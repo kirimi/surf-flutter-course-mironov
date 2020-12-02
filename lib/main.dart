@@ -1,47 +1,48 @@
 import 'package:flutter/material.dart';
 
-// Задача вывести счетчик вызовов build у stateless и stateful виджетах при hotreload
-
-// В данном коде счетчик вызовов build при hotreload будет одинаковый и в stateless и в stateful виджетах,
-// но по разным причинам.
-// В stateless - build вызывается при полном пересоздании виджета. constructor -> build
-// В stateful - после hotreload виджет тоже пересоздается, но его state остается. А build вызывается после didUpdateWidget
-
-// немножко расширил чтобы одновременно выводился результат
+// Если переименовать main.dart в start.dart, то при запуске `flutter run` ошибка 'Target file "lib/main.dart" not found.'
+// Фреймворк ожидает что функция main() находится в файле main.dart
+//
+// Значение поле title виджета MaterialApp в андроиде выводится когда пользователь нажимает "recent apps".
+//
+// Функцию которая возвращает context.runtimeType в stateless-виджете не получится реализовать.
+// Т.к. context доступен после того, как виджет вставится в дерево и запустится build. А build уже есть context.
+//
+// А вот в stateful-виджете context доступен из state. Доступен в виде поля стейта, ну и он же в параметре build().
+// Потому, что виджет уже вставлен в дерево и state к нему привязан.
+// сontext привязывается перед initState. Но в initState() не рекомендуется его использовать.
+// Можно в didChangeDependencies().
+// Вот тут до конца не разобрался почему в initState нельзя. Почему тут нет BuildContext.inheritFromWidgetOfExactType.
+// И что происходит между initState и didChangeDependencies? Возможно это будет дальше в нашей программе.
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyFirstStatelessWidget(),
-            MyFirstStatefulWidget(),
-          ],
-        ),
-      ),
+      title: 'Places',
+      home: MyFirstStatefulWidget(),
     );
   }
 }
 
 // ------------------------------------
-int statelessBuildCount = 0;
-
 class MyFirstStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    statelessBuildCount++;
-    print('stateless build count: $statelessBuildCount');
     return Center(
-      child: Text('stless $statelessBuildCount'),
+      child: Text('Hello'),
     );
   }
+
+  // нету context тут
+
+  // getContextRuntimeType() {
+  //   return context.runtimeType;
+  // }
 }
 
 // -------------------------------------
@@ -52,20 +53,15 @@ class MyFirstStatefulWidget extends StatefulWidget {
 }
 
 class _MyFirstStatefulWidgetState extends State<MyFirstStatefulWidget> {
-  int statefulBuildCount = 0;
-
-  @override
-  void didUpdateWidget(covariant MyFirstStatefulWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget');
-  }
-
   @override
   Widget build(BuildContext context) {
-    statefulBuildCount++;
-    print('stateful build count: $statefulBuildCount');
+    print(getContextRuntimeType());
     return Center(
-      child: Text('stful $statefulBuildCount'),
+      child: Text('Hello!'),
     );
+  }
+
+  getContextRuntimeType() {
+    return context.runtimeType;
   }
 }
