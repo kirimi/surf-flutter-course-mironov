@@ -31,4 +31,5 @@ const _appBarStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.w700,
   fontSize: 32.0,
+  height: 36.0 / 32.0,
 );
