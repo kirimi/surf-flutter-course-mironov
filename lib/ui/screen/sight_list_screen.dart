@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:places/mocks.dart';
+import 'package:places/ui/screen/sight_card.dart';
 
 class SightListScreen extends StatefulWidget {
   @override
@@ -10,7 +12,6 @@ class _SightListScreenState extends State<SightListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // чтобы на ios title не прыгнул в центр
         centerTitle: false,
         toolbarHeight: 112.0,
         title: Text(
@@ -19,9 +20,26 @@ class _SightListScreenState extends State<SightListScreen> {
           maxLines: 2,
           style: _appBarStyle,
         ),
-        // делаем прозрачным чтобы был цвет фона
         backgroundColor: Colors.transparent,
         elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              SightCard(sight: mocks[0]),
+              SizedBox(height: 16.0),
+              SightCard(sight: mocks[1]),
+              SizedBox(height: 16.0),
+              SightCard(sight: mocks[2]),
+              SizedBox(height: 16.0),
+              SightCard(sight: mocks[3]),
+              SizedBox(height: 16.0),
+              SightCard(sight: mocks[4]),
+            ],
+          ),
+        ),
       ),
     );
   }
