@@ -38,21 +38,24 @@ class BigButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
-              Icon(
-                icon,
-                color: enabled ? color : disabledColor,
-              ),
-              SizedBox(width: 10),
-            ],
-            Text(
-              text,
-              style: style.copyWith(color: enabled ? color : disabledColor),
-            ),
-          ],
+          children: _getLabelList(),
         ),
       ),
     );
+  }
+
+  List<Widget> _getLabelList() {
+    final List<Widget> labelList = [];
+    if (icon != null) {
+      labelList.add(Icon(icon, color: enabled ? color : disabledColor));
+      labelList.add(SizedBox(width: 10));
+    }
+
+    labelList.add(Text(
+      text,
+      style: style.copyWith(color: enabled ? color : disabledColor),
+    ));
+
+    return labelList;
   }
 }
