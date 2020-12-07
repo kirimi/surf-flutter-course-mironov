@@ -4,7 +4,6 @@ class Sight {
   final double lat;
   final String url;
   final String details;
-  // какой тип у type будет, пока сделал просто String
   final String type;
 
   Sight({

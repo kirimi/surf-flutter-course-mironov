@@ -18,7 +18,10 @@ class SightCard extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(sight.url), fit: BoxFit.cover),
+                  image: DecorationImage(
+                    image: NetworkImage(sight.url),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -27,7 +30,10 @@ class SightCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(sight.type, style: _typeStyle),
-                      Icon(Icons.favorite_outline, color: Colors.white),
+                      Icon(
+                        Icons.favorite_outline,
+                        color: Colors.white,
+                      ),
                     ],
                   ),
                 ),

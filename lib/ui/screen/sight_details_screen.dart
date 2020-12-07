@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/widgets/big_button.dart';
 
-//  Для простоты я вынес кнопки в отдельный общий виджет ui/widgets/BigButton
-
 class SightDetailsScreen extends StatefulWidget {
   final Sight sight;
 
@@ -21,26 +19,34 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: Stack(children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(widget.sight.url), fit: BoxFit.cover),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 36.0),
-                child: Container(
-                  height: 32.0,
-                  width: 32.0,
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-                  child: Icon(
-                    Icons.arrow_back_ios_rounded,
-                    size: 16.0,
-                    color: Colors.black,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.sight.url),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              )
-            ]),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 36.0),
+                  child: Container(
+                    height: 32.0,
+                    width: 32.0,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Icon(
+                      Icons.arrow_back_ios_rounded,
+                      size: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Expanded(
             child: SingleChildScrollView(

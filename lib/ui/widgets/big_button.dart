@@ -30,8 +30,10 @@ class BigButton extends StatelessWidget {
       onTap: enabled ? onPressed : null,
       child: Container(
         height: 48.0,
-        decoration:
-            BoxDecoration(color: enabled ? bgColor : disabledBgColor, borderRadius: BorderRadius.circular(12.0)),
+        decoration: BoxDecoration(
+          color: enabled ? bgColor : disabledBgColor,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -42,7 +44,10 @@ class BigButton extends StatelessWidget {
               ),
               SizedBox(width: 10),
             ],
-            Text(text, style: style.copyWith(color: enabled ? color : disabledColor)),
+            Text(
+              text,
+              style: style.copyWith(color: enabled ? color : disabledColor),
+            ),
           ],
         ),
       ),
