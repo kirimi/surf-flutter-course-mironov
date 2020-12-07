@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/ui/res/app_colors.dart';
+import 'package:places/ui/res/app_text_styles.dart';
 
 class SightCard extends StatelessWidget {
   final Sight sight;
@@ -29,10 +31,10 @@ class SightCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(sight.type, style: _typeStyle),
+                      Text(sight.type, style: AppTextStyles.sightCardType),
                       Icon(
                         Icons.favorite_outline,
-                        color: Colors.white,
+                        color: AppColors.white,
                       ),
                     ],
                   ),
@@ -41,7 +43,7 @@ class SightCard extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                color: _bottomBgrColor,
+                color: AppColors.grayF5,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -51,13 +53,13 @@ class SightCard extends StatelessWidget {
                       Text(
                         sight.name,
                         maxLines: 2,
-                        style: _titleStyle,
+                        style: AppTextStyles.sightCardTitle,
                       ),
                       Text(
                         sight.details,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: _detailsStyle,
+                        style: AppTextStyles.sightCardDetails,
                       ),
                     ],
                   ),
@@ -70,26 +72,3 @@ class SightCard extends StatelessWidget {
     );
   }
 }
-
-const _titleStyle = TextStyle(
-  color: Color(0xFF3B3E5B),
-  fontWeight: FontWeight.w500,
-  fontSize: 16.0,
-  height: 20.0 / 16.0,
-);
-
-const _detailsStyle = TextStyle(
-  color: Color(0xFF7C7E92),
-  fontWeight: FontWeight.w400,
-  fontSize: 14.0,
-  height: 18.0 / 14.0,
-);
-
-const _typeStyle = TextStyle(
-  color: Colors.white,
-  fontWeight: FontWeight.w700,
-  fontSize: 14.0,
-  height: 18.0 / 14.0,
-);
-
-const _bottomBgrColor = Color(0xfff5f5f5);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places/mocks.dart';
+import 'package:places/ui/res/app_colors.dart';
+import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
 
 class SightListScreen extends StatefulWidget {
@@ -15,12 +18,12 @@ class _SightListScreenState extends State<SightListScreen> {
         centerTitle: false,
         toolbarHeight: 112.0,
         title: Text(
-          'Список\nинтересных мест',
+          AppStrings.sightListAppBar,
           textAlign: TextAlign.left,
           maxLines: 2,
-          style: _appBarStyle,
+          style: AppTextStyles.sightListAppBar,
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.transparent,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -44,10 +47,3 @@ class _SightListScreenState extends State<SightListScreen> {
     );
   }
 }
-
-const _appBarStyle = TextStyle(
-  color: Colors.black,
-  fontWeight: FontWeight.w700,
-  fontSize: 32.0,
-  height: 36.0 / 32.0,
-);

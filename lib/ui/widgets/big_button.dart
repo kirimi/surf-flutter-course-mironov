@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:places/ui/res/app_colors.dart';
+import 'package:places/ui/res/app_text_styles.dart';
 
 class BigButton extends StatelessWidget {
   final String text;
@@ -16,11 +18,11 @@ class BigButton extends StatelessWidget {
     @required this.text,
     @required this.onPressed,
     this.icon,
-    this.color = Colors.white,
-    this.disabledColor = Colors.black54,
-    this.bgColor = Colors.green,
-    this.disabledBgColor = Colors.grey,
-    this.style = _textStyle,
+    this.color = AppColors.white,
+    this.disabledColor = AppColors.black54,
+    this.bgColor = AppColors.green,
+    this.disabledBgColor = AppColors.grey,
+    this.style = AppTextStyles.bigButtonText,
     this.enabled = true,
   }) : super(key: key);
 
@@ -54,11 +56,3 @@ class BigButton extends StatelessWidget {
     );
   }
 }
-
-const _textStyle = TextStyle(
-  color: Color(0xFF3B3E5B),
-  fontWeight: FontWeight.w700,
-  fontSize: 14.0,
-  letterSpacing: 0.3,
-  height: 18.0 / 14.0,
-);
