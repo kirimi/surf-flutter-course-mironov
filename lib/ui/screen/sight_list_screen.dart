@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:places/mocks.dart';
-import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
@@ -14,17 +13,8 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        toolbarHeight: 112.0,
-        title: Text(
-          AppStrings.sightListAppBar,
-          textAlign: TextAlign.left,
-          maxLines: 2,
-          style: AppTextStyles.sightListAppBar,
-        ),
-        backgroundColor: AppColors.transparent,
-        elevation: 0,
+      appBar: _MyAppBar(
+        title: AppStrings.sightListAppBar,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -46,4 +36,26 @@ class _SightListScreenState extends State<SightListScreen> {
       ),
     );
   }
+}
+
+class _MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const _MyAppBar({Key key, this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, top: 64.0, right: 16.0, bottom: 16.0),
+      child: Text(
+        title,
+        textAlign: TextAlign.left,
+        maxLines: 2,
+        style: AppTextStyles.sightListAppBar,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(150.0);
 }
