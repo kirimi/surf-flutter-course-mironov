@@ -4,6 +4,7 @@ import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/widgets/big_button.dart';
+import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 class SightDetailsScreen extends StatefulWidget {
   final Sight sight;
@@ -25,12 +26,8 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
             child: Stack(
               children: [
                 Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(widget.sight.url),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  height: double.infinity,
+                  child: NetworkImageWithSpinner(url: widget.sight.url),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, top: 36.0),
