@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 class SightCard extends StatelessWidget {
   final Sight sight;
@@ -18,27 +19,30 @@ class SightCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(sight.url),
-                    fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: NetworkImageWithSpinner(url: sight.url),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(sight.type, style: AppTextStyles.sightCardType),
-                      Icon(
-                        Icons.favorite_outline,
-                        color: AppColors.white,
-                      ),
-                    ],
-                  ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          sight.type,
+                          style: AppTextStyles.sightCardType,
+                        ),
+                        Icon(
+                          Icons.favorite_outline,
+                          color: AppColors.white,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             Expanded(
