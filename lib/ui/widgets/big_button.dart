@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 
+/// Кнопка с иконкой [icon] и текстом [text] по центру
+///
+/// Если иконка [icon] не задана, то выводит просто текст [text]
+/// Позволяет настроить цвета, текстовый стиль
 class BigButton extends StatelessWidget {
   final String text;
   final IconData icon;

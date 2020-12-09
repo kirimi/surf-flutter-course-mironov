@@ -4,6 +4,9 @@ import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
+/// Карточка "Интересного места" для списка мест
+///
+/// Используется в списке мест на странице [SightListScreen]
 class SightCard extends StatelessWidget {
   final Sight sight;
 

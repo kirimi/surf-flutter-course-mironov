@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
+/// Виджет загружает и показывает изображение из сети по адресу [url].
+///
+/// Во время загрузки вместо изображения показывает спиннер.
 class NetworkImageWithSpinner extends StatelessWidget {
   final String url;
   final BoxFit fit;
 
   const NetworkImageWithSpinner({
     Key key,
-    this.url,
+    @required this.url,
     this.fit = BoxFit.cover,
   }) : super(key: key);
   @override

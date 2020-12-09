@@ -6,6 +6,7 @@ import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/widgets/big_button.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
+/// Экран подробного представления "Интересного места"
 class SightDetailsScreen extends StatefulWidget {
   final Sight sight;
 
