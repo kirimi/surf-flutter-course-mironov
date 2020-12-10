@@ -7,5 +7,5 @@ class AppStrings {
 
   static const String visitingAppBarTitle = 'Избранное';
   static const String visitingWantToVisitTab = 'Хочу посетить';
-  static const String visitingVisitedTab = 'Посещенные места';
+  static const String visitingVisitedTab = 'Посещенные';
 }

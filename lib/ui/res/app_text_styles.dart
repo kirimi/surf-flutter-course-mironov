@@ -2,6 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:places/ui/res/app_colors.dart';
 
 class AppTextStyles {
+  // VisitingScreen
+  // ---------------------------------------------
+  static const visitingAppBarTitle = TextStyle(
+    color: AppColors.grayBlue2,
+    fontWeight: FontWeight.w500,
+    fontSize: 18.0,
+    height: 18.0 / 24.0,
+  );
+
+  static const visitingTab = TextStyle(
+    color: AppColors.lightGray,
+    fontWeight: FontWeight.w700,
+    fontSize: 14.0,
+    height: 14.0 / 18.0,
+  );
+
+  static const visitingActiveTab = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w700,
+    fontSize: 14.0,
+    height: 14.0 / 18.0,
+  );
+
   //  SightList text styles
   // ---------------------------------------------
 
