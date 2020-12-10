@@ -3,6 +3,7 @@ import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
+import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран со списком интересных мест
@@ -27,6 +28,7 @@ class _SightListScreenState extends State<SightListScreen> {
           SightCard(sight: mocks[4]),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 }
