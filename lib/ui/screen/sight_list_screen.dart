@@ -3,6 +3,8 @@ import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
+import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран со списком интересных мест
 class SightListScreen extends StatefulWidget {
@@ -17,24 +19,16 @@ class _SightListScreenState extends State<SightListScreen> {
       appBar: _MyAppBar(
         title: AppStrings.sightListAppBar,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              SightCard(sight: mocks[0]),
-              SizedBox(height: 16.0),
-              SightCard(sight: mocks[1]),
-              SizedBox(height: 16.0),
-              SightCard(sight: mocks[2]),
-              SizedBox(height: 16.0),
-              SightCard(sight: mocks[3]),
-              SizedBox(height: 16.0),
-              SightCard(sight: mocks[4]),
-            ],
-          ),
-        ),
+      body: SightListWidget(
+        children: [
+          SightCard(sight: mocks[0]),
+          SightCard(sight: mocks[1]),
+          SightCard(sight: mocks[2]),
+          SightCard(sight: mocks[3]),
+          SightCard(sight: mocks[4]),
+        ],
       ),
+      bottomNavigationBar: CustomBottomNavBar(),
     );
   }
 }
