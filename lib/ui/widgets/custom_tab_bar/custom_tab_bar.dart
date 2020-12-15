@@ -32,7 +32,7 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
         height: _tabBarHeight,
         decoration: BoxDecoration(
           color: AppColors.grayF5,
-          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+          borderRadius: BorderRadius.all(Radius.circular(_tabBarHeight / 2)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.max,

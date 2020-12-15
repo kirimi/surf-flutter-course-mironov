@@ -35,10 +35,9 @@ class CustomTab extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTap?.call(),
         child: Container(
-          height: 40,
           decoration: BoxDecoration(
             color: isActive ? activeBgrColor : bgrColor,
-            borderRadius: BorderRadius.all(Radius.circular(40.0)),
+            borderRadius: BorderRadius.all(Radius.circular(24.0)),
           ),
           child: Center(
             child: Padding(
