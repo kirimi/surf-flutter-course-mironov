@@ -36,13 +36,13 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                     height: 32.0,
                     width: 32.0,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: Theme.of(context).backgroundColor,
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Icon(
                       Icons.arrow_back_ios_rounded,
                       size: 16.0,
-                      color: AppColors.black,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 )
@@ -65,6 +65,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                     BigButton(
                       text: AppStrings.sightDetailsRouteToBtn.toUpperCase(),
                       icon: Icons.repeat_outlined,
+                      bgColor: Theme.of(context).accentColor,
                       onPressed: () {},
                     ),
                     SizedBox(height: 32.0),
@@ -76,7 +77,8 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                           icon: Icons.calendar_today_outlined,
                           bgColor: Colors.transparent,
                           disabledBgColor: AppColors.transparent,
-                          color: AppColors.black,
+                          color: Theme.of(context).primaryColor,
+                          disabledColor: Theme.of(context).disabledColor,
                           style: AppTextStyles.sightDetailsBtn,
                           enabled: false,
                           onPressed: () {},
@@ -86,7 +88,8 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                           icon: Icons.favorite_outline,
                           bgColor: Colors.transparent,
                           disabledBgColor: AppColors.transparent,
-                          color: AppColors.black,
+                          color: Theme.of(context).primaryColor,
+                          disabledColor: Theme.of(context).disabledColor,
                           style: AppTextStyles.sightDetailsBtn,
                           enabled: true,
                           onPressed: () {},

@@ -31,7 +31,9 @@ class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProvid
       appBar: AppBar(
         title: Text(
           AppStrings.visitingAppBarTitle,
-          style: AppTextStyles.visitingAppBarTitle,
+          style: AppTextStyles.visitingAppBarTitle.copyWith(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         backgroundColor: AppColors.transparent,
         elevation: 0,
@@ -39,8 +41,16 @@ class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProvid
           controller: _controller,
           onTabTap: (index) => _controller.animateTo(index),
           items: [
-            CustomTabBarItem(text: AppStrings.visitingWantToVisitTab),
-            CustomTabBarItem(text: AppStrings.visitingVisitedTab),
+            CustomTabBarItem(
+              text: AppStrings.visitingWantToVisitTab,
+              activeStyle: AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
+              style: AppTextStyles.visitingTab.copyWith(color: Theme.of(context).disabledColor),
+            ),
+            CustomTabBarItem(
+              text: AppStrings.visitingVisitedTab,
+              activeStyle: AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
+              style: AppTextStyles.visitingTab.copyWith(color: Theme.of(context).disabledColor),
+            ),
           ],
         ),
       ),
