@@ -25,7 +25,10 @@ class CustomTab extends StatelessWidget {
     this.activeBgrColor = AppColors.grayBlue,
     this.bgrColor = AppColors.transparent,
     this.onTap,
-  }) : super(key: key);
+  })  : assert(isActive != null),
+        assert(text != null),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Expanded(

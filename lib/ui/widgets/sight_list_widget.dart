@@ -13,7 +13,8 @@ class SightListWidget extends StatelessWidget {
     Key key,
     @required this.children,
     this.padding = const EdgeInsets.symmetric(horizontal: 16.0),
-  }) : super(key: key);
+  })  : assert(children != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {

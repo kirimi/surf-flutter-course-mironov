@@ -11,7 +11,9 @@ class NetworkImageWithSpinner extends StatelessWidget {
     Key key,
     @required this.url,
     this.fit = BoxFit.cover,
-  }) : super(key: key);
+  })  : assert(url != null),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Image.network(
