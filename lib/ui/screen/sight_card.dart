@@ -14,7 +14,7 @@ class SightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+      borderRadius: BorderRadius.circular(16.0),
       child: AspectRatio(
         aspectRatio: 3 / 2,
         child: Column(

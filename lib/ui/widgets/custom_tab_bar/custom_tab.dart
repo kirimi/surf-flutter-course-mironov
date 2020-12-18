@@ -37,7 +37,7 @@ class CustomTab extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: isActive ? activeBgrColor : bgrColor,
-            borderRadius: BorderRadius.all(Radius.circular(24.0)),
+            borderRadius: BorderRadius.circular(24.0),
           ),
           child: Center(
             child: Padding(
