@@ -23,7 +23,6 @@ final lightTheme = ThemeData.light().copyWith(
 );
 
 final darkTheme = ThemeData.dark().copyWith(
-  brightness: Brightness.dark,
   primaryColor: AppColors.dkPrimaryColor,
   accentColor: AppColors.dkAccentColor,
   disabledColor: AppColors.dkDisabledColor,
