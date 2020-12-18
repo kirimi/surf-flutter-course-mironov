@@ -20,7 +20,9 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
     @required this.items,
     @required this.controller,
     this.onTabTap,
-  }) : super(key: key);
+  })  : assert(items != null),
+        assert(controller != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
         height: _tabBarHeight,
         decoration: BoxDecoration(
           color: AppColors.grayF5,
-          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+          borderRadius: BorderRadius.circular(_tabBarHeight / 2),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -49,15 +51,17 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
     // определяем активный таб или нет в соответствии с этим передаем isActive
     final List<Widget> tabs = [];
     for (var i = 0; i < items.length; i++) {
-      tabs.add(CustomTab(
-        text: items[i].text,
-        isActive: controller.index == i,
-        activeStyle: items[i].activeStyle,
-        activeBgrColor: items[i].activeBgrColor,
-        style: items[i].style,
-        bgrColor: items[i].bgrColor,
-        onTap: () => onTabTap?.call(i),
-      ));
+      tabs.add(
+        CustomTab(
+          text: items[i].text,
+          isActive: controller.index == i,
+          activeStyle: items[i].activeStyle,
+          activeBgrColor: items[i].activeBgrColor,
+          style: items[i].style,
+          bgrColor: items[i].bgrColor,
+          onTap: () => onTabTap?.call(i),
+        ),
+      );
     }
     return tabs;
   }

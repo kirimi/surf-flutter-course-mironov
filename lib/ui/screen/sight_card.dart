@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
@@ -15,7 +14,7 @@ class SightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(16.0)),
+      borderRadius: BorderRadius.circular(16.0),
       child: AspectRatio(
         aspectRatio: 3 / 2,
         child: Column(
@@ -36,11 +35,13 @@ class SightCard extends StatelessWidget {
                       children: [
                         Text(
                           sight.type,
-                          style: AppTextStyles.sightCardType,
+                          style: AppTextStyles.sightCardType.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         Icon(
                           Icons.favorite_outline,
-                          color: AppColors.white,
+                          color: Colors.white,
                         ),
                       ],
                     ),
@@ -50,7 +51,7 @@ class SightCard extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                color: AppColors.grayF5,
+                color: Theme.of(context).cardColor,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(

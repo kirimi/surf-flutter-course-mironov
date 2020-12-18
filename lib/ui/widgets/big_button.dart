@@ -28,7 +28,9 @@ class BigButton extends StatelessWidget {
     this.disabledBgColor = AppColors.grey,
     this.style = AppTextStyles.bigButtonText,
     this.enabled = true,
-  }) : super(key: key);
+  })  : assert(text != null),
+        assert(onPressed != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +57,12 @@ class BigButton extends StatelessWidget {
       labelList.add(SizedBox(width: 10));
     }
 
-    labelList.add(Text(
-      text,
-      style: style.copyWith(color: enabled ? color : disabledColor),
-    ));
+    labelList.add(
+      Text(
+        text,
+        style: style.copyWith(color: enabled ? color : disabledColor),
+      ),
+    );
 
     return labelList;
   }

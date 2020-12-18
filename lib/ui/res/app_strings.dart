@@ -1,4 +1,6 @@
 class AppStrings {
+  static const String appTitle = 'Places';
+
   static const String sightListAppBar = 'Список\nинтересных мест';
 
   static const String sightDetailsRouteToBtn = 'Построить маршрут';

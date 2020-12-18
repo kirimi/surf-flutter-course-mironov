@@ -18,5 +18,5 @@ class CustomTabBarItem {
     this.style = AppTextStyles.visitingTab,
     this.activeBgrColor = AppColors.grayBlue,
     this.bgrColor = AppColors.transparent,
-  });
+  }) : assert(text != null);
 }
