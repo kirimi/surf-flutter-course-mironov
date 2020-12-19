@@ -10,4 +10,13 @@ class AppStrings {
   static const String visitingAppBarTitle = 'Избранное';
   static const String visitingWantToVisitTab = 'Хочу посетить';
   static const String visitingVisitedTab = 'Посещенные';
+
+  static const String filtersDistanceMeters = 'м';
+  static const String filtersDistanceKilometers = 'км';
+  static const String filtersCategories = 'Категории';
+  static const String filtersDistance = 'Расстояние';
+  static const String filtersFrom = 'от';
+  static const String filtersTo = 'до';
+  static const String filtersShow = 'Показать';
+  static const String filtersClear = 'Очистить';
 }

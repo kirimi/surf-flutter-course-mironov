@@ -1,5 +1,35 @@
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_type.dart';
 
+/// Категории
+final List<SightType> typeMocks = [
+  SightType(
+    name: 'Кинотеатр',
+    iconName: 'cinema',
+  ),
+  SightType(
+    name: 'Ресторан',
+    iconName: 'restaurant',
+  ),
+  SightType(
+    name: 'Особое место',
+    iconName: 'special',
+  ),
+  SightType(
+    name: 'Парк',
+    iconName: 'park',
+  ),
+  SightType(
+    name: 'Музей',
+    iconName: 'museum',
+  ),
+  SightType(
+    name: 'Кафе',
+    iconName: 'cafe',
+  ),
+];
+
+/// Места
 final List<Sight> mocks = [
   Sight(
     name: 'Дворцовая площадь',
@@ -35,7 +65,7 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/bolshoy-ekaterininskiy-dvorets.jpg',
     lon: 59.715871,
     lat: 30.395414,
-    type: 'музей',
+    type: 'Музей',
   ),
   Sight(
     name: 'Государственный Эрмитаж',

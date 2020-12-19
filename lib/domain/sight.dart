@@ -1,3 +1,4 @@
+/// Место
 class Sight {
   final String name;
   final double lon;

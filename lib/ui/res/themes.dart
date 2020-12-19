@@ -18,8 +18,10 @@ final lightTheme = ThemeData.light().copyWith(
     selectedItemColor: AppColors.ltBottomNavSelectedColor,
   ),
   appBarTheme: AppBarTheme(
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     centerTitle: true,
+    elevation: 0.0,
+    color: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -37,6 +39,12 @@ final lightTheme = ThemeData.light().copyWith(
       primary: AppColors.ltPrimaryColor,
       textStyle: AppTextStyles.sightDetailsBtn,
     ),
+  ),
+  sliderTheme: SliderThemeData(
+    trackHeight: 2.0,
+    thumbColor: AppColors.ltAccentColor,
+    activeTrackColor: AppColors.ltAccentColor,
+    inactiveTrackColor: AppColors.ltAccentColor.withOpacity(0.3),
   ),
 );
 
@@ -58,6 +66,8 @@ final darkTheme = ThemeData.dark().copyWith(
   appBarTheme: AppBarTheme(
     brightness: Brightness.dark,
     centerTitle: true,
+    elevation: 0.0,
+    color: Colors.transparent,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -75,5 +85,11 @@ final darkTheme = ThemeData.dark().copyWith(
       primary: AppColors.dkPrimaryColor,
       textStyle: AppTextStyles.sightDetailsBtn,
     ),
+  ),
+  sliderTheme: SliderThemeData(
+    trackHeight: 2.0,
+    thumbColor: AppColors.dkAccentColor,
+    activeTrackColor: AppColors.dkAccentColor,
+    inactiveTrackColor: AppColors.dkAccentColor.withOpacity(0.3),
   ),
 );

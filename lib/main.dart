@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
-import 'package:places/ui/screen/sight_details_screen.dart';
+import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 
 void main() {
   runApp(App());
@@ -23,10 +22,11 @@ class _AppState extends State<App> {
       theme: isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: SightDetailsScreen(
-          sight: mocks[0],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        // body: SightDetailsScreen(
+        //   sight: mocks[0],
+        // ),
+        body: FiltersScreen(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         floatingActionButton: Container(
           height: 40,
           width: 40,
