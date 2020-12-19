@@ -6,6 +6,7 @@ import 'package:places/ui/res/app_text_styles.dart';
 ///
 /// Если иконка [icon] не задана, то выводит просто текст [text]
 /// Позволяет настроить цвета, текстовый стиль
+// todo deprecated. use flutter api buttons instead
 class BigButton extends StatelessWidget {
   final String text;
   final IconData icon;

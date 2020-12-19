@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
-import 'package:places/ui/widgets/big_button.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Экран подробного представления "Интересного места"
@@ -62,37 +60,42 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                     SizedBox(height: 24.0),
                     Text(widget.sight.details, style: AppTextStyles.sightDetailsDetails),
                     SizedBox(height: 24.0),
-                    BigButton(
-                      text: AppStrings.sightDetailsRouteToBtn.toUpperCase(),
-                      icon: Icons.repeat_outlined,
-                      bgColor: Theme.of(context).accentColor,
-                      onPressed: () {},
+                    ElevatedButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.repeat_outlined),
+                          SizedBox(width: 10),
+                          Text(AppStrings.sightDetailsRouteToBtn.toUpperCase()),
+                        ],
+                      ),
+                      onPressed: () => print('${AppStrings.sightDetailsRouteToBtn} tapped'),
                     ),
                     SizedBox(height: 32.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        BigButton(
-                          text: AppStrings.sightDetailsPlanBtn,
-                          icon: Icons.calendar_today_outlined,
-                          bgColor: Colors.transparent,
-                          disabledBgColor: AppColors.transparent,
-                          color: Theme.of(context).primaryColor,
-                          disabledColor: Theme.of(context).disabledColor,
-                          style: AppTextStyles.sightDetailsBtn,
-                          enabled: false,
-                          onPressed: () {},
+                        TextButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.calendar_today_outlined),
+                              SizedBox(width: 10),
+                              Text(AppStrings.sightDetailsPlanBtn),
+                            ],
+                          ),
+                          onPressed: null,
                         ),
-                        BigButton(
-                          text: AppStrings.sightDetailsToFavoriteBtn,
-                          icon: Icons.favorite_outline,
-                          bgColor: Colors.transparent,
-                          disabledBgColor: AppColors.transparent,
-                          color: Theme.of(context).primaryColor,
-                          disabledColor: Theme.of(context).disabledColor,
-                          style: AppTextStyles.sightDetailsBtn,
-                          enabled: true,
-                          onPressed: () {},
+                        TextButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.favorite_outline),
+                              SizedBox(width: 10),
+                              Text(AppStrings.sightDetailsToFavoriteBtn),
+                            ],
+                          ),
+                          onPressed: () => print('${AppStrings.sightDetailsToFavoriteBtn} tapped'),
                         ),
                       ],
                     ),
