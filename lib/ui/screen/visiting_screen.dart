@@ -31,7 +31,7 @@ class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProvid
       appBar: AppBar(
         title: Text(
           AppStrings.visitingAppBarTitle,
-          style: AppTextStyles.visitingAppBarTitle.copyWith(
+          style: AppTextStyles.appBarTitle.copyWith(
             color: Theme.of(context).primaryColor,
           ),
         ),

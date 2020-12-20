@@ -22,6 +22,10 @@ final lightTheme = ThemeData.light().copyWith(
     centerTitle: true,
     elevation: 0.0,
     color: Colors.transparent,
+    textTheme: TextTheme(
+      // title text style
+      headline6: AppTextStyles.appBarTitle.copyWith(color: AppColors.ltPrimaryColor),
+    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -68,6 +72,10 @@ final darkTheme = ThemeData.dark().copyWith(
     centerTitle: true,
     elevation: 0.0,
     color: Colors.transparent,
+    textTheme: TextTheme(
+      // title text style
+      headline6: AppTextStyles.appBarTitle.copyWith(color: AppColors.dkPrimaryColor),
+    ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

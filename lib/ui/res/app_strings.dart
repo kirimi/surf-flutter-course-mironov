@@ -19,4 +19,8 @@ class AppStrings {
   static const String filtersTo = 'до';
   static const String filtersShow = 'Показать';
   static const String filtersClear = 'Очистить';
+
+  static const String settingsAppbarTitle = 'Настройки';
+  static const String settingsDarkTheme = 'Темная тема';
+  static const String settingsTutorial = 'Смотреть туториал';
 }

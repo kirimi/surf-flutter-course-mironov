@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
-  // VisitingScreen
-  // ---------------------------------------------
-  static const visitingAppBarTitle = TextStyle(
+  static const appBarTitle = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 18.0,
     height: 18.0 / 24.0,
   );
 
+  // VisitingScreen
+  // ---------------------------------------------
   static const visitingTab = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 14.0,

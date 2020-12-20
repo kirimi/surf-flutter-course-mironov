@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
-import 'package:places/ui/screen/filters_screen/filters_screen.dart';
+import 'package:places/ui/screen/settings_screen.dart';
+
+// Хранилище для текущей темы приложения
+final themeState = ThemeState();
 
 void main() {
   runApp(App());
@@ -13,33 +17,27 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  bool isDark = false;
+  @override
+  void initState() {
+    super.initState();
+    themeState.addListener(_onThemeChange);
+  }
+
+  @override
+  void dispose() {
+    themeState.removeListener(_onThemeChange);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppStrings.appTitle,
-      theme: isDark ? darkTheme : lightTheme,
+      theme: themeState.isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        // body: SightDetailsScreen(
-        //   sight: mocks[0],
-        // ),
-        body: FiltersScreen(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: Container(
-          height: 40,
-          width: 40,
-          child: FloatingActionButton(
-            child: Icon(isDark ? Icons.wb_sunny : Icons.nightlight_round),
-            onPressed: () {
-              setState(() {
-                isDark = !isDark;
-              });
-            },
-          ),
-        ),
-      ),
+      home: SettingsScreen(),
     );
   }
+
+  void _onThemeChange() => setState(() {});
 }
