@@ -111,7 +111,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 onChanged: (newValues) {
                   setState(() => _rangeValues = newValues);
                 }),
-            Expanded(child: Container()),
+            Spacer(),
             IconElevatedButton(
               text: _getShowButtonLabel(),
               onPressed: _onShowTap,
