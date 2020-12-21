@@ -22,7 +22,9 @@ class SightListWidget extends StatelessWidget {
     for (var i = 0; i < children.length; i++) {
       childrenWithSpacing.add(children[i]);
       if (i != children.length - 1) {
-        childrenWithSpacing.add(SizedBox(height: spaceHeight));
+        childrenWithSpacing.add(
+          const SizedBox(height: spaceHeight),
+        );
       }
     }
 

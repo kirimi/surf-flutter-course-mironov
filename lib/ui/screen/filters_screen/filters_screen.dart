@@ -65,7 +65,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               AppStrings.filtersCategories,
               style: Theme.of(context).textTheme.headline6,
             ),
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
             GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -87,7 +87,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 );
               },
             ),
-            SizedBox(height: 60.0),
+            const SizedBox(height: 60.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

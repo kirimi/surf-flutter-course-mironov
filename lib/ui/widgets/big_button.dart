@@ -55,7 +55,7 @@ class BigButton extends StatelessWidget {
     final List<Widget> labelList = [];
     if (icon != null) {
       labelList.add(Icon(icon, color: enabled ? color : disabledColor));
-      labelList.add(SizedBox(width: 10));
+      labelList.add(const SizedBox(width: 10));
     }
 
     labelList.add(

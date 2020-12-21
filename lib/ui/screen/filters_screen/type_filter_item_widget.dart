@@ -71,7 +71,7 @@ class TypeFilterItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               sightType.name,
               maxLines: 1,
