@@ -5,6 +5,7 @@ import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 
+/// Экран настроек
 class SettingsScreen extends StatefulWidget {
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
