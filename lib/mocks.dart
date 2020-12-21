@@ -1,34 +1,6 @@
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 
-/// Категории
-final List<SightType> typeMocks = [
-  SightType(
-    name: 'Кинотеатр',
-    iconName: 'cinema',
-  ),
-  SightType(
-    name: 'Ресторан',
-    iconName: 'restaurant',
-  ),
-  SightType(
-    name: 'Особое место',
-    iconName: 'special',
-  ),
-  SightType(
-    name: 'Парк',
-    iconName: 'park',
-  ),
-  SightType(
-    name: 'Музей',
-    iconName: 'museum',
-  ),
-  SightType(
-    name: 'Кафе',
-    iconName: 'cafe',
-  ),
-];
-
 /// Места
 final List<Sight> mocks = [
   Sight(
@@ -38,7 +10,10 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/dvorcovaya-ploschad.jpg',
     lon: 59.940073,
     lat: 30.312733,
-    type: 'красивое место',
+    type: SightType(
+      name: 'Особое место',
+      iconName: 'special',
+    ),
   ),
   Sight(
     name: 'Музей-заповедник Павловск',
@@ -47,7 +22,10 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/muzey-zapovednik-pavlovsk.jpg',
     lon: 59.685994,
     lat: 30.433278,
-    type: 'музей',
+    type: SightType(
+      name: 'Музей',
+      iconName: 'museum',
+    ),
   ),
   Sight(
     name: 'Петергоф',
@@ -56,7 +34,10 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/petergof.jpg',
     lon: 59.881223,
     lat: 29.906775,
-    type: 'городок',
+    type: SightType(
+      name: 'Особое место',
+      iconName: 'special',
+    ),
   ),
   Sight(
     name: 'Большой Екатерининский дворец',
@@ -65,7 +46,10 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/bolshoy-ekaterininskiy-dvorets.jpg',
     lon: 59.715871,
     lat: 30.395414,
-    type: 'Музей',
+    type: SightType(
+      name: 'Музей',
+      iconName: 'museum',
+    ),
   ),
   Sight(
     name: 'Государственный Эрмитаж',
@@ -74,6 +58,9 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/ermitazh.jpg',
     lon: 59.940073,
     lat: 30.312733,
-    type: 'музей',
+    type: SightType(
+      name: 'Музей',
+      iconName: 'museum',
+    ),
   ),
 ];

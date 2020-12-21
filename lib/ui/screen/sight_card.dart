@@ -81,7 +81,7 @@ class SightCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    sight.type,
+                    sight.type.name,
                     style: AppTextStyles.sightCardType.copyWith(
                       color: Colors.white,
                     ),

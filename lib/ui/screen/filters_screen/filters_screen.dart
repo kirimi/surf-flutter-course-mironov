@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
+import 'package:places/domain/sight_types.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/type_filter_item_widget.dart';
@@ -30,7 +31,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   final List<Sight> _sights = mocks;
 
   // список категорий
-  final List<SightType> _types = typeMocks;
+  final List<SightType> _types = defaultSightTypes;
 
   // Выбранные категории для фильтрации
   final List<String> _selectedTypes = [];
@@ -143,7 +144,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   // то фильтруем по типу
   int _calculateFilteredCount() {
     final filteredSights = _sights
-        .where((sight) => _selectedTypes.isNotEmpty ? _selectedTypes.contains(sight.type) : true)
+        .where((sight) => _selectedTypes.isNotEmpty ? _selectedTypes.contains(sight.type.name) : true)
         .where(
           (sight) => _isPointInsideRange(
             sight.lat,

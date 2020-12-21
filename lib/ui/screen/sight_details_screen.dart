@@ -59,7 +59,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                   children: [
                     Text(widget.sight.name, style: AppTextStyles.sightDetailsTitle),
                     const SizedBox(height: 2.0),
-                    Text(widget.sight.type, style: AppTextStyles.sightDetailsType),
+                    Text(widget.sight.type.name, style: AppTextStyles.sightDetailsType),
                     const SizedBox(height: 24.0),
                     Text(widget.sight.details, style: AppTextStyles.sightDetailsDetails),
                     const SizedBox(height: 24.0),

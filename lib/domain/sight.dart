@@ -1,3 +1,5 @@
+import 'package:places/domain/sight_type.dart';
+
 /// Место
 class Sight {
   final String name;
@@ -5,7 +7,7 @@ class Sight {
   final double lat;
   final String url;
   final String details;
-  final String type;
+  final SightType type;
 
   Sight({
     this.name,
