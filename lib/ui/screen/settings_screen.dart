@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -27,8 +29,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(AppStrings.settingsTutorial),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Icon(
-                Icons.info_outline,
+              child: SvgIcon(
+                icon: SvgIcons.info,
                 color: Theme.of(context).accentColor,
               ),
             ),

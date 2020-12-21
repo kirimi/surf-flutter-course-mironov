@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
-import 'package:places/ui/screen/settings_screen.dart';
+import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 
 // Хранилище для текущей темы приложения
 final themeState = ThemeState();
@@ -35,7 +35,7 @@ class _AppState extends State<App> {
       title: AppStrings.appTitle,
       theme: themeState.isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
-      home: SettingsScreen(),
+      home: FiltersScreen(),
     );
   }
 

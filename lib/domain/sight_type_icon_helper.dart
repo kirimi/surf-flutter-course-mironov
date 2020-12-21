@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 
 /// Функция возвращает [IconData] по имени [iconName] иконки,
 /// если нет такой, то иконку по-умолчанию
-IconData getIconByName(String iconName) {
-  IconData icon;
+SvgData getIconByName(String iconName) {
+  SvgData icon;
   switch (iconName) {
     case 'cinema':
-      icon = Icons.video_call;
+      icon = SvgIcons.hotel;
       break;
     case 'restaurant':
-      icon = Icons.dinner_dining;
+      icon = SvgIcons.restaurant;
       break;
     case 'special':
-      icon = Icons.star;
+      icon = SvgIcons.place;
       break;
     case 'park':
-      icon = Icons.park;
+      icon = SvgIcons.park;
       break;
     case 'museum':
-      icon = Icons.museum;
+      icon = SvgIcons.museum;
       break;
     case 'cafe':
-      icon = Icons.local_cafe;
+      icon = SvgIcons.cafe;
       break;
     default:
-      icon = Icons.map;
+      icon = SvgIcons.info;
   }
   return icon;
 }

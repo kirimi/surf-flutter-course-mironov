@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 
-/// Виджет рисует кнопку ElevatedButton с иконкой и текстом по центру
+/// Виджет рисует кнопку ElevatedButton с svg-иконкой и текстом по центру
 ///
-/// все параметры опциональны
+/// все параметры опциональны,
+/// доступные иконки для [icon] в конcтантах [SvgIcons]
 class IconElevatedButton extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final SvgData icon;
   final VoidCallback onPressed;
 
   const IconElevatedButton({
@@ -20,9 +23,7 @@ class IconElevatedButton extends StatelessWidget {
     final List<Widget> content = [];
 
     if (icon != null) {
-      content.add(
-        Icon(icon),
-      );
+      content.add(SvgIcon(icon: icon));
     }
 
     if (icon != null && text != null) {

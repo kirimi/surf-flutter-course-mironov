@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Карточка "Интересного места" для списка мест
@@ -92,8 +94,8 @@ class SightCard extends StatelessWidget {
                         onTap: () => onFavoriteTap?.call(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.favorite_outline,
+                          child: SvgIcon(
+                            icon: SvgIcons.heart,
                             color: Colors.white,
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/icon_text_button.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
@@ -63,7 +64,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                     Text(widget.sight.details, style: AppTextStyles.sightDetailsDetails),
                     const SizedBox(height: 24.0),
                     IconElevatedButton(
-                      icon: Icons.repeat_outlined,
+                      icon: SvgIcons.route,
                       text: AppStrings.sightDetailsRouteToBtn.toUpperCase(),
                       onPressed: () => print('${AppStrings.sightDetailsRouteToBtn} tapped'),
                     ),
@@ -72,12 +73,12 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconTextButton(
-                          icon: Icons.calendar_today_outlined,
+                          icon: SvgIcons.calendar,
                           text: AppStrings.sightDetailsPlanBtn,
                           onPressed: null,
                         ),
                         IconTextButton(
-                          icon: Icons.favorite_outline,
+                          icon: SvgIcons.heart,
                           text: AppStrings.sightDetailsToFavoriteBtn,
                           onPressed: () => print('${AppStrings.sightDetailsToFavoriteBtn} tapped'),
                         ),

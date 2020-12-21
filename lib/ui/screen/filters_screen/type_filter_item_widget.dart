@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/domain/sight_type_icon_helper.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
 
 /// Виджет - элемент фильтра согласно дизайну
 ///
@@ -49,8 +50,8 @@ class TypeFilterItemWidget extends StatelessWidget {
                           // Это для того, чтобы размер иконки подстраивался под constraints
                           child: LayoutBuilder(
                             builder: (BuildContext context, BoxConstraints constraints) {
-                              return Icon(
-                                getIconByName(sightType.iconName),
+                              return SvgIcon(
+                                icon: getIconByName(sightType.iconName),
                                 size: constraints.biggest.height,
                                 color: Theme.of(context).accentColor,
                               );

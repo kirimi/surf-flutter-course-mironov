@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 
-/// Виджет рисует кнопку TextButton с иконкой и текстом по центру
+/// Виджет рисует кнопку TextButton с svg-иконкой и текстом по центру
 ///
 /// все параметры опциональны
+/// /// доступные иконки для [icon] в конcтантах [SvgIcons]
 class IconTextButton extends StatelessWidget {
   final String text;
-  final IconData icon;
+  final SvgData icon;
   final VoidCallback onPressed;
 
   const IconTextButton({
@@ -21,7 +24,7 @@ class IconTextButton extends StatelessWidget {
 
     if (icon != null) {
       content.add(
-        Icon(icon),
+        SvgIcon(icon: icon),
       );
     }
 
