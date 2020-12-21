@@ -77,16 +77,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                 mainAxisSpacing: 20.0,
                 crossAxisSpacing: 20.0,
               ),
-              itemBuilder: (BuildContext context, int index) {
-                return TypeFilterItemWidget(
-                  sightType: _types[index],
-                  isSelected: _isTypeSelected(_types[index].name),
-                  onTap: () {
-                    _onTypeSelect(_types[index].name);
-                    _filteredCount = _calculateFilteredCount();
-                  },
-                );
-              },
+              itemBuilder: _buildFilterItem,
             ),
             const SizedBox(height: 60.0),
             Row(
@@ -119,6 +110,18 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  // Элемент фильтра
+  Widget _buildFilterItem(BuildContext context, int index) {
+    return TypeFilterItemWidget(
+      sightType: _types[index],
+      isSelected: _isTypeSelected(_types[index].name),
+      onTap: () {
+        _onTypeSelect(_types[index].name);
+        _filteredCount = _calculateFilteredCount();
+      },
     );
   }
 
