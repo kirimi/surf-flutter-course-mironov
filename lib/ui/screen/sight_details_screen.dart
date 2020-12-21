@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/widgets/icon_elevated_button.dart';
+import 'package:places/ui/widgets/icon_text_button.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Экран подробного представления "Интересного места"
@@ -55,46 +57,28 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(widget.sight.name, style: AppTextStyles.sightDetailsTitle),
-                    SizedBox(height: 2.0),
+                    const SizedBox(height: 2.0),
                     Text(widget.sight.type, style: AppTextStyles.sightDetailsType),
-                    SizedBox(height: 24.0),
+                    const SizedBox(height: 24.0),
                     Text(widget.sight.details, style: AppTextStyles.sightDetailsDetails),
-                    SizedBox(height: 24.0),
-                    ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.repeat_outlined),
-                          SizedBox(width: 10),
-                          Text(AppStrings.sightDetailsRouteToBtn.toUpperCase()),
-                        ],
-                      ),
+                    const SizedBox(height: 24.0),
+                    IconElevatedButton(
+                      icon: Icons.repeat_outlined,
+                      text: AppStrings.sightDetailsRouteToBtn.toUpperCase(),
                       onPressed: () => print('${AppStrings.sightDetailsRouteToBtn} tapped'),
                     ),
-                    SizedBox(height: 32.0),
+                    const SizedBox(height: 32.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TextButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.calendar_today_outlined),
-                              SizedBox(width: 10),
-                              Text(AppStrings.sightDetailsPlanBtn),
-                            ],
-                          ),
+                        IconTextButton(
+                          icon: Icons.calendar_today_outlined,
+                          text: AppStrings.sightDetailsPlanBtn,
                           onPressed: null,
                         ),
-                        TextButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.favorite_outline),
-                              SizedBox(width: 10),
-                              Text(AppStrings.sightDetailsToFavoriteBtn),
-                            ],
-                          ),
+                        IconTextButton(
+                          icon: Icons.favorite_outline,
+                          text: AppStrings.sightDetailsToFavoriteBtn,
                           onPressed: () => print('${AppStrings.sightDetailsToFavoriteBtn} tapped'),
                         ),
                       ],

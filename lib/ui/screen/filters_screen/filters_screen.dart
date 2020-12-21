@@ -7,6 +7,7 @@ import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/type_filter_item_widget.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:places/ui/widgets/icon_elevated_button.dart';
 
 /// Экран с фильтрами
 class FiltersScreen extends StatefulWidget {
@@ -110,10 +111,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   setState(() => _rangeValues = newValues);
                 }),
             Expanded(child: Container()),
-            ElevatedButton(
+            IconElevatedButton(
+              text: _getShowButtonLabel(),
               onPressed: _onShowTap,
-              child: Text(_getShowButtonLabel()),
-            )
+            ),
           ],
         ),
       ),
