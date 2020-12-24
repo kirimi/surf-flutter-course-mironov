@@ -2,6 +2,7 @@ class AppStrings {
   static const String appTitle = 'Places';
 
   static const String sightListAppBar = 'Список\nинтересных мест';
+  static const String sightListAddBtn = 'Новое место';
 
   static const String sightDetailsRouteToBtn = 'Построить маршрут';
   static const String sightDetailsPlanBtn = 'Запланировать';
@@ -23,4 +24,22 @@ class AppStrings {
   static const String settingsAppbarTitle = 'Настройки';
   static const String settingsDarkTheme = 'Темная тема';
   static const String settingsTutorial = 'Смотреть туториал';
+
+  static const String addSightAppbarTitle = 'Новое место';
+  static const String addSightAppbarCancel = 'Отмена';
+  static const String addSightFormTitle = 'Название';
+  static const String addSightFormLatitude = 'Широта';
+  static const String addSightFormLongitude = 'Долгота';
+  static const String addSightFormDescription = 'Описание';
+  static const String addSightHintTitle = 'Введите название';
+  static const String addSightHintLatitude = 'Введите широту';
+  static const String addSightHintLongitude = 'Введите долготу';
+  static const String addSightHintDescription = 'Введите описание';
+  static const String addSightBtnCreate = 'Создать';
+  static const String addSightCategory = 'Категория';
+  static const String addSightDoesNotSelected = 'Не выбрано';
+  static const String addSightGetFromMap = 'Указать на карте';
+
+  static const String selectCategoryAppbarTitle = 'Категория';
+  static const String selectCategoryBtnSave = 'Сохранить';
 }

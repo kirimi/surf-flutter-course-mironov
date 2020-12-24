@@ -7,6 +7,18 @@ class AppTextStyles {
     height: 18.0 / 24.0,
   );
 
+  static const appBarButton = TextStyle(
+    fontWeight: FontWeight.w500,
+    fontSize: 16.0,
+    height: 18.0 / 16.0,
+  );
+
+  static const textLabel = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 12.0,
+    height: 16.0 / 12.0,
+  );
+
   // VisitingScreen
   // ---------------------------------------------
   static const visitingTab = TextStyle(
@@ -87,5 +99,14 @@ class AppTextStyles {
     fontSize: 14.0,
     letterSpacing: 0.3,
     height: 18.0 / 14.0,
+  );
+
+// AddSightScreen text styles
+// ---------------------------------------------
+
+  static const addSightCategory = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 16.0,
+    height: 20.0 / 16.0,
   );
 }

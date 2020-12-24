@@ -1,3 +1,10 @@
+### 5.4.1  Add sight screen
+- добавлен экран AddSightScreen
+- для реализации логики с кнопкой очистки добавлен виджет TextFieldWithLabel
+- для выбора категории добавлен экран SelectCategoryScreen
+- добавлена кнопка Новое место на странице SightListScreen
+- введенные данные добавляются в mocks
+
 ### Правки по review
 
 * выделил отдельно виджеты кнопок IconElevatedButton, IconTextButton
