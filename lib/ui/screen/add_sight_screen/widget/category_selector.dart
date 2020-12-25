@@ -53,7 +53,6 @@ class CategorySelector extends StatelessWidget {
             ),
           ),
         ),
-        Divider(),
       ],
     );
   }

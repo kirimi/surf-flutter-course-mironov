@@ -67,6 +67,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       value: _selectedSightType,
                       onTap: _onSelectCategory,
                     ),
+                    Divider(),
                     const SizedBox(height: 24.0),
                     TextFieldWithLabel(
                       labelText: AppStrings.addSightFormTitle,
