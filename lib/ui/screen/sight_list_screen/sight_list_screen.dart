@@ -3,10 +3,10 @@ import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
-import 'package:places/ui/screen/sight_card.dart';
-import 'package:places/ui/screen/sight_list_screen/add_button.dart';
-import 'package:places/ui/screen/sight_list_screen/sight_list_app_bar.dart';
+import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
+import 'package:places/ui/screen/sight_list_screen/widget/sight_list_app_bar.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран со списком интересных мест

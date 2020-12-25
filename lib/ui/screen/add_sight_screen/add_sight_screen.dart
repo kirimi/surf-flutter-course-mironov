@@ -3,7 +3,7 @@ import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
-import 'package:places/ui/screen/add_sight_screen/category_selector.dart';
+import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/text_field_with_label.dart';
