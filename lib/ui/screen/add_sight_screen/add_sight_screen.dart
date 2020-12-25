@@ -32,15 +32,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
   bool _isSubmitEnabled = false;
 
   @override
-  void dispose() {
-    _titleController.dispose();
-    _latController.dispose();
-    _lonController.dispose();
-    _descrController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -140,6 +131,15 @@ class _AddSightScreenState extends State<AddSightScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _latController.dispose();
+    _lonController.dispose();
+    _descrController.dispose();
+    super.dispose();
   }
 
   // попадаем сюда после submit на любом textField,
