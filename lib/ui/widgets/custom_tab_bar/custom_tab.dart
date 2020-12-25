@@ -20,20 +20,21 @@ class CustomTab extends StatelessWidget {
     Key key,
     @required this.isActive,
     @required this.text,
+    @required this.onTap,
     this.activeStyle = AppTextStyles.visitingActiveTab,
     this.style = AppTextStyles.visitingTab,
     this.activeBgrColor = AppColors.grayBlue,
     this.bgrColor = AppColors.transparent,
-    this.onTap,
   })  : assert(isActive != null),
         assert(text != null),
+        assert(onTap != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: () => onTap?.call(),
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             color: isActive ? activeBgrColor : bgrColor,

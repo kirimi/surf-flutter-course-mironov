@@ -18,9 +18,11 @@ class SightCard extends StatelessWidget {
   const SightCard({
     Key key,
     @required this.sight,
-    this.onTap,
-    this.onFavoriteTap,
+    @required this.onTap,
+    @required this.onFavoriteTap,
   })  : assert(sight != null),
+        assert(onTap != null),
+        assert(onFavoriteTap != null),
         super(key: key);
 
   @override
@@ -70,7 +72,7 @@ class SightCard extends StatelessWidget {
             Material(
               type: MaterialType.transparency,
               child: InkWell(
-                onTap: () => onTap?.call(),
+                onTap: onTap,
                 child: Container(),
               ),
             ),
@@ -91,7 +93,7 @@ class SightCard extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: InkWell(
-                        onTap: () => onFavoriteTap?.call(),
+                        onTap: onFavoriteTap,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SvgIcon(

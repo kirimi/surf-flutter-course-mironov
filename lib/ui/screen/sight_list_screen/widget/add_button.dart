@@ -9,7 +9,11 @@ import 'package:places/ui/res/svg_icons/svg_icons.dart';
 class AddButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const AddButton({Key key, this.onPressed}) : super(key: key);
+  const AddButton({
+    Key key,
+    @required this.onPressed,
+  })  : assert(onPressed != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class AddButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       child: Material(
         child: InkWell(
-          onTap: () => onPressed?.call(),
+          onTap: onPressed,
           child: Ink(
             height: 48.0,
             width: 177.0,

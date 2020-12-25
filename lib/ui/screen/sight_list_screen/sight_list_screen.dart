@@ -44,7 +44,11 @@ class _SightListScreenState extends State<SightListScreen> {
   List<Widget> _buildSightList() {
     List<Widget> result = [];
     for (Sight sight in _sights) {
-      result.add(SightCard(sight: sight));
+      result.add(SightCard(
+        sight: sight,
+        onTap: () {},
+        onFavoriteTap: () {},
+      ));
     }
     return result;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -17,6 +18,10 @@ class VisitingScreen extends StatefulWidget {
 
 class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProviderStateMixin {
   TabController _controller;
+
+  // моки мест которые хотим посетить и посещенные
+  List<Sight> _toVisitSights = [mocks[0], mocks[1], mocks[2]];
+  List<Sight> _visitedSights = [mocks[3]];
 
   @override
   void initState() {
@@ -60,21 +65,32 @@ class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProvid
         children: [
           SightListWidget(
             padding: const EdgeInsets.all(16.0),
-            children: [
-              SightCard(sight: mocks[1]),
-              SightCard(sight: mocks[2]),
-              SightCard(sight: mocks[0]),
-            ],
+            children: _buildSightList(_toVisitSights),
           ),
           SightListWidget(
             padding: const EdgeInsets.all(16.0),
-            children: [
-              SightCard(sight: mocks[3]),
-              SightCard(sight: mocks[4]),
-            ],
+            children: _buildSightList(_visitedSights),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  List<Widget> _buildSightList(List<Sight> sights) {
+    final List<Widget> res = [];
+    for (final sight in sights) {
+      res.add(SightCard(
+        sight: sight,
+        onTap: () {},
+        onFavoriteTap: () {},
+      ));
+    }
+    return res;
   }
 }

@@ -18,8 +18,9 @@ class CategorySelector extends StatelessWidget {
   const CategorySelector({
     Key key,
     this.value,
-    this.onTap,
-  }) : super(key: key);
+    @required this.onTap,
+  })  : assert(onTap != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,7 @@ class CategorySelector extends StatelessWidget {
         ),
         Material(
           child: InkWell(
-            onTap: () {
-              onTap?.call();
-            },
+            onTap: onTap,
             child: Padding(
               padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
               child: Row(
