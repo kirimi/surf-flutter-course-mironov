@@ -59,7 +59,7 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
           activeBgrColor: items[i].activeBgrColor,
           style: items[i].style,
           bgrColor: items[i].bgrColor,
-          onTap: () => onTabTap?.call(i),
+          onTap: () => onTabTap(i),
         ),
       );
     }

@@ -49,6 +49,31 @@ class SvgIcons {
     'res/svg/restouraunt.svg',
     semanticsLabel: 'Restaurant',
   );
+
+  static const SvgData arrowRight = SvgData(
+    'res/svg/arrow_right.svg',
+    semanticsLabel: 'Arrow right',
+  );
+
+  static const SvgData arrowLeft = SvgData(
+    'res/svg/arrow_left.svg',
+    semanticsLabel: 'Arrow left',
+  );
+
+  static const SvgData tick = SvgData(
+    'res/svg/tick.svg',
+    semanticsLabel: 'Tick',
+  );
+
+  static const SvgData clear = SvgData(
+    'res/svg/clear.svg',
+    semanticsLabel: 'Clear',
+  );
+
+  static const SvgData plus = SvgData(
+    'res/svg/plus.svg',
+    semanticsLabel: 'Plus',
+  );
 }
 
 /// Описание SVG-ресурса

@@ -50,6 +50,24 @@ final lightTheme = ThemeData.light().copyWith(
     activeTrackColor: AppColors.ltAccentColor,
     inactiveTrackColor: AppColors.ltAccentColor.withOpacity(0.3),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(
+        color: AppColors.ltAccentColor,
+        width: 1.0,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(
+        color: AppColors.ltAccentColor,
+        width: 2.0,
+      ),
+    ),
+    hintStyle: AppTextStyles.addSightCategory.copyWith(color: AppColors.ltDisabledColor),
+  ),
 );
 
 final darkTheme = ThemeData.dark().copyWith(
@@ -99,5 +117,23 @@ final darkTheme = ThemeData.dark().copyWith(
     thumbColor: AppColors.dkAccentColor,
     activeTrackColor: AppColors.dkAccentColor,
     inactiveTrackColor: AppColors.dkAccentColor.withOpacity(0.3),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(
+        color: AppColors.dkAccentColor,
+        width: 1.0,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8.0),
+      borderSide: BorderSide(
+        color: AppColors.dkAccentColor,
+        width: 2.0,
+      ),
+    ),
+    hintStyle: AppTextStyles.addSightCategory.copyWith(color: AppColors.dkDisabledColor),
   ),
 );

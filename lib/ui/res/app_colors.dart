@@ -23,6 +23,7 @@ class AppColors {
   static const dkBottomNavUnselectedColor = Colors.white;
   static const dkBottomNavSelectedColor = Colors.white;
 
+  static const yellow = Color(0xffFCDD3D);
   static const black = Colors.black;
   static const black54 = Colors.black54;
   static const white = Colors.white;

@@ -6,7 +6,7 @@ import 'package:places/domain/sight_type.dart';
 import 'package:places/domain/sight_types.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
-import 'package:places/ui/screen/filters_screen/type_filter_item_widget.dart';
+import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 
