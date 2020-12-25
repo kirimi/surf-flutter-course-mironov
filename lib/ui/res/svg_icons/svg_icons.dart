@@ -10,11 +10,6 @@ class SvgIcons {
     semanticsLabel: 'Calendar',
   );
 
-  static const SvgData heart = SvgData(
-    'res/svg/heart.svg',
-    semanticsLabel: 'Heart',
-  );
-
   static const SvgData info = SvgData(
     'res/svg/info.svg',
     semanticsLabel: 'Info',
@@ -73,6 +68,44 @@ class SvgIcons {
   static const SvgData plus = SvgData(
     'res/svg/plus.svg',
     semanticsLabel: 'Plus',
+  );
+
+  static const SvgData list = SvgData(
+    'res/svg/list.svg',
+    semanticsLabel: 'List',
+  );
+
+  static const SvgData list_fill = SvgData(
+    'res/svg/list_fill.svg',
+    semanticsLabel: 'List',
+  );
+
+  static const SvgData map = SvgData(
+    'res/svg/map.svg',
+    semanticsLabel: 'Map',
+  );
+
+  static const SvgData map_fill = SvgData(
+    'res/svg/map_fill.svg',
+    semanticsLabel: 'Map',
+  );
+
+  static const SvgData heart = SvgData(
+    'res/svg/heart.svg',
+    semanticsLabel: 'Heart',
+  );
+  static const SvgData heart_fill = SvgData(
+    'res/svg/heart_fill.svg',
+    semanticsLabel: 'Heart',
+  );
+
+  static const SvgData settings = SvgData(
+    'res/svg/settings.svg',
+    semanticsLabel: 'Settings',
+  );
+  static const SvgData settings_fill = SvgData(
+    'res/svg/settings_fill.svg',
+    semanticsLabel: 'Settings',
   );
 }
 
