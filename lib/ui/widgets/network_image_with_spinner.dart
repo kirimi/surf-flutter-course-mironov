@@ -25,12 +25,14 @@ class NetworkImageWithSpinner extends StatelessWidget {
           return child;
         } else {
           // в документации expectedTotalBytes может быть null поэтому в этом кейсе показываем простую крутилку
-          if (loadingProgress.expectedTotalBytes == null || loadingProgress.expectedTotalBytes == 0) {
-            return CircularProgressIndicator();
+          if (loadingProgress.expectedTotalBytes == null ||
+              loadingProgress.expectedTotalBytes == 0) {
+            return const CircularProgressIndicator();
           }
 
           // Вычисляем прогресс для спиннера
-          final progress = loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes;
+          final progress = loadingProgress.cumulativeBytesLoaded /
+              loadingProgress.expectedTotalBytes;
           return Center(
             child: CircularProgressIndicator(value: progress),
           );
