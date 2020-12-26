@@ -6,7 +6,8 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
-import 'package:places/ui/widgets/text_field_with_label.dart';
+import 'package:places/ui/widgets/label.dart';
+import 'package:places/ui/widgets/text_field_with_clear.dart';
 
 /// Экран добавления нового места
 class AddSightScreen extends StatefulWidget {
@@ -54,14 +55,18 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Label(
+                      text: AppStrings.addSightCategory,
+                      padding: const EdgeInsets.all(0),
+                    ),
                     CategorySelector(
                       value: _selectedSightType,
                       onTap: _onSelectCategory,
                     ),
                     Divider(),
                     const SizedBox(height: 24.0),
-                    TextFieldWithLabel(
-                      labelText: AppStrings.addSightFormTitle,
+                    const Label(text: AppStrings.addSightFormTitle),
+                    TextFieldWithClear(
                       hintText: AppStrings.addSightHintTitle,
                       controller: _titleController,
                       focusNode: _titleFocusNode,
@@ -73,26 +78,36 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          child: TextFieldWithLabel(
-                            labelText: AppStrings.addSightFormLatitude,
-                            hintText: AppStrings.addSightHintLatitude,
-                            focusNode: _latFocusNode,
-                            onSubmitted: (_) => _onSubmitTextField(_latFocusNode),
-                            controller: _latController,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Label(text: AppStrings.addSightFormLatitude),
+                              TextFieldWithClear(
+                                hintText: AppStrings.addSightHintLatitude,
+                                focusNode: _latFocusNode,
+                                onSubmitted: (_) => _onSubmitTextField(_latFocusNode),
+                                controller: _latController,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(width: 16.0),
                         Expanded(
-                          child: TextFieldWithLabel(
-                            labelText: AppStrings.addSightFormLongitude,
-                            hintText: AppStrings.addSightHintLongitude,
-                            focusNode: _lonFocusNode,
-                            onSubmitted: (_) => _onSubmitTextField(_lonFocusNode),
-                            controller: _lonController,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Label(text: AppStrings.addSightFormLongitude),
+                              TextFieldWithClear(
+                                hintText: AppStrings.addSightHintLongitude,
+                                focusNode: _lonFocusNode,
+                                onSubmitted: (_) => _onSubmitTextField(_lonFocusNode),
+                                controller: _lonController,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -105,8 +120,8 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       ),
                     ),
                     const SizedBox(height: 24.0),
-                    TextFieldWithLabel(
-                      labelText: AppStrings.addSightFormDescription,
+                    const Label(text: AppStrings.addSightFormDescription),
+                    TextFieldWithClear(
                       hintText: AppStrings.addSightHintDescription,
                       maxLines: 3,
                       focusNode: _descrFocusNode,

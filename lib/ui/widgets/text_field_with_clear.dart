@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
-import 'package:places/ui/widgets/form_label.dart';
 
-/// Текстовое поле с заголовком и кнопкой очистки
-///
-/// [labelText] - заголовок
+/// Текстовое поле с кнопкой очистки
 ///
 /// кнопка "очистить" видна если в TextField есть контент и он в фокусе
 /// [onSubmitted] вызывается когда пользователь закончил ввод
-class TextFieldWithLabel extends StatefulWidget {
+class TextFieldWithClear extends StatefulWidget {
   final String text;
-  final String labelText;
   final String hintText;
   final int maxLines;
   final FocusNode focusNode;
@@ -22,11 +18,10 @@ class TextFieldWithLabel extends StatefulWidget {
   final TextInputAction textInputAction;
   final TextInputType keyboardType;
 
-  const TextFieldWithLabel({
+  const TextFieldWithClear({
     Key key,
     @required this.focusNode,
     @required this.controller,
-    this.labelText,
     this.onSubmitted,
     this.maxLines = 1,
     this.textInputAction,
@@ -38,10 +33,10 @@ class TextFieldWithLabel extends StatefulWidget {
         super(key: key);
 
   @override
-  _TextFieldWithLabelState createState() => _TextFieldWithLabelState();
+  _TextFieldWithClearState createState() => _TextFieldWithClearState();
 }
 
-class _TextFieldWithLabelState extends State<TextFieldWithLabel> {
+class _TextFieldWithClearState extends State<TextFieldWithClear> {
   bool _isClearVisible;
 
   @override
@@ -79,21 +74,15 @@ class _TextFieldWithLabelState extends State<TextFieldWithLabel> {
       hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        FormLabel(text: widget.labelText),
-        TextField(
-          controller: widget.controller,
-          focusNode: widget.focusNode,
-          decoration: _isClearVisible ? clearBtnDecoration : decoration,
-          maxLines: widget.maxLines,
-          textInputAction: widget.textInputAction,
-          keyboardType: widget.keyboardType,
-          onSubmitted: widget.onSubmitted,
-          onChanged: (_) => _updateClearVisibility(),
-        ),
-      ],
+    return TextField(
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      decoration: _isClearVisible ? clearBtnDecoration : decoration,
+      maxLines: widget.maxLines,
+      textInputAction: widget.textInputAction,
+      keyboardType: widget.keyboardType,
+      onSubmitted: widget.onSubmitted,
+      onChanged: (_) => _updateClearVisibility(),
     );
   }
 
