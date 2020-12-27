@@ -107,6 +107,16 @@ class SvgIcons {
     'res/svg/settings_fill.svg',
     semanticsLabel: 'Settings',
   );
+
+  static const SvgData filter = SvgData(
+    'res/svg/filter.svg',
+    semanticsLabel: 'Filter',
+  );
+
+  static const SvgData search = SvgData(
+    'res/svg/search.svg',
+    semanticsLabel: 'Search',
+  );
 }
 
 /// Описание SVG-ресурса
