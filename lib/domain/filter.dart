@@ -4,11 +4,11 @@ import 'package:places/domain/sight_type.dart';
 /// на странице FiltersScreen.
 /// И используется на SightListScreen, SightSearchScreen
 class Filter {
-  final double minDistance;
-  final double maxDistance;
-  final List<SightType> types;
+  double minDistance;
+  double maxDistance;
+  List<SightType> types;
 
-  const Filter({
+  Filter({
     this.minDistance,
     this.maxDistance,
     this.types,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
@@ -202,8 +203,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
   void _onSubmit() {
     final Sight newSight = Sight(
       name: _titleController.text,
-      lat: double.parse(_latController.text),
-      lon: double.parse(_lonController.text),
+      point: GeoPoint(
+        lon: double.parse(_lonController.text),
+        lat: double.parse(_latController.text),
+      ),
       details: _descrController.text,
       // todo картинка
       url: 'https://republica-dominikana.ru/wp-content/uploads/2018/08/51.jpg',

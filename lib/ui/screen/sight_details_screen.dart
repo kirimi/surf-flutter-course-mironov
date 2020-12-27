@@ -33,17 +33,20 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, top: 36.0),
-                  child: Container(
-                    height: 32.0,
-                    width: 32.0,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_ios_rounded,
-                      size: 16.0,
-                      color: Theme.of(context).primaryColor,
+                  child: InkWell(
+                    onTap: _onBack,
+                    child: Container(
+                      height: 32.0,
+                      width: 32.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        size: 16.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 )
@@ -100,5 +103,9 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
         ],
       ),
     );
+  }
+
+  void _onBack() {
+    Navigator.of(context).pop();
   }
 }

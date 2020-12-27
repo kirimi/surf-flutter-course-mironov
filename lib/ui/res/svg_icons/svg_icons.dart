@@ -94,6 +94,7 @@ class SvgIcons {
     'res/svg/heart.svg',
     semanticsLabel: 'Heart',
   );
+
   static const SvgData heartFill = SvgData(
     'res/svg/heart_fill.svg',
     semanticsLabel: 'Heart',
@@ -103,6 +104,7 @@ class SvgIcons {
     'res/svg/settings.svg',
     semanticsLabel: 'Settings',
   );
+
   static const SvgData settingsFill = SvgData(
     'res/svg/settings_fill.svg',
     semanticsLabel: 'Settings',
@@ -116,6 +118,16 @@ class SvgIcons {
   static const SvgData search = SvgData(
     'res/svg/search.svg',
     semanticsLabel: 'Search',
+  );
+
+  static const SvgData error = SvgData(
+    'res/svg/error.svg',
+    semanticsLabel: 'Error',
+  );
+
+  static const SvgData delete = SvgData(
+    'res/svg/delete.svg',
+    semanticsLabel: 'Delete',
   );
 }
 
