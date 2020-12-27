@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/domain/sight_types.dart';
@@ -34,7 +35,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   final List<SightType> _types = defaultSightTypes;
 
   // Выбранные категории для фильтрации
-  final List<String> _selectedTypes = [];
+  final List<SightType> _selectedTypes = [];
 
   // количество элементов, которые попадают под условие фильтра
   int _filteredCount;
@@ -116,9 +117,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Widget _buildFilterItem(BuildContext context, int index) {
     return TypeFilterItemWidget(
       sightType: _types[index],
-      isSelected: _isTypeSelected(_types[index].name),
+      isSelected: _isTypeSelected(_types[index]),
       onTap: () {
-        _onTypeSelect(_types[index].name);
+        _onTypeSelect(_types[index]);
         _filteredCount = _calculateFilteredCount();
       },
     );
@@ -178,19 +179,23 @@ class _FiltersScreenState extends State<FiltersScreen> {
   }
 
   // При тапе на категорию добавляем или убираем ее в фильтре
-  void _onTypeSelect(String typeName) {
+  void _onTypeSelect(SightType type) {
     setState(() {
-      _isTypeSelected(typeName)
-          ? _selectedTypes.remove(typeName)
-          : _selectedTypes.add(typeName);
+      _isTypeSelected(type)
+          ? _selectedTypes.remove(type)
+          : _selectedTypes.add(type);
     });
   }
 
-  bool _isTypeSelected(String typeName) => _selectedTypes.contains(typeName);
+  bool _isTypeSelected(SightType type) => _selectedTypes.contains(type);
 
   void _onShowTap() {
-    // print('minDistance: ${_rangeValues.start}\nmaxDistance: ${_rangeValues.end}\ntypes: $_selectedTypes');
-    // todo возвращаем фильтр на страницу sight_list_screen.dart
+    final filter = Filter(
+      minDistance: _rangeValues.start,
+      maxDistance: _rangeValues.end,
+      types: _selectedTypes,
+    );
+    Navigator.of(context).pop(filter);
   }
 
   // Возвращает лежит ли точка в радисе между minDistance и maxDistance от lat/lon
