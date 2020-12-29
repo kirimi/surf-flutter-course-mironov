@@ -24,7 +24,9 @@ class CategorySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String text = value?.name ?? AppStrings.addSightDoesNotSelected;
-    final Color textColor = value != null ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
+    final Color textColor = value != null
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).disabledColor;
 
     return Material(
       child: InkWell(
@@ -36,7 +38,9 @@ class CategorySelector extends StatelessWidget {
             children: [
               Text(
                 text,
-                style: AppTextStyles.addSightCategory.copyWith(color: textColor),
+                style: AppTextStyles.addSightCategory.copyWith(
+                  color: textColor,
+                ),
               ),
               const SvgIcon(icon: SvgIcons.arrowRight)
             ],
