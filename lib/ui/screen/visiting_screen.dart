@@ -8,7 +8,7 @@ import 'package:places/ui/screen/sight_details_screen.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
-import 'package:places/ui/widgets/draggable_sight_card.dart';
+import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран Хочу посетить/Посещенные места
@@ -92,13 +92,17 @@ class _VisitingScreenState extends State<VisitingScreen>
     final List<Widget> res = [];
     for (final sight in sights) {
       res.add(
-        DraggableSightCard(
+        DraggableDismissibleSightCard(
           sight: sight,
           onTap: () => _onSightTap(sight),
           onFavoriteTap: () {},
           onSightDrop: (droppedSight) => _swapSights(
             target: sight,
             sight: droppedSight,
+            sights: sights,
+          ),
+          onDismissed: (dismissedSight) => _onDismissedSight(
+            sight: dismissedSight,
             sights: sights,
           ),
         ),
@@ -114,6 +118,13 @@ class _VisitingScreenState extends State<VisitingScreen>
     setState(() {
       sights[targetIndex] = sight;
       sights[sightIndex] = target;
+    });
+  }
+
+  // удаляем место из списка
+  void _onDismissedSight({Sight sight, List<Sight> sights}) {
+    setState(() {
+      sights.removeWhere((element) => element == sight);
     });
   }
 

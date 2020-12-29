@@ -32,20 +32,20 @@ class SightCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16.0),
       child: AspectRatio(
         aspectRatio: 4 / 2,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: NetworkImageWithSpinner(url: sight.url),
+        child: Container(
+          color: Theme.of(context).cardColor,
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: NetworkImageWithSpinner(url: sight.url),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    color: Theme.of(context).cardColor,
+                  Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -67,47 +67,48 @@ class SightCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Material(
-              type: MaterialType.transparency,
-              child: InkWell(
-                onTap: onTap,
-                child: Container(),
+                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    sight.type.name,
-                    style: AppTextStyles.sightCardType.copyWith(
-                      color: Colors.white,
+              Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  onTap: onTap,
+                  child: Container(),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      sight.type.name,
+                      style: AppTextStyles.sightCardType.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(24.0),
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: InkWell(
-                        onTap: onFavoriteTap,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: SvgIcon(
-                            icon: SvgIcons.heart,
-                            color: Colors.white,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(24.0),
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: InkWell(
+                          onTap: onFavoriteTap,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: SvgIcon(
+                              icon: SvgIcons.heart,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

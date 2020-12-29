@@ -1,29 +1,40 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/ui/res/app_colors.dart';
+import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/svg_icons/svg_icon.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 
 typedef OnSightDrop = Function(Sight sight);
+typedef OnDismissed = Function(Sight sight);
 
 /// Карточка места, которую можно двигать по LongPress
+/// и удалить по свайпу налево
 ///
 /// если на карточку при drag попадает другая каточка,
 /// то вызывается [onSightDrop] с параметром что на нее упало
-class DraggableSightCard extends StatelessWidget {
+/// Если каточку смахнули, то вызывается [onDismissed]
+class DraggableDismissibleSightCard extends StatelessWidget {
   final Sight sight;
   final VoidCallback onTap;
   final VoidCallback onFavoriteTap;
   final OnSightDrop onSightDrop;
+  final OnDismissed onDismissed;
 
-  const DraggableSightCard({
+  const DraggableDismissibleSightCard({
     Key key,
     @required this.sight,
     @required this.onTap,
     @required this.onFavoriteTap,
     @required this.onSightDrop,
+    @required this.onDismissed,
   })  : assert(sight != null),
         assert(onTap != null),
         assert(onFavoriteTap != null),
         assert(onSightDrop != null),
+        assert(onDismissed != null),
         super(key: key);
 
   @override
@@ -70,11 +81,64 @@ class DraggableSightCard extends StatelessWidget {
                 opacity: 0.5,
                 child: sightWidget,
               ),
-              child: sightWidget,
+              // Такая конструкция со Stack тут применяется для того, чтобы
+              // закругленные уголки не заострялись. =)
+              // https://github.com/flutter/flutter/issues/56812
+              child: Stack(
+                children: [
+                  SizedBox(
+                    width: constraints.maxWidth,
+                    child: _DismissibleBackground(),
+                  ),
+                  Dismissible(
+                    key: UniqueKey(),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (_) => onDismissed(sight),
+                    child: sightWidget,
+                  )
+                ],
+              ),
             );
           },
         );
       },
+    );
+  }
+}
+
+class _DismissibleBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // У SightCard  - aspectRatio: 4 / 2,
+    // тут повторяем
+    return AspectRatio(
+      aspectRatio: 4 / 2,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          color: Colors.red,
+        ),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SvgIcon(
+                  icon: SvgIcons.bucket,
+                  color: AppColors.white,
+                ),
+                const SizedBox(height: 10.0),
+                Text(
+                  AppStrings.sightCardDelete,
+                  style: Theme.of(context).primaryTextTheme.bodyText1,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
