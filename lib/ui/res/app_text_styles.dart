@@ -109,16 +109,4 @@ class AppTextStyles {
     fontSize: 16.0,
     height: 20.0 / 16.0,
   );
-
-  static const messageTitle = TextStyle(
-    fontWeight: FontWeight.w500,
-    fontSize: 18.0,
-    height: 18.0 / 24.0,
-  );
-
-  static const messageSubtitle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 14.0,
-    height: 18.0 / 14.0,
-  );
 }

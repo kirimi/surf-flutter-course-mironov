@@ -6,21 +6,22 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  # поддержка svg
-  flutter_svg: ^0.19.1
+  cupertino_icons: ^1.0.0
+
+  # Последняя версия flutter_svg 0.19.2+1 хочет flutter >=1.24.0-6.0.pre, а в stable 1.22.4
+  # поэтому зафиксировал 0.19.1
+  # Because places depends on flutter_svg >=0.19.2 which requires Flutter SDK version >=1.24.0-6.0.pre <2.0.0, version solving failed.
+  flutter_svg: 0.19.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # линтер. настройки в analysis_options.yaml
-  lint: 1.3.0
 
 flutter:
   uses-material-design: true

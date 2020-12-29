@@ -8,7 +8,4 @@ class SightType {
   final String iconName;
 
   const SightType({this.name, this.iconName});
-
-  @override
-  String toString() => name;
 }

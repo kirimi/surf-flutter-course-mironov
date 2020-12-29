@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
@@ -7,8 +6,7 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
-import 'package:places/ui/widgets/label.dart';
-import 'package:places/ui/widgets/text_field_with_clear.dart';
+import 'package:places/ui/widgets/text_field_with_label.dart';
 
 /// Экран добавления нового места
 class AddSightScreen extends StatefulWidget {
@@ -37,10 +35,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.addSightAppbarTitle),
+        title: Text(AppStrings.addSightAppbarTitle),
         leading: TextButton(
+          child: Text(AppStrings.addSightAppbarCancel),
           onPressed: _onBack,
-          child: const Text(AppStrings.addSightAppbarCancel),
         ),
         leadingWidth: 100.0,
       ),
@@ -56,18 +54,14 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Label(
-                      text: AppStrings.addSightCategory,
-                      padding: EdgeInsets.all(0),
-                    ),
                     CategorySelector(
                       value: _selectedSightType,
                       onTap: _onSelectCategory,
                     ),
-                    const Divider(),
+                    Divider(),
                     const SizedBox(height: 24.0),
-                    const Label(text: AppStrings.addSightFormTitle),
-                    TextFieldWithClear(
+                    TextFieldWithLabel(
+                      labelText: AppStrings.addSightFormTitle,
                       hintText: AppStrings.addSightHintTitle,
                       controller: _titleController,
                       focusNode: _titleFocusNode,
@@ -76,55 +70,43 @@ class _AddSightScreenState extends State<AddSightScreen> {
                     ),
                     const SizedBox(height: 24.0),
                     Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Label(
-                                  text: AppStrings.addSightFormLatitude),
-                              TextFieldWithClear(
-                                hintText: AppStrings.addSightHintLatitude,
-                                focusNode: _latFocusNode,
-                                onSubmitted: (_) =>
-                                    _onSubmitTextField(_latFocusNode),
-                                controller: _latController,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ],
+                          child: TextFieldWithLabel(
+                            labelText: AppStrings.addSightFormLatitude,
+                            hintText: AppStrings.addSightHintLatitude,
+                            focusNode: _latFocusNode,
+                            onSubmitted: (_) => _onSubmitTextField(_latFocusNode),
+                            controller: _latController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.number,
                           ),
                         ),
                         const SizedBox(width: 16.0),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Label(
-                                  text: AppStrings.addSightFormLongitude),
-                              TextFieldWithClear(
-                                hintText: AppStrings.addSightHintLongitude,
-                                focusNode: _lonFocusNode,
-                                onSubmitted: (_) =>
-                                    _onSubmitTextField(_lonFocusNode),
-                                controller: _lonController,
-                                textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ],
+                          child: TextFieldWithLabel(
+                            labelText: AppStrings.addSightFormLongitude,
+                            hintText: AppStrings.addSightHintLongitude,
+                            focusNode: _lonFocusNode,
+                            onSubmitted: (_) => _onSubmitTextField(_lonFocusNode),
+                            controller: _lonController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.number,
                           ),
                         ),
                       ],
                     ),
                     TextButton(
                       onPressed: () {},
-                      style: TextButton.styleFrom(
-                          primary: Theme.of(context).accentColor),
-                      child: const Text(AppStrings.addSightGetFromMap),
+                      style: TextButton.styleFrom(primary: Theme.of(context).accentColor),
+                      child: Text(
+                        AppStrings.addSightGetFromMap,
+                      ),
                     ),
                     const SizedBox(height: 24.0),
-                    const Label(text: AppStrings.addSightFormDescription),
-                    TextFieldWithClear(
+                    TextFieldWithLabel(
+                      labelText: AppStrings.addSightFormDescription,
                       hintText: AppStrings.addSightHintDescription,
                       maxLines: 3,
                       focusNode: _descrFocusNode,
@@ -184,7 +166,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
   }
 
   // Выбор категории
-  Future<void> _onSelectCategory() async {
+  void _onSelectCategory() async {
     final SightType result = await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => SelectCategoryScreen()),
     );
@@ -203,10 +185,8 @@ class _AddSightScreenState extends State<AddSightScreen> {
   void _onSubmit() {
     final Sight newSight = Sight(
       name: _titleController.text,
-      point: GeoPoint(
-        lon: double.parse(_lonController.text),
-        lat: double.parse(_latController.text),
-      ),
+      lat: double.parse(_latController.text),
+      lon: double.parse(_lonController.text),
       details: _descrController.text,
       // todo картинка
       url: 'https://republica-dominikana.ru/wp-content/uploads/2018/08/51.jpg',

@@ -1,10 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:places/config.dart';
-import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/domain/sight_types.dart';
-import 'package:places/filter_utils.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
@@ -12,33 +11,30 @@ import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 
 /// Экран с фильтрами
-///
-/// В конструкторе передается текущий фильтр
 class FiltersScreen extends StatefulWidget {
-  final Filter filter;
-
-  const FiltersScreen({
-    Key key,
-    @required this.filter,
-  })  : assert(filter != null),
-        super(key: key);
-
   @override
   _FiltersScreenState createState() => _FiltersScreenState();
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  // список категорий
-  final List<SightType> _types = defaultSightTypes;
-
-  // список мест
-  List<Sight> _sights;
-
-  // Фильтр
-  Filter _filter;
+  static const double _minRange = 100.0;
+  static const double _maxRange = 10000.0;
 
   // значения слайдера
   RangeValues _rangeValues;
+
+  // текущее местоположение
+  double _currentLat = 30.433278;
+  double _currentLon = 59.685994;
+
+  // список мест
+  final List<Sight> _sights = mocks;
+
+  // список категорий
+  final List<SightType> _types = defaultSightTypes;
+
+  // Выбранные категории для фильтрации
+  final List<String> _selectedTypes = [];
 
   // количество элементов, которые попадают под условие фильтра
   int _filteredCount;
@@ -46,10 +42,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    _sights = mocks;
-    _filter = widget.filter;
-    _rangeValues = RangeValues(_filter.minDistance, _filter.maxDistance);
-    _filteredCount = _calculateFilteredCount();
+    _initFilters();
   }
 
   @override
@@ -59,11 +52,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
         actions: [
           TextButton(
             onPressed: _clearFilters,
-            child: const Text(AppStrings.filtersClear),
+            child: Text(AppStrings.filtersClear),
           ),
         ],
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -75,11 +68,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
             ),
             const SizedBox(height: 24.0),
             GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: _types.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
+                childAspectRatio: 1.0,
                 mainAxisSpacing: 20.0,
                 crossAxisSpacing: 20.0,
               ),
@@ -98,22 +92,17 @@ class _FiltersScreenState extends State<FiltersScreen> {
             ),
             RangeSlider(
                 values: _rangeValues,
-                min: Config.minRange,
-                max: Config.maxRange,
+                min: _minRange,
+                max: _maxRange,
                 onChangeEnd: (_) {
-                  // считаем количество отфильтрованных элементов когда
-                  // пользователь закончил изменения, чтобы не дергать будущий
-                  // репозиторий при каждом движении слайдера
-                  _filter.minDistance = _rangeValues.start;
-                  _filter.maxDistance = _rangeValues.end;
-                  setState(() {
-                    _filteredCount = _calculateFilteredCount();
-                  });
+                  // считаем количество отфильтрованных элементов когда пользователь закончил изменения,
+                  // чтобы не дергать будущий репозиторий при каждом движении слайдера
+                  setState(() => _filteredCount = _calculateFilteredCount());
                 },
                 onChanged: (newValues) {
                   setState(() => _rangeValues = newValues);
                 }),
-            const Spacer(),
+            Spacer(),
             IconElevatedButton(
               text: _getShowButtonLabel(),
               onPressed: _onShowTap,
@@ -128,9 +117,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
   Widget _buildFilterItem(BuildContext context, int index) {
     return TypeFilterItemWidget(
       sightType: _types[index],
-      isSelected: _isTypeSelected(_types[index]),
+      isSelected: _isTypeSelected(_types[index].name),
       onTap: () {
-        _onTypeSelect(_types[index]);
+        _onTypeSelect(_types[index].name);
         _filteredCount = _calculateFilteredCount();
       },
     );
@@ -142,7 +131,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       if (distanceMeters >= 1000) {
         return '${(distanceMeters / 1000).toStringAsFixed(2)}${AppStrings.filtersDistanceKilometers}';
       }
-      return '${distanceMeters.toStringAsFixed(0)}${AppStrings.filtersDistanceMeters}';
+      return '${(distanceMeters).toStringAsFixed(0)}${AppStrings.filtersDistanceMeters}';
     }
 
     return '${AppStrings.filtersFrom} ${distLabel(_rangeValues.start)} ${AppStrings.filtersTo} ${distLabel(_rangeValues.end)}';
@@ -154,36 +143,61 @@ class _FiltersScreenState extends State<FiltersScreen> {
   }
 
   // возвращает количество точек, которые попадают под условие фильтра
-  // если тип места не выбран, то не применяем фильтр места, если хоть один тип
-  // выбран, то фильтруем по типу
+  // если тип места не выбран, то не применяем фильтр места, если хоть один тип выбран,
+  // то фильтруем по типу
   int _calculateFilteredCount() {
-    final filteredSights = filteredSightList(_sights, _filter, currentPoint);
+    final filteredSights = _sights
+        .where((sight) => _selectedTypes.isNotEmpty ? _selectedTypes.contains(sight.type.name) : true)
+        .where(
+          (sight) => _isPointInsideRange(
+            sight.lat,
+            sight.lon,
+            _rangeValues.start,
+            _rangeValues.end,
+          ),
+        )
+        .toList();
+
     return filteredSights.length;
   }
 
   // сбрасывает фильтры в начальное значение
   void _clearFilters() {
-    _filter.minDistance = Config.minRange;
-    _filter.maxDistance = Config.maxRange;
-    _filter.types.clear();
     setState(() {
-      _rangeValues = RangeValues(_filter.minDistance, _filter.maxDistance);
-      _filteredCount = _calculateFilteredCount();
+      _initFilters();
     });
+  }
+
+  // инициализирует начальное значение фильтров
+  void _initFilters() {
+    _rangeValues = RangeValues(_minRange, _maxRange);
+    _selectedTypes.clear();
+    _filteredCount = _calculateFilteredCount();
   }
 
   // При тапе на категорию добавляем или убираем ее в фильтре
-  void _onTypeSelect(SightType type) {
+  void _onTypeSelect(String typeName) {
     setState(() {
-      _isTypeSelected(type)
-          ? _filter.types.remove(type)
-          : _filter.types.add(type);
+      _isTypeSelected(typeName) ? _selectedTypes.remove(typeName) : _selectedTypes.add(typeName);
     });
   }
 
-  bool _isTypeSelected(SightType type) => _filter.types.contains(type);
+  bool _isTypeSelected(String typeName) => _selectedTypes.contains(typeName);
 
   void _onShowTap() {
-    Navigator.of(context).pop(_filter);
+    print('minDistance: ${_rangeValues.start}\nmaxDistance: ${_rangeValues.end}\ntypes: $_selectedTypes');
+    // todo возвращаем фильтр на страницу sight_list_screen.dart
+  }
+
+  // Возвращает лежит ли точка в радисе между minDistance и maxDistance от lat/lon
+  // minDistance/maxDistance в метрах
+  // todo перенести в отдельный файл utils или типа того, тесты
+  bool _isPointInsideRange(double lat, double lon, double minDistance, double maxDistance) {
+    final double ky = 40000000 / 360;
+    final double kx = cos(pi * _currentLat / 180.0) * ky;
+    final double dx = (_currentLon - lon).abs() * kx;
+    final double dy = (_currentLat - lat).abs() * ky;
+    final double dis = sqrt(dx * dx + dy * dy);
+    return dis >= minDistance && dis <= maxDistance;
   }
 }

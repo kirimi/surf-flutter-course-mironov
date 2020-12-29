@@ -8,11 +8,11 @@ final lightTheme = ThemeData.light().copyWith(
   disabledColor: AppColors.ltDisabledColor,
   cardColor: AppColors.ltCardColor,
   backgroundColor: AppColors.ltBackgroundColor,
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.ltAccentColor,
     foregroundColor: AppColors.ltBackgroundColor,
   ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: AppColors.ltBottomNavBackgroundColor,
     unselectedItemColor: AppColors.ltBottomNavUnselectedColor,
     selectedItemColor: AppColors.ltBottomNavSelectedColor,
@@ -24,15 +24,14 @@ final lightTheme = ThemeData.light().copyWith(
     color: Colors.transparent,
     textTheme: TextTheme(
       // title text style
-      headline6:
-          AppTextStyles.appBarTitle.copyWith(color: AppColors.ltPrimaryColor),
+      headline6: AppTextStyles.appBarTitle.copyWith(color: AppColors.ltPrimaryColor),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       textStyle: AppTextStyles.bigButtonText,
       primary: AppColors.ltAccentColor,
-      minimumSize: const Size.fromHeight(48.0),
+      minimumSize: Size.fromHeight(48.0),
       elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -52,23 +51,22 @@ final lightTheme = ThemeData.light().copyWith(
     inactiveTrackColor: AppColors.ltAccentColor.withOpacity(0.3),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    contentPadding:
-        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
-      borderSide: const BorderSide(
+      borderSide: BorderSide(
         color: AppColors.ltAccentColor,
+        width: 1.0,
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
-      borderSide: const BorderSide(
+      borderSide: BorderSide(
         color: AppColors.ltAccentColor,
         width: 2.0,
       ),
     ),
-    hintStyle: AppTextStyles.addSightCategory
-        .copyWith(color: AppColors.ltDisabledColor),
+    hintStyle: AppTextStyles.addSightCategory.copyWith(color: AppColors.ltDisabledColor),
   ),
 );
 
@@ -78,11 +76,11 @@ final darkTheme = ThemeData.dark().copyWith(
   disabledColor: AppColors.dkDisabledColor,
   cardColor: AppColors.dkCardColor,
   backgroundColor: AppColors.dkBackgroundColor,
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: AppColors.dkAccentColor,
     foregroundColor: AppColors.dkBackgroundColor,
   ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: AppColors.dkBottomNavBackgroundColor,
     unselectedItemColor: AppColors.dkBottomNavUnselectedColor,
     selectedItemColor: AppColors.dkBottomNavSelectedColor,
@@ -94,15 +92,14 @@ final darkTheme = ThemeData.dark().copyWith(
     color: Colors.transparent,
     textTheme: TextTheme(
       // title text style
-      headline6:
-          AppTextStyles.appBarTitle.copyWith(color: AppColors.dkPrimaryColor),
+      headline6: AppTextStyles.appBarTitle.copyWith(color: AppColors.dkPrimaryColor),
     ),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       textStyle: AppTextStyles.bigButtonText,
       primary: AppColors.dkAccentColor,
-      minimumSize: const Size.fromHeight(48.0),
+      minimumSize: Size.fromHeight(48.0),
       elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -122,20 +119,21 @@ final darkTheme = ThemeData.dark().copyWith(
     inactiveTrackColor: AppColors.dkAccentColor.withOpacity(0.3),
   ),
   inputDecorationTheme: InputDecorationTheme(
-    contentPadding:
-        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
-      borderSide: const BorderSide(color: AppColors.dkAccentColor),
+      borderSide: BorderSide(
+        color: AppColors.dkAccentColor,
+        width: 1.0,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.0),
-      borderSide: const BorderSide(
+      borderSide: BorderSide(
         color: AppColors.dkAccentColor,
         width: 2.0,
       ),
     ),
-    hintStyle: AppTextStyles.addSightCategory
-        .copyWith(color: AppColors.dkDisabledColor),
+    hintStyle: AppTextStyles.addSightCategory.copyWith(color: AppColors.dkDisabledColor),
   ),
 );

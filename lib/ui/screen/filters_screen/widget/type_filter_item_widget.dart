@@ -31,16 +31,15 @@ class TypeFilterItemWidget extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: AspectRatio(
                 // Это чтобы иконка галочки была на своем месте.
                 aspectRatio: 1,
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .accentColor
-                        .withOpacity(isSelected ? 0.3 : 0.1),
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).accentColor.withOpacity(isSelected ? 0.3 : 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Stack(
@@ -50,8 +49,7 @@ class TypeFilterItemWidget extends StatelessWidget {
                           padding: const EdgeInsets.all(12.0),
                           // Это для того, чтобы размер иконки подстраивался под constraints
                           child: LayoutBuilder(
-                            builder: (BuildContext context,
-                                BoxConstraints constraints) {
+                            builder: (BuildContext context, BoxConstraints constraints) {
                               return SvgIcon(
                                 icon: getIconByName(sightType.iconName),
                                 size: constraints.biggest.height,

@@ -3,27 +3,27 @@ import 'package:places/ui/res/svg_icons/svg_icons.dart';
 
 /// Предустановленные категории мест, используются в фильтре.
 final List<SightType> defaultSightTypes = [
-  const SightType(
+  SightType(
     name: 'Кинотеатр',
     iconName: 'cinema',
   ),
-  const SightType(
+  SightType(
     name: 'Ресторан',
     iconName: 'restaurant',
   ),
-  const SightType(
+  SightType(
     name: 'Особое место',
     iconName: 'special',
   ),
-  const SightType(
+  SightType(
     name: 'Парк',
     iconName: 'park',
   ),
-  const SightType(
+  SightType(
     name: 'Музей',
     iconName: 'museum',
   ),
-  const SightType(
+  SightType(
     name: 'Кафе',
     iconName: 'cafe',
   ),

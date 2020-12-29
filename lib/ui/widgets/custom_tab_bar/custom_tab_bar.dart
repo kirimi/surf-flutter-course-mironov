@@ -35,6 +35,7 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.circular(_tabBarHeight / 2),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: _getTabs(),
         ),
@@ -43,7 +44,7 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(_tabBarHeight);
+  Size get preferredSize => Size.fromHeight(_tabBarHeight);
 
   // Формирует список виджетов для отображения табов
   List<Widget> _getTabs() {

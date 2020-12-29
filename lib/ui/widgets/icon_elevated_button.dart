@@ -35,11 +35,11 @@ class IconElevatedButton extends StatelessWidget {
     }
 
     return ElevatedButton(
-      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: content,
       ),
+      onPressed: onPressed,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:places/search_history_state.dart';
 import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
@@ -7,10 +6,6 @@ import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 
 // Хранилище для текущей темы приложения
 final themeState = ThemeState();
-
-// Хранилище для истории поиска.
-// Тут, пока не внедряли других решений
-final searchHistoryState = SearchHistoryState();
 
 void main() {
   runApp(App());
