@@ -4,10 +4,11 @@ import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/screen/sight_details_screen.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
-import 'package:places/ui/widgets/sight_card.dart';
+import 'package:places/ui/widgets/draggable_sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран Хочу посетить/Посещенные места
@@ -90,12 +91,39 @@ class _VisitingScreenState extends State<VisitingScreen>
   List<Widget> _buildSightList(List<Sight> sights) {
     final List<Widget> res = [];
     for (final sight in sights) {
-      res.add(SightCard(
-        sight: sight,
-        onTap: () {},
-        onFavoriteTap: () {},
-      ));
+      res.add(
+        DraggableSightCard(
+          sight: sight,
+          onTap: () => _onSightTap(sight),
+          onFavoriteTap: () {},
+          onSightDrop: (droppedSight) => _swapSights(
+            target: sight,
+            sight: droppedSight,
+            sights: sights,
+          ),
+        ),
+      );
     }
     return res;
+  }
+
+  // Меняем местами элементы списка
+  void _swapSights({Sight target, Sight sight, List<Sight> sights}) {
+    final targetIndex = sights.indexOf(target);
+    final sightIndex = sights.indexOf(sight);
+    setState(() {
+      sights[targetIndex] = sight;
+      sights[sightIndex] = target;
+    });
+  }
+
+  void _onSightTap(Sight sight) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SightDetailsScreen(
+          sight: sight,
+        ),
+      ),
+    );
   }
 }

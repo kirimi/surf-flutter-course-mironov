@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
@@ -30,7 +31,7 @@ class SightCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: AspectRatio(
-        aspectRatio: 3 / 2,
+        aspectRatio: 4 / 2,
         child: Stack(
           children: [
             Column(
