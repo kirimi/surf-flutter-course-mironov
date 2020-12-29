@@ -16,13 +16,12 @@ class VisitingScreen extends StatefulWidget {
   _VisitingScreenState createState() => _VisitingScreenState();
 }
 
-class _VisitingScreenState extends State<VisitingScreen>
-    with SingleTickerProviderStateMixin {
+class _VisitingScreenState extends State<VisitingScreen> with SingleTickerProviderStateMixin {
   TabController _controller;
 
   // моки мест которые хотим посетить и посещенные
-  final List<Sight> _toVisitSights = [mocks[0], mocks[1], mocks[2]];
-  final List<Sight> _visitedSights = [mocks[3]];
+  List<Sight> _toVisitSights = [mocks[0], mocks[1], mocks[2]];
+  List<Sight> _visitedSights = [mocks[3]];
 
   @override
   void initState() {
@@ -49,22 +48,18 @@ class _VisitingScreenState extends State<VisitingScreen>
           items: [
             CustomTabBarItem(
               text: AppStrings.visitingWantToVisitTab,
-              activeStyle:
-                  AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
-              style: AppTextStyles.visitingTab
-                  .copyWith(color: Theme.of(context).disabledColor),
+              activeStyle: AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
+              style: AppTextStyles.visitingTab.copyWith(color: Theme.of(context).disabledColor),
             ),
             CustomTabBarItem(
               text: AppStrings.visitingVisitedTab,
-              activeStyle:
-                  AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
-              style: AppTextStyles.visitingTab
-                  .copyWith(color: Theme.of(context).disabledColor),
+              activeStyle: AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
+              style: AppTextStyles.visitingTab.copyWith(color: Theme.of(context).disabledColor),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(),
       body: TabBarView(
         controller: _controller,
         children: [

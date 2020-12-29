@@ -7,11 +7,10 @@ final List<Sight> mocks = [
     name: 'Дворцовая площадь',
     details:
         'Главная площадь Санкт-Петербурга, находится перед Зимним дворцом. Ее размеры почти в два раза превышают столичную Красную площадь. Архитектурный ансамбль с идеальными геометрическими пропорциями возводился в XVIII-XIX столетиях. Посередине площади находится монументальная Александрийская колонна, которая посвящена победе Российской империи над армией Наполеона. Колонна была воздвигнута по указу Николая I.',
-    url:
-        'https://top10.travel/wp-content/uploads/2016/11/dvorcovaya-ploschad.jpg',
+    url: 'https://top10.travel/wp-content/uploads/2016/11/dvorcovaya-ploschad.jpg',
     lon: 59.940073,
     lat: 30.312733,
-    type: const SightType(
+    type: SightType(
       name: 'Особое место',
       iconName: 'special',
     ),
@@ -20,11 +19,10 @@ final List<Sight> mocks = [
     name: 'Музей-заповедник Павловск',
     details:
         'Дворцово-парковый ансамбль, расположившийся на территории 600 Га. Раньше на этих землях находились царские охотничьи угодья. В 1777 году земли были переданы во владения наследному принцу Павлу I, который задумал возвести здесь для себя грандиозную резиденцию. За четыре года построили дворец и разбили парк. После кончины Павла I в резиденции проживала его вдова, которая вложила много сил и средств на расширение и украшение комплекса.',
-    url:
-        'https://top10.travel/wp-content/uploads/2016/11/muzey-zapovednik-pavlovsk.jpg',
+    url: 'https://top10.travel/wp-content/uploads/2016/11/muzey-zapovednik-pavlovsk.jpg',
     lon: 59.685994,
     lat: 30.433278,
-    type: const SightType(
+    type: SightType(
       name: 'Музей',
       iconName: 'museum',
     ),
@@ -36,7 +34,7 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/petergof.jpg',
     lon: 59.881223,
     lat: 29.906775,
-    type: const SightType(
+    type: SightType(
       name: 'Особое место',
       iconName: 'special',
     ),
@@ -45,11 +43,10 @@ final List<Sight> mocks = [
     name: 'Большой Екатерининский дворец',
     details:
         'Дворцовый комплекс располагается в окрестностях Петербурга в г. Пушкин. До начала XX века он назывался Большой Царскосельский дворец. Первый царский дом возник здесь в первой половине XVIII столетия. Расширение началось в 1750-хх гг. во время правления Елизаветы под руководством архитектора Растрелли. Дворец возводился в стиле классического барокко, в пышных внутренних интерьерах преобладают элементы рококо.',
-    url:
-        'https://top10.travel/wp-content/uploads/2016/11/bolshoy-ekaterininskiy-dvorets.jpg',
+    url: 'https://top10.travel/wp-content/uploads/2016/11/bolshoy-ekaterininskiy-dvorets.jpg',
     lon: 59.715871,
     lat: 30.395414,
-    type: const SightType(
+    type: SightType(
       name: 'Музей',
       iconName: 'museum',
     ),
@@ -61,7 +58,7 @@ final List<Sight> mocks = [
     url: 'https://top10.travel/wp-content/uploads/2016/11/ermitazh.jpg',
     lon: 59.940073,
     lat: 30.312733,
-    type: const SightType(
+    type: SightType(
       name: 'Музей',
       iconName: 'museum',
     ),

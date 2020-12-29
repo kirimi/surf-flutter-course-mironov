@@ -58,15 +58,15 @@ class _TextFieldWithClearState extends State<TextFieldWithClear> {
     final clearBtnDecoration = InputDecoration(
       suffixIcon: InkWell(
         onTap: _onClearTap,
-        child: const Material(
+        child: Material(
           type: MaterialType.transparency,
           child: Padding(
-            padding: EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 8.0),
             child: SvgIcon(icon: SvgIcons.clear),
           ),
         ),
       ),
-      suffixIconConstraints: const BoxConstraints(),
+      suffixIconConstraints: BoxConstraints(),
     );
 
     final decoration = InputDecoration(
@@ -88,8 +88,7 @@ class _TextFieldWithClearState extends State<TextFieldWithClear> {
 
   void _updateClearVisibility() {
     setState(() {
-      _isClearVisible =
-          widget.controller.text != '' && widget.focusNode.hasPrimaryFocus;
+      _isClearVisible = widget.controller.text != '' && widget.focusNode.hasPrimaryFocus;
     });
   }
 

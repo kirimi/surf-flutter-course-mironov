@@ -37,11 +37,11 @@ class IconTextButton extends StatelessWidget {
     }
 
     return TextButton(
-      onPressed: onPressed,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: content,
       ),
+      onPressed: onPressed,
     );
   }
 }

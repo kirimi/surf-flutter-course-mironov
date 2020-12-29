@@ -12,26 +12,25 @@ class CustomBottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       selectedFontSize: 0,
       unselectedFontSize: 0,
-      // ignore: prefer_const_literals_to_create_immutables
       items: [
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: SvgIcon(icon: SvgIcons.list),
-          activeIcon: SvgIcon(icon: SvgIcons.listFill),
+          activeIcon: SvgIcon(icon: SvgIcons.list_fill),
           label: '',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: SvgIcon(icon: SvgIcons.map),
-          activeIcon: SvgIcon(icon: SvgIcons.mapFill),
+          activeIcon: SvgIcon(icon: SvgIcons.map_fill),
           label: '',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: SvgIcon(icon: SvgIcons.heart),
-          activeIcon: SvgIcon(icon: SvgIcons.heartFill),
+          activeIcon: SvgIcon(icon: SvgIcons.heart_fill),
           label: '',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: SvgIcon(icon: SvgIcons.settings),
-          activeIcon: SvgIcon(icon: SvgIcons.settingsFill),
+          activeIcon: SvgIcon(icon: SvgIcons.settings_fill),
           label: '',
         ),
       ],

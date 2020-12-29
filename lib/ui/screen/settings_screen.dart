@@ -16,18 +16,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.settingsAppbarTitle),
+        title: Text(AppStrings.settingsAppbarTitle),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(),
       body: Column(
         children: [
           SwitchListTile(
-            title: const Text(AppStrings.settingsDarkTheme),
+            title: Text(AppStrings.settingsDarkTheme),
             value: themeState.isDark,
             onChanged: _onChangeTheme,
           ),
           ListTile(
-            title: const Text(AppStrings.settingsTutorial),
+            title: Text(AppStrings.settingsTutorial),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: SvgIcon(
@@ -36,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             onTap: () {
-              // print('Show tutorial');
+              print('Show tutorial');
             },
           ),
         ],
@@ -44,6 +44,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // ignore: use_setters_to_change_properties
   void _onChangeTheme(bool newValue) => themeState.isDark = newValue;
 }

@@ -27,10 +27,10 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SightListAppBar(
+      appBar: SightListAppBar(
         title: AppStrings.sightListAppBar,
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: CustomBottomNavBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(
         onPressed: _onAddPressed,
@@ -42,8 +42,8 @@ class _SightListScreenState extends State<SightListScreen> {
   }
 
   List<Widget> _buildSightList() {
-    final List<Widget> result = [];
-    for (final sight in _sights) {
+    List<Widget> result = [];
+    for (Sight sight in _sights) {
       result.add(SightCard(
         sight: sight,
         onTap: () {},
@@ -53,7 +53,7 @@ class _SightListScreenState extends State<SightListScreen> {
     return result;
   }
 
-  Future<void> _onAddPressed() async {
+  void _onAddPressed() async {
     await Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => AddSightScreen()),
     );

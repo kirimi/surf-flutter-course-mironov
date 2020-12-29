@@ -27,7 +27,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.selectCategoryAppbarTitle),
+        title: Text(AppStrings.selectCategoryAppbarTitle),
         leading: IconTextButton(
           icon: SvgIcons.arrowLeft,
           onPressed: _onBack,
@@ -43,7 +43,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
               child: ListView.separated(
                 itemCount: _types.length,
                 itemBuilder: _buildItem,
-                separatorBuilder: (_, __) => const Divider(),
+                separatorBuilder: (_, __) => Divider(),
               ),
             ),
 
@@ -63,7 +63,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen> {
 
   Widget _buildItem(BuildContext context, int index) {
     // галочка только у выбранного элемента
-    final Widget trailing = _selectedIndex == index
+    Widget trailing = _selectedIndex == index
         ? SvgIcon(
             icon: SvgIcons.tick,
             color: Theme.of(context).accentColor,

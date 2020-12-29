@@ -35,15 +35,14 @@ class AddButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SvgIcon(
+                SvgIcon(
                   icon: SvgIcons.plus,
                   color: AppColors.white,
                 ),
                 const SizedBox(width: 8.0),
                 Text(
                   AppStrings.sightListAddBtn.toUpperCase(),
-                  style: AppTextStyles.bigButtonText
-                      .copyWith(color: AppColors.white),
+                  style: AppTextStyles.bigButtonText.copyWith(color: AppColors.white),
                 ),
               ],
             ),

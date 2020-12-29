@@ -75,7 +75,7 @@ class SvgIcons {
     semanticsLabel: 'List',
   );
 
-  static const SvgData listFill = SvgData(
+  static const SvgData list_fill = SvgData(
     'res/svg/list_fill.svg',
     semanticsLabel: 'List',
   );
@@ -85,7 +85,7 @@ class SvgIcons {
     semanticsLabel: 'Map',
   );
 
-  static const SvgData mapFill = SvgData(
+  static const SvgData map_fill = SvgData(
     'res/svg/map_fill.svg',
     semanticsLabel: 'Map',
   );
@@ -94,7 +94,7 @@ class SvgIcons {
     'res/svg/heart.svg',
     semanticsLabel: 'Heart',
   );
-  static const SvgData heartFill = SvgData(
+  static const SvgData heart_fill = SvgData(
     'res/svg/heart_fill.svg',
     semanticsLabel: 'Heart',
   );
@@ -103,7 +103,7 @@ class SvgIcons {
     'res/svg/settings.svg',
     semanticsLabel: 'Settings',
   );
-  static const SvgData settingsFill = SvgData(
+  static const SvgData settings_fill = SvgData(
     'res/svg/settings_fill.svg',
     semanticsLabel: 'Settings',
   );
