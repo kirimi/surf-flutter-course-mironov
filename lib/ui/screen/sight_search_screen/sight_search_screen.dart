@@ -121,8 +121,8 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
       itemCount: sights.length,
       itemBuilder: (context, index) {
         return SearchResultItem(
-          sight: _sights[index],
-          onTap: () => _onCardTap(_sights[index]),
+          sight: sights[index],
+          onTap: () => _onCardTap(sights[index]),
         );
       },
     );
