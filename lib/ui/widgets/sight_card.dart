@@ -37,7 +37,7 @@ class SightCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: NetworkImageWithSpinner(url: sight.url),
                   ),
@@ -79,7 +79,6 @@ class SightCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -94,8 +93,8 @@ class SightCard extends StatelessWidget {
                       type: MaterialType.transparency,
                       child: InkWell(
                         onTap: onFavoriteTap,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: SvgIcon(
                             icon: SvgIcons.heart,
                             color: Colors.white,

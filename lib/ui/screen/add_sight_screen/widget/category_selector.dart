@@ -4,7 +4,6 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
-import 'package:places/ui/widgets/form_label.dart';
 
 /// Виджет - кнопка выбора категории.
 ///
@@ -25,34 +24,29 @@ class CategorySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String text = value?.name ?? AppStrings.addSightDoesNotSelected;
-    final Color textColor = value != null ? Theme.of(context).primaryColor : Theme.of(context).disabledColor;
+    final Color textColor = value != null
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).disabledColor;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        FormLabel(
-          text: AppStrings.addSightCategory,
-          padding: const EdgeInsets.all(0),
-        ),
-        Material(
-          child: InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 14.0, bottom: 14.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    text,
-                    style: AppTextStyles.addSightCategory.copyWith(color: textColor),
-                  ),
-                  SvgIcon(icon: SvgIcons.arrowRight)
-                ],
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 14, bottom: 14.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                text,
+                style: AppTextStyles.addSightCategory.copyWith(
+                  color: textColor,
+                ),
               ),
-            ),
+              const SvgIcon(icon: SvgIcons.arrowRight)
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

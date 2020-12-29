@@ -10,11 +10,6 @@ class SvgIcons {
     semanticsLabel: 'Calendar',
   );
 
-  static const SvgData heart = SvgData(
-    'res/svg/heart.svg',
-    semanticsLabel: 'Heart',
-  );
-
   static const SvgData info = SvgData(
     'res/svg/info.svg',
     semanticsLabel: 'Info',
@@ -73,6 +68,66 @@ class SvgIcons {
   static const SvgData plus = SvgData(
     'res/svg/plus.svg',
     semanticsLabel: 'Plus',
+  );
+
+  static const SvgData list = SvgData(
+    'res/svg/list.svg',
+    semanticsLabel: 'List',
+  );
+
+  static const SvgData listFill = SvgData(
+    'res/svg/list_fill.svg',
+    semanticsLabel: 'List',
+  );
+
+  static const SvgData map = SvgData(
+    'res/svg/map.svg',
+    semanticsLabel: 'Map',
+  );
+
+  static const SvgData mapFill = SvgData(
+    'res/svg/map_fill.svg',
+    semanticsLabel: 'Map',
+  );
+
+  static const SvgData heart = SvgData(
+    'res/svg/heart.svg',
+    semanticsLabel: 'Heart',
+  );
+
+  static const SvgData heartFill = SvgData(
+    'res/svg/heart_fill.svg',
+    semanticsLabel: 'Heart',
+  );
+
+  static const SvgData settings = SvgData(
+    'res/svg/settings.svg',
+    semanticsLabel: 'Settings',
+  );
+
+  static const SvgData settingsFill = SvgData(
+    'res/svg/settings_fill.svg',
+    semanticsLabel: 'Settings',
+  );
+
+  static const SvgData filter = SvgData(
+    'res/svg/filter.svg',
+    semanticsLabel: 'Filter',
+  );
+
+  static const SvgData search = SvgData(
+    'res/svg/search.svg',
+    semanticsLabel: 'Search',
+  );
+
+  static const SvgData error = SvgData(
+    'res/svg/error.svg',
+    semanticsLabel: 'Error',
+  );
+
+  static const SvgData delete = SvgData(
+    'res/svg/delete.svg',
+    semanticsLabel: 'Delete',
   );
 }
 

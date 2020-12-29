@@ -1,7 +1,7 @@
 class AppStrings {
   static const String appTitle = 'Places';
 
-  static const String sightListAppBar = 'Список\nинтересных мест';
+  static const String sightListAppBar = 'Список интересных мест';
   static const String sightListAddBtn = 'Новое место';
 
   static const String sightDetailsRouteToBtn = 'Построить маршрут';
@@ -42,4 +42,16 @@ class AppStrings {
 
   static const String selectCategoryAppbarTitle = 'Категория';
   static const String selectCategoryBtnSave = 'Сохранить';
+
+  static const String sightSearchAppBar = 'Список интересных мест';
+  static const String sightSearchEmptyTitle = 'Ничего не найдено';
+  static const String sightSearchEmptySubtitle =
+      'Попробуйте изменить параметры поиска';
+  static const String sightSearchErrorTitle = 'Ошибка';
+  static const String sightSearchErrorSubtitle =
+      'Что-то пошло не так.\nПопробуйте позже.';
+
+  static const String searchBarHint = 'Поиск';
+  static const String searchHistoryTitle = 'Вы искали';
+  static const String searchClearHistory = 'Очистить историю';
 }
