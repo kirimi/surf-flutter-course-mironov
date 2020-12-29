@@ -8,24 +8,24 @@ import 'package:places/ui/screen/add_sight_screen/widget/sight_photo_widget.dart
 ///
 /// [sightPhotos] список [SightPhoto], который надо отобразить
 /// [onTap] срабатываем при тапе на фото, в параметрах index
-/// [onDeleteTap] при тапе на крестик,  в параметрах index
-/// [onAddTap] при тапе на кнопку добавления фото, первый элемент
+/// [onDelete] при тапе на крестик,  в параметрах index
+/// [onAdd] при тапе на кнопку добавления фото, первый элемент
 class SightPhotosListWidget extends StatelessWidget {
   final List<SightPhoto> sightPhotos;
   final ValueChanged<int> onTap;
-  final VoidCallback onAddTap;
-  final ValueChanged<int> onDeleteTap;
+  final VoidCallback onAdd;
+  final ValueChanged<int> onDelete;
 
   const SightPhotosListWidget({
     Key key,
     @required this.sightPhotos,
     @required this.onTap,
-    @required this.onDeleteTap,
-    @required this.onAddTap,
+    @required this.onDelete,
+    @required this.onAdd,
   })  : assert(sightPhotos != null),
         assert(onTap != null),
-        assert(onDeleteTap != null),
-        assert(onAddTap != null),
+        assert(onDelete != null),
+        assert(onAdd != null),
         super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class SightPhotosListWidget extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(children: [
-        AddPhotoWidget(onTap: onAddTap),
+        AddPhotoWidget(onTap: onAdd),
         ..._buildPhotosList(),
       ]),
     );
@@ -47,7 +47,7 @@ class SightPhotosListWidget extends StatelessWidget {
         SightPhotoWidget(
           photo: sightPhotos[i],
           onTap: () => onTap(i),
-          onDelete: () => onDeleteTap(i),
+          onDelete: () => onDelete(i),
         ),
       );
     }

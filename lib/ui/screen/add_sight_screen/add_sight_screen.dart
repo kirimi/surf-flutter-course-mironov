@@ -66,8 +66,8 @@ class _AddSightScreenState extends State<AddSightScreen> {
                     SightPhotosListWidget(
                       sightPhotos: _sightPhotos,
                       onTap: _onPhotoTap,
-                      onAddTap: _onAddPhotoTap,
-                      onDeleteTap: _onDeleteTap,
+                      onAdd: _onAddPhotoTap,
+                      onDelete: _onPhotoDeleteTap,
                     ),
                     const Label(
                       text: AppStrings.addSightCategory,
@@ -233,7 +233,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
   void _onAddPhotoTap() {
     final int randomIndex = Random().nextInt(sightPhotosMocks.length - 1);
     setState(() {
-      _sightPhotos.add(sightPhotosMocks[randomIndex]);
+      _sightPhotos.insert(0, sightPhotosMocks[randomIndex]);
     });
   }
 
@@ -241,7 +241,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
   void _onPhotoTap(int index) {}
 
   // Удалить фото
-  void _onDeleteTap(int index) {
+  void _onPhotoDeleteTap(int index) {
     setState(() {
       _sightPhotos.removeAt(index);
     });

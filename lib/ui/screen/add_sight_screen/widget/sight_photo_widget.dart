@@ -27,39 +27,44 @@ class SightPhotoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12.0),
-          child: SizedBox(
-            height: 72.0,
-            width: 72.0,
-            child: Stack(
-              children: [
-                SizedBox.expand(
-                  child: NetworkImageWithSpinner(
-                    url: photo.url,
+    return Dismissible(
+      key: UniqueKey(),
+      direction: DismissDirection.up,
+      onDismissed: (_) => onDelete(),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: onTap,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: SizedBox(
+              height: 72.0,
+              width: 72.0,
+              child: Stack(
+                children: [
+                  SizedBox.expand(
+                    child: NetworkImageWithSpinner(
+                      url: photo.url,
+                    ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: InkWell(
-                      onTap: onDelete,
-                      child: const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: SvgIcon(
-                          icon: SvgIcons.clear,
-                          color: AppColors.white,
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        onTap: onDelete,
+                        child: const Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: SvgIcon(
+                            icon: SvgIcons.clear,
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
