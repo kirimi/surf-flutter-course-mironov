@@ -1,5 +1,6 @@
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type.dart';
 
 /// текущее местоположение
@@ -80,4 +81,15 @@ final List<Sight> mocks = [
       iconName: 'museum',
     ),
   ),
+];
+
+/// Фотографии мест
+final List<SightPhoto> sightPhotosMocks = [
+  const SightPhoto(url: 'https://picsum.photos/200/300?1'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?2'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?3'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?4'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?5'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?6'),
+  const SightPhoto(url: 'https://picsum.photos/200/300?7'),
 ];
