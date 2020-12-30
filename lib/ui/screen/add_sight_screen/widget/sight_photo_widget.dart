@@ -28,7 +28,7 @@ class SightPhotoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: UniqueKey(),
+      key: key,
       direction: DismissDirection.up,
       onDismissed: (_) => onDelete(),
       child: Padding(

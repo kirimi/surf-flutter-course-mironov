@@ -93,6 +93,7 @@ class _VisitingScreenState extends State<VisitingScreen>
     for (final sight in sights) {
       res.add(
         DraggableDismissibleSightCard(
+          key: ObjectKey(sight),
           sight: sight,
           onTap: () => _onSightTap(sight),
           onFavoriteTap: () {},
@@ -112,6 +113,8 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   // Меняем местами элементы списка
+  // передаем сюда sights, чтобы определить с каким именно списком работаем
+  // _toVisitSights или _visitedSights
   void _swapSights({Sight target, Sight sight, List<Sight> sights}) {
     final targetIndex = sights.indexOf(target);
     final sightIndex = sights.indexOf(sight);

@@ -40,6 +40,7 @@ class DraggableDismissibleSightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DragTarget<Sight>(
+      key: key,
       onAccept: (droppedSight) => onSightDrop(droppedSight),
       onWillAccept: (_) => true,
       builder: (BuildContext context, List<dynamic> candidateData,
@@ -91,7 +92,7 @@ class DraggableDismissibleSightCard extends StatelessWidget {
                     child: _DismissibleBackground(),
                   ),
                   Dismissible(
-                    key: UniqueKey(),
+                    key: key,
                     direction: DismissDirection.endToStart,
                     onDismissed: (_) => onDismissed(sight),
                     child: sightWidget,
