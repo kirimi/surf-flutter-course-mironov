@@ -4,6 +4,8 @@ class AppStrings {
   static const String sightListAppBar = 'Список интересных мест';
   static const String sightListAddBtn = 'Новое место';
 
+  static const String sightCardDelete = 'Удалить';
+
   static const String sightDetailsRouteToBtn = 'Построить маршрут';
   static const String sightDetailsPlanBtn = 'Запланировать';
   static const String sightDetailsToFavoriteBtn = 'В избранное';

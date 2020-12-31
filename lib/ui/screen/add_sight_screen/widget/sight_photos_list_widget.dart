@@ -45,6 +45,7 @@ class SightPhotosListWidget extends StatelessWidget {
     for (var i = 0; i < sightPhotos.length; i++) {
       _photosList.add(
         SightPhotoWidget(
+          key: ObjectKey(sightPhotos[i]),
           photo: sightPhotos[i],
           onTap: () => onTap(i),
           onDelete: () => onDelete(i),
