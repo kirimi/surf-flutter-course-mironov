@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
@@ -36,6 +34,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // фотографии места
   final List<SightPhoto> _sightPhotos = [];
+
+  // индекс для добавления фотографии из моков,
+  // чтобы не добавлялись одинаковые
+  int currentMockIndex = 0;
 
   // Доступность кнопки submit
   bool _isSubmitEnabled = false;
@@ -231,10 +233,13 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Добавление фото
   void _onAddPhotoTap() {
-    final int randomIndex = Random().nextInt(sightPhotosMocks.length - 1);
-    setState(() {
-      _sightPhotos.insert(0, sightPhotosMocks[randomIndex]);
-    });
+    // добавляем только разные фото
+    if (currentMockIndex < sightPhotosMocks.length) {
+      setState(() {
+        _sightPhotos.insert(0, sightPhotosMocks[currentMockIndex]);
+      });
+      currentMockIndex++;
+    }
   }
 
   // Тап на карточке с фото
