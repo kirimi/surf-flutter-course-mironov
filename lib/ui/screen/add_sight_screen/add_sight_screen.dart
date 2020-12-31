@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
+import 'package:places/ui/screen/add_sight_screen/widget/sight_photos_list_widget.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/label.dart';
@@ -29,6 +33,9 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Выбранная категория
   SightType _selectedSightType;
+
+  // фотографии места
+  final List<SightPhoto> _sightPhotos = [];
 
   // Доступность кнопки submit
   bool _isSubmitEnabled = false;
@@ -56,6 +63,12 @@ class _AddSightScreenState extends State<AddSightScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SightPhotosListWidget(
+                      sightPhotos: _sightPhotos,
+                      onTap: _onPhotoTap,
+                      onAdd: _onAddPhotoTap,
+                      onDelete: _onPhotoDeleteTap,
+                    ),
                     const Label(
                       text: AppStrings.addSightCategory,
                       padding: EdgeInsets.all(0),
@@ -214,6 +227,24 @@ class _AddSightScreenState extends State<AddSightScreen> {
     );
     mocks.insert(0, newSight);
     _onBack();
+  }
+
+  // Добавление фото
+  void _onAddPhotoTap() {
+    final int randomIndex = Random().nextInt(sightPhotosMocks.length - 1);
+    setState(() {
+      _sightPhotos.insert(0, sightPhotosMocks[randomIndex]);
+    });
+  }
+
+  // Тап на карточке с фото
+  void _onPhotoTap(int index) {}
+
+  // Удалить фото
+  void _onPhotoDeleteTap(int index) {
+    setState(() {
+      _sightPhotos.removeAt(index);
+    });
   }
 
   void _onBack() {
