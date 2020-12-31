@@ -18,23 +18,11 @@ class SightListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> childrenWithSpacing = [];
-    for (var i = 0; i < children.length; i++) {
-      childrenWithSpacing.add(children[i]);
-      if (i != children.length - 1) {
-        childrenWithSpacing.add(
-          const SizedBox(height: spaceHeight),
-        );
-      }
-    }
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: padding,
-        child: Column(
-          children: childrenWithSpacing,
-        ),
-      ),
+    return ListView.separated(
+      padding: padding,
+      itemCount: children.length,
+      itemBuilder: (context, index) => children[index],
+      separatorBuilder: (context, index) => const SizedBox(height: spaceHeight),
     );
   }
 }

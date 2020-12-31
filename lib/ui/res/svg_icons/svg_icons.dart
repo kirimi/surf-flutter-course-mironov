@@ -129,6 +129,11 @@ class SvgIcons {
     'res/svg/delete.svg',
     semanticsLabel: 'Delete',
   );
+
+  static const SvgData bucket = SvgData(
+    'res/svg/bucket.svg',
+    semanticsLabel: 'Bucket',
+  );
 }
 
 /// Описание SVG-ресурса
