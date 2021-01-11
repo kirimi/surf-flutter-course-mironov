@@ -56,4 +56,17 @@ class AppStrings {
   static const String searchBarHint = 'Поиск';
   static const String searchHistoryTitle = 'Вы искали';
   static const String searchClearHistory = 'Очистить историю';
+
+  static const String onboarding1Title = 'Добро пожаловать\nв Путеводитель';
+  static const String onboarding1SubTitle =
+      'Ищи новые локации и сохраняй самые любимые.';
+  static const String onboarding2Title =
+      'Построй маршрут\nи отправляйся в путь';
+  static const String onboarding2SubTitle =
+      'Достигай цели максимально быстро и комфортно.';
+  static const String onboarding3Title = 'Добавляй места, которые нашёл сам';
+  static const String onboarding3SubTitle =
+      'Делись самыми интересными и помоги нам стать лучше!';
+  static const String onboardingStart = 'на старт';
+  static const String onboardingSkip = 'Пропустить';
 }

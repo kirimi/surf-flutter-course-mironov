@@ -5,7 +5,7 @@ import 'package:places/search_history_state.dart';
 import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
-import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
+import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 
 // Хранилище для текущей темы приложения
 final themeState = ThemeState();
@@ -47,7 +47,7 @@ class _AppState extends State<App> {
       title: AppStrings.appTitle,
       theme: themeState.isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
-      home: SightListScreen(),
+      home: OnboardingScreen(),
     );
   }
 

@@ -134,6 +134,21 @@ class SvgIcons {
     'res/svg/bucket.svg',
     semanticsLabel: 'Bucket',
   );
+
+  static const SvgData onboarding1 = SvgData(
+    'res/svg/onboarding1.svg',
+    semanticsLabel: '',
+  );
+
+  static const SvgData onboarding2 = SvgData(
+    'res/svg/onboarding2.svg',
+    semanticsLabel: '',
+  );
+
+  static const SvgData onboarding3 = SvgData(
+    'res/svg/onboarding3.svg',
+    semanticsLabel: '',
+  );
 }
 
 /// Описание SVG-ресурса
