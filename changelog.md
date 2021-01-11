@@ -1,4 +1,4 @@
-### 6.2.2  OnBoarding screen  11.01.2021
+### 6.4.2  OnBoarding screen  11.01.2021
 - добавлена страница онбординга на PageView
 
 ### 6.2 ListView
