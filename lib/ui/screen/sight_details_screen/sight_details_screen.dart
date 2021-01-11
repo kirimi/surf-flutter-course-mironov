@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
+import 'package:places/ui/screen/sight_details_screen/widget/sight_photos_carousel.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/icon_text_button.dart';
-import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Экран подробного представления "Интересного места"
 class SightDetailsScreen extends StatefulWidget {
@@ -27,10 +28,7 @@ class _SightDetailsScreenState extends State<SightDetailsScreen> {
           Expanded(
             child: Stack(
               children: [
-                SizedBox(
-                  height: double.infinity,
-                  child: NetworkImageWithSpinner(url: widget.sight.url),
-                ),
+                SightPhotosCarousel(list: sightPhotosMocks),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0, top: 36.0),
                   child: InkWell(
