@@ -31,42 +31,47 @@ class SightPhotoWidget extends StatelessWidget {
       key: key,
       direction: DismissDirection.up,
       onDismissed: (_) => onDelete(),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          onTap: onTap,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12.0),
-            child: SizedBox(
-              height: 72.0,
-              width: 72.0,
-              child: Stack(
-                children: [
-                  SizedBox.expand(
-                    child: NetworkImageWithSpinner(
-                      url: photo.url,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: InkWell(
-                        onTap: onDelete,
-                        child: const Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: SvgIcon(
-                            icon: SvgIcons.clear,
-                            color: AppColors.white,
+      child: GestureDetector(
+        onTap: onTap,
+        // LayoutBuilder тут, чтобы получить высоту сверху
+        // и использовать для того, чтобы сделать виджет квадратным
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SizedBox(
+              width: constraints.maxHeight,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Stack(
+                    children: [
+                      SizedBox.expand(
+                        child: NetworkImageWithSpinner(
+                          url: photo.url,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: InkWell(
+                            onTap: onDelete,
+                            child: const Padding(
+                              padding: EdgeInsets.all(4.0),
+                              child: SvgIcon(
+                                icon: SvgIcons.clear,
+                                color: AppColors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
