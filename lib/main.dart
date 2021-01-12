@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/theme_state.dart';
@@ -13,11 +11,6 @@ final themeState = ThemeState();
 // Хранилище для истории поиска.
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
-
-// Физика скроллов.
-final scrollPhysics = Platform.isAndroid
-    ? const ClampingScrollPhysics()
-    : const BouncingScrollPhysics();
 
 void main() {
   runApp(App());

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:places/main.dart';
 
 /// Виджет выводит список виджетов [children] со скроллом.
 ///
@@ -20,7 +19,6 @@ class SightListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      physics: scrollPhysics,
       padding: padding,
       itemCount: children.length,
       itemBuilder: (context, index) => children[index],
