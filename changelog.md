@@ -1,3 +1,6 @@
+### 6.6.1 Sliver на SightDetailsScreen
+- Галерея фото переделана на sliver. Использовал SliverPersistentHeader с делегатом для тренировки.
+
 ### 6.4.2  OnBoarding screen  11.01.2021
 - добавлена страница онбординга на PageView
 
