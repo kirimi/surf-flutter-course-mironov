@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight_photo.dart';
-import 'package:places/main.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Карусель фото  места, с индикатором.
@@ -28,7 +27,6 @@ class _SightPhotosCarouselState extends State<SightPhotosCarousel> {
           children: [
             PageView.builder(
               itemCount: widget.list.length,
-              physics: scrollPhysics,
               onPageChanged: (index) {
                 setState(() => _currentIndex = index);
               },

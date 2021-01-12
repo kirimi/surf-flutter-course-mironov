@@ -3,7 +3,6 @@ import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type.dart';
-import 'package:places/main.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
@@ -63,7 +62,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
               padding: const EdgeInsets.only(bottom: 60.0),
               // SingleChildScrollView - чтобы при появлении клавиатуры не было overflow
               child: SingleChildScrollView(
-                physics: scrollPhysics,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
