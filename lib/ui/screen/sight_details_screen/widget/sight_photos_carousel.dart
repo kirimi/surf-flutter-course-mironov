@@ -97,7 +97,7 @@ class _ProgressIndicatorItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: isActive ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 300),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).accentColor,
