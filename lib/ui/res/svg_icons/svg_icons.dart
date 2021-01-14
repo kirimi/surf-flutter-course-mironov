@@ -149,6 +149,11 @@ class SvgIcons {
     'res/svg/onboarding3.svg',
     semanticsLabel: '',
   );
+
+  static const SvgData logo = SvgData(
+    'res/svg/logo.svg',
+    semanticsLabel: 'Logo',
+  );
 }
 
 /// Описание SVG-ресурса
