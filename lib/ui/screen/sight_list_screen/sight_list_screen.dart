@@ -44,30 +44,10 @@ class _SightListScreenState extends State<SightListScreen> {
       floatingActionButton: AddButton(onPressed: _onAddPressed),
       body: CustomScrollView(
         slivers: [
-          // *****
-          // В макете figma заголовок в две строки в развернутом виде
-          // и в одну строку в свернутом.
-          // Постарался этим реализовать что-то похожее ))
           SliverPersistentHeader(
             pinned: true,
             delegate: SearchSliverPersistentHeaderDelegate(),
           ),
-
-          // *****  Более красивый вариант, на мой взгляд.
-          // Но не смог добиться тут переноса строки
-          // SliverAppBar(
-          //   pinned: true,
-          //   expandedHeight: 150,
-          //   backgroundColor: Theme.of(context).backgroundColor,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     title: Text(
-          //       AppStrings.sightListAppBar,
-          //       style: AppTextStyles.appBarTitle
-          //           .copyWith(color: Theme.of(context).primaryColor),
-          //     ),
-          //   ),
-          // ),
-
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
