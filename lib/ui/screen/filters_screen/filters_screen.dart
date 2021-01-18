@@ -15,6 +15,8 @@ import 'package:places/ui/widgets/icon_elevated_button.dart';
 ///
 /// В конструкторе передается текущий фильтр
 class FiltersScreen extends StatefulWidget {
+  static const String routeName = 'FiltersScreen';
+
   final Filter filter;
 
   const FiltersScreen({

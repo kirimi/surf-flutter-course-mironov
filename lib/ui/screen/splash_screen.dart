@@ -12,6 +12,8 @@ import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 /// Далее автоматический переход на OnBoardingScreen или SightListScreen
 /// в зависимости от того, первый раз открыли приложение или нет.
 class SplashScreen extends StatefulWidget {
+  static const String routeName = 'SplashScreen';
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -68,11 +70,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // todo Сделать получение сохраненных данных о isFirstRun
     final bool isFirstRun = true;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) =>
-            isFirstRun ? OnboardingScreen() : SightListScreen(),
-      ),
+    Navigator.of(context).pushReplacementNamed(
+      isFirstRun ? OnboardingScreen.routeName : SightListScreen.routeName,
     );
   }
 

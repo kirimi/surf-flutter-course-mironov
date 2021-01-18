@@ -13,6 +13,8 @@ import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран Хочу посетить/Посещенные места
 class VisitingScreen extends StatefulWidget {
+  static const String routeName = 'VisitingScreen';
+
   @override
   _VisitingScreenState createState() => _VisitingScreenState();
 }
@@ -132,12 +134,9 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   void _onSightTap(Sight sight) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SightDetailsScreen(
-          sight: sight,
-        ),
-      ),
+    Navigator.of(context).pushNamed(
+      SightDetailsScreen.routeName,
+      arguments: sight,
     );
   }
 }

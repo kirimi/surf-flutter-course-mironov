@@ -7,6 +7,8 @@ import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 
 /// Экран настроек
 class SettingsScreen extends StatefulWidget {
+  static const String routeName = 'SettingsScreen';
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
