@@ -65,7 +65,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 0),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

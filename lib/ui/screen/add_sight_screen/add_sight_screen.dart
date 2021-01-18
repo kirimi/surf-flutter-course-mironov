@@ -202,9 +202,9 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Выбор категории
   Future<void> _onSelectCategory() async {
-    final SightType result = await Navigator.of(context).pushNamed(
+    final result = await Navigator.of(context).pushNamed(
       SelectCategoryScreen.routeName,
-    );
+    ) as SightType;
 
     setState(() {
       _selectedSightType = result;

@@ -67,7 +67,7 @@ class _VisitingScreenState extends State<VisitingScreen>
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 2),
       body: TabBarView(
         controller: _controller,
         children: [

@@ -41,7 +41,7 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
       body: CustomScrollView(
@@ -106,10 +106,12 @@ class _SightListScreenState extends State<SightListScreen> {
       arguments: _filter,
     ) as Filter;
 
-    // Обновляем в соответствии с новым фильтром
-    setState(() {
-      _filter = newFilter;
-    });
+    if (newFilter != null) {
+      // Обновляем в соответствии с новым фильтром
+      setState(() {
+        _filter = newFilter;
+      });
+    }
   }
 
   void _onCardTap(Sight sight) {

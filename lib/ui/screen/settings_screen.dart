@@ -3,6 +3,7 @@ import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
+import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 
 /// Экран настроек
@@ -20,7 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: const Text(AppStrings.settingsAppbarTitle),
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 3),
       body: Column(
         children: [
           SwitchListTile(
@@ -38,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             onTap: () {
-              // print('Show tutorial');
+              Navigator.of(context).pushNamed(OnboardingScreen.routeName);
             },
           ),
         ],
