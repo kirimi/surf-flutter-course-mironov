@@ -14,6 +14,8 @@ import 'package:places/ui/widgets/text_field_with_clear.dart';
 
 /// Экран добавления нового места
 class AddSightScreen extends StatefulWidget {
+  static const String routeName = 'AddSightScreen';
+
   @override
   _AddSightScreenState createState() => _AddSightScreenState();
 }
@@ -200,9 +202,9 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Выбор категории
   Future<void> _onSelectCategory() async {
-    final SightType result = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => SelectCategoryScreen()),
-    );
+    final result = await Navigator.of(context).pushNamed(
+      SelectCategoryScreen.routeName,
+    ) as SightType;
 
     setState(() {
       _selectedSightType = result;

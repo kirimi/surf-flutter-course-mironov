@@ -17,6 +17,8 @@ import 'package:places/ui/widgets/sight_card.dart';
 
 /// Экран со списком интересных мест
 class SightListScreen extends StatefulWidget {
+  static const String routeName = 'SightListScreen';
+
   @override
   _SightListScreenState createState() => _SightListScreenState();
 }
@@ -39,7 +41,7 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
       body: CustomScrollView(
@@ -83,8 +85,8 @@ class _SightListScreenState extends State<SightListScreen> {
   }
 
   Future<void> _onAddPressed() async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => AddSightScreen()),
+    await Navigator.of(context).pushNamed(
+      AddSightScreen.routeName,
     );
     setState(() {
       _sights = mocks;
@@ -92,37 +94,30 @@ class _SightListScreenState extends State<SightListScreen> {
   }
 
   void _onSearchTap() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SightSearchScreen(
-          filter: _filter,
-        ),
-      ),
+    Navigator.of(context).pushNamed(
+      SightSearchScreen.routeName,
+      arguments: _filter,
     );
   }
 
   Future<void> _onFilterTap() async {
-    final Filter newFilter = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => FiltersScreen(
-          filter: _filter,
-        ),
-      ),
-    );
+    final newFilter = await Navigator.of(context).pushNamed(
+      FiltersScreen.routeName,
+      arguments: _filter,
+    ) as Filter;
 
-    // Обновляем в соответствии с новым фильтром
-    setState(() {
-      _filter = newFilter;
-    });
+    if (newFilter != null) {
+      // Обновляем в соответствии с новым фильтром
+      setState(() {
+        _filter = newFilter;
+      });
+    }
   }
 
   void _onCardTap(Sight sight) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SightDetailsScreen(
-          sight: sight,
-        ),
-      ),
+    Navigator.of(context).pushNamed(
+      SightDetailsScreen.routeName,
+      arguments: sight,
     );
   }
 }

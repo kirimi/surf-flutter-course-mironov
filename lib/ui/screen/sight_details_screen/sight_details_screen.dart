@@ -11,6 +11,8 @@ import 'package:places/ui/widgets/icon_text_button.dart';
 
 /// Экран подробного представления "Интересного места"
 class SightDetailsScreen extends StatefulWidget {
+  static const String routeName = 'SightDetailsScreen';
+
   final Sight sight;
 
   const SightDetailsScreen({Key key, @required this.sight}) : super(key: key);

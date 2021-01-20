@@ -15,6 +15,8 @@ import 'package:places/ui/widgets/icon_elevated_button.dart';
 ///
 /// В конструкторе передается текущий фильтр
 class FiltersScreen extends StatefulWidget {
+  static const String routeName = 'FiltersScreen';
+
   final Filter filter;
 
   const FiltersScreen({
@@ -63,7 +65,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
+      bottomNavigationBar: const CustomBottomNavBar(index: 0),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

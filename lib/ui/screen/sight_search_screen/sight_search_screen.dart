@@ -20,6 +20,8 @@ import 'package:places/ui/widgets/search_bar.dart';
 ///
 /// В конструкторе передается текущий фильтр
 class SightSearchScreen extends StatefulWidget {
+  static const String routeName = 'SightSearchScreen';
+
   final Filter filter;
 
   const SightSearchScreen({
@@ -205,12 +207,9 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
   }
 
   void _onCardTap(Sight sight) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => SightDetailsScreen(
-          sight: sight,
-        ),
-      ),
+    Navigator.of(context).pushNamed(
+      SightDetailsScreen.routeName,
+      arguments: sight,
     );
   }
 

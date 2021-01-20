@@ -9,6 +9,8 @@ import 'package:places/ui/widgets/icon_elevated_button.dart';
 
 /// Экран онбординга
 class OnboardingScreen extends StatefulWidget {
+  static const String routeName = 'OnboardingScreen';
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -118,10 +120,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Нажали на Старт
   void _onStartPressed() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => SightListScreen(),
-      ),
+    Navigator.of(context).pushReplacementNamed(
+      SightListScreen.routeName,
     );
   }
 }

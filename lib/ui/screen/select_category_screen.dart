@@ -9,6 +9,8 @@ import 'package:places/ui/widgets/icon_text_button.dart';
 
 /// Экран выбора категории
 class SelectCategoryScreen extends StatefulWidget {
+  static const String routeName = 'SelectCategoryScreen';
+
   @override
   _SelectCategoryScreenState createState() => _SelectCategoryScreenState();
 }
