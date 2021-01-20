@@ -10,6 +10,7 @@ import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/icon_text_button.dart';
 
 /// Экран подробного представления "Интересного места"
+// todo deprecate
 class SightDetailsScreen extends StatefulWidget {
   static const String routeName = 'SightDetailsScreen';
 
