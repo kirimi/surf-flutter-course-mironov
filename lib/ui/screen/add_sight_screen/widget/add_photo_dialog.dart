@@ -151,7 +151,7 @@ class _CancelButton extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: onSelect,
-        child: Container(
+        child: Ink(
           height: 48.0,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.0),
