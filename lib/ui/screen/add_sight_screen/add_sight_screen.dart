@@ -38,10 +38,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
   // фотографии места
   final List<SightPhoto> _sightPhotos = [];
 
-  // индекс для добавления фотографии из моков,
-  // чтобы не добавлялись одинаковые
-  int currentMockIndex = 0;
-
   // Доступность кнопки submit
   bool _isSubmitEnabled = false;
 
@@ -236,26 +232,16 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Добавление фото
   Future<void> _onAddPhotoTap() async {
-    final int res = await showDialog(
+    final SightPhoto sightPhoto = await showDialog(
         context: context,
         builder: (_) {
           return AddPhotoDialog();
         });
 
-    if (res != null && res != AddPhotoDialogResultCode.cancelSelected) {
-      switch (res) {
-        case AddPhotoDialogResultCode.cameraSelected:
-        case AddPhotoDialogResultCode.photoSelected:
-        case AddPhotoDialogResultCode.fileSelected:
-          // добавляем только разные фото
-          if (currentMockIndex < sightPhotosMocks.length) {
-            setState(() {
-              _sightPhotos.insert(0, sightPhotosMocks[currentMockIndex]);
-            });
-            currentMockIndex++;
-          }
-          break;
-      }
+    if (sightPhoto != null) {
+      setState(() {
+        _sightPhotos.insert(0, sightPhoto);
+      });
     }
   }
 
