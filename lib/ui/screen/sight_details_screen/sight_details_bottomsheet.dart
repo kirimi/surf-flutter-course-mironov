@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_photo.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -26,62 +27,32 @@ class SightDetailsBottomSheet extends StatefulWidget {
 }
 
 class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
-  // Высота карусели фото
-  static const _headerHeight = 300.0;
-
   @override
   Widget build(BuildContext context) {
-    final maxHeight = MediaQuery.of(context).size.height * 0.9;
-
-    return ConstrainedBox(
-      constraints: BoxConstraints.expand(height: maxHeight),
-      child: Stack(
-        children: [
-          // карусель фото, за которую можно свайпнуть вниз для закрытия bottomsheet
-          SizedBox(
-            height: _headerHeight,
-            child: SightPhotosCarousel(
-              list: sightPhotosMocks,
-            ),
+    return DraggableScrollableSheet(
+      maxChildSize: 0.9,
+      minChildSize: 0.6,
+      initialChildSize: 0.9,
+      expand: false,
+      builder: (context, scrollController) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12.0),
+            topRight: Radius.circular(12.0),
           ),
-
-          // Кнопка закрытия
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 16.0),
-              child: InkWell(
-                onTap: _onBack,
-                child: SvgIcon(
-                  icon: SvgIcons.clear,
-                  size: 40,
-                  color: Theme.of(context).backgroundColor,
+          child: Container(
+            color: Theme.of(context).backgroundColor,
+            child: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                SliverPersistentHeader(
+                  delegate: DetailsSliverPersistentHeaderDelegate(
+                    photos: sightPhotosMocks,
+                    onBackTap: _onBack,
+                  ),
                 ),
-              ),
-            ),
-          ),
-
-          // Ушко
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Container(
-                height: 4.0,
-                width: 40.0,
-                color: Theme.of(context).backgroundColor,
-              ),
-            ),
-          ),
-
-          // Текстовый контент и кнопки, со скролом.
-          // Делаем отступ сверху на высоту карусели с фото.
-          Padding(
-            padding: const EdgeInsets.only(top: _headerHeight),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
+                SliverToBoxAdapter(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0, vertical: 24.0),
                     child: Column(
@@ -119,16 +90,102 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          )
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 
   void _onBack() {
     Navigator.of(context).pop();
+  }
+}
+
+/// Sliver-делегат для заголовка с каруселью фото
+///
+/// [photos] - список фото для карусели
+/// [onBackTap] - при тапе на кнопку back
+class DetailsSliverPersistentHeaderDelegate
+    extends SliverPersistentHeaderDelegate {
+  final List<SightPhoto> photos;
+  final VoidCallback onBackTap;
+
+  DetailsSliverPersistentHeaderDelegate({
+    @required this.photos,
+    @required this.onBackTap,
+  })  : assert(photos != null && onBackTap != null),
+        super();
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    // При скролле кнопка "back" и ушко делаеются прозрачными,
+    // в середине скролла.
+    // Высчитываем прозрачность в соответствии с shrinkOffset
+    final startOpacityOffset = maxExtent - 200;
+    final endOpacityOffset = maxExtent - 100;
+    final currentOpacityOffset =
+        shrinkOffset.clamp(startOpacityOffset, endOpacityOffset).toDouble() -
+            startOpacityOffset;
+    final opacity =
+        1 - currentOpacityOffset / (endOpacityOffset - startOpacityOffset);
+
+    return Stack(
+      children: [
+        SightPhotosCarousel(list: photos),
+
+        // Кнопка закрытия
+        Opacity(
+          opacity: opacity,
+          child: Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16.0, top: 16.0),
+              child: InkWell(
+                onTap: onBackTap,
+                child: SvgIcon(
+                  icon: SvgIcons.clear,
+                  size: 40,
+                  color: Theme.of(context).backgroundColor,
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        // Ушко
+        Opacity(
+          opacity: opacity,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Container(
+                height: 4.0,
+                width: 40.0,
+                color: Theme.of(context).backgroundColor,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  double get maxExtent => 300;
+
+  @override
+  double get minExtent => 0;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
