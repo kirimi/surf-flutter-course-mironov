@@ -70,6 +70,9 @@ final lightTheme = ThemeData.light().copyWith(
     hintStyle: AppTextStyles.addSightCategory
         .copyWith(color: AppColors.ltDisabledColor),
   ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: Colors.transparent,
+  ),
 );
 
 final darkTheme = ThemeData.dark().copyWith(
@@ -137,5 +140,8 @@ final darkTheme = ThemeData.dark().copyWith(
     ),
     hintStyle: AppTextStyles.addSightCategory
         .copyWith(color: AppColors.dkDisabledColor),
+  ),
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: Colors.transparent,
   ),
 );

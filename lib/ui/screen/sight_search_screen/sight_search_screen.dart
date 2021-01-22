@@ -10,7 +10,7 @@ import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
-import 'package:places/ui/screen/sight_details_screen/sight_details_screen.dart';
+import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:places/ui/screen/sight_search_screen/widget/history_list.dart';
 import 'package:places/ui/screen/sight_search_screen/widget/search_result_item.dart';
 import 'package:places/ui/widgets/center_message.dart';
@@ -207,10 +207,12 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
   }
 
   void _onCardTap(Sight sight) {
-    Navigator.of(context).pushNamed(
-      SightDetailsScreen.routeName,
-      arguments: sight,
-    );
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) {
+          return SightDetailsBottomSheet(sight: sight);
+        });
   }
 
   // при очистке текстового поля
