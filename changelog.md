@@ -1,3 +1,10 @@
+### 8.2.1 Sight detail bottom sheet fix 21.01.2021
+- переделал bottomSheet на DraggableScrollableSheet.
+Спасибо, то, что нужно. Теперь при свайпе вниз botoomSheet закрывается и возможность скролла сохранилась.
+Добавил даже SliverPersistentHeader, реализованный ранее на SightDetailsScreen, чтобы карусель красиво схлопывалась и кнопочка закрытия исчезала от скролла.
+
+- скруглил углы наверху. В теме прозрачный фон для bottomSheetTheme, а контент обернул в ClipRRect.
+
 ### 8.2 Sight detail bottom sheet
 - Заменил страницу SightDetailsScreen на bottomSheet
 Столкнулся с такой трудностью - не удавалось добиться одновременной возможности скролла контента на bottomSheet и свайпа вниз для закрытия.
