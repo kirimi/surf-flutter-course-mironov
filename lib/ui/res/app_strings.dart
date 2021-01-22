@@ -69,4 +69,9 @@ class AppStrings {
       'Делись самыми интересными и помоги нам стать лучше!';
   static const String onboardingStart = 'на старт';
   static const String onboardingSkip = 'Пропустить';
+
+  static const String addPhotoCancel = 'Отмена';
+  static const String addPhotoCamera = 'Камера';
+  static const String addPhotoPhoto = 'Фотография';
+  static const String addPhotoFile = 'Файл';
 }

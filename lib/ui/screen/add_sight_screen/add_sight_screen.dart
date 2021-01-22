@@ -5,6 +5,7 @@ import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/sight_photos_list_widget.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
@@ -36,10 +37,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // фотографии места
   final List<SightPhoto> _sightPhotos = [];
-
-  // индекс для добавления фотографии из моков,
-  // чтобы не добавлялись одинаковые
-  int currentMockIndex = 0;
 
   // Доступность кнопки submit
   bool _isSubmitEnabled = false;
@@ -234,13 +231,17 @@ class _AddSightScreenState extends State<AddSightScreen> {
   }
 
   // Добавление фото
-  void _onAddPhotoTap() {
-    // добавляем только разные фото
-    if (currentMockIndex < sightPhotosMocks.length) {
+  Future<void> _onAddPhotoTap() async {
+    final SightPhoto sightPhoto = await showDialog(
+        context: context,
+        builder: (_) {
+          return AddPhotoDialog();
+        });
+
+    if (sightPhoto != null) {
       setState(() {
-        _sightPhotos.insert(0, sightPhotosMocks[currentMockIndex]);
+        _sightPhotos.insert(0, sightPhoto);
       });
-      currentMockIndex++;
     }
   }
 

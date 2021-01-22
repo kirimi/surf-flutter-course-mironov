@@ -105,3 +105,6 @@ final List<SightPhoto> sightPhotosMocks = [
   const SightPhoto(url: 'https://picsum.photos/800/600?19'),
   const SightPhoto(url: 'https://picsum.photos/800/600?20'),
 ];
+
+/// Текущий индекс фотографии, чтобы не повторялись
+int currentMockIndex = 0;

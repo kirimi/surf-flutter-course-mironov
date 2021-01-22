@@ -154,6 +154,21 @@ class SvgIcons {
     'res/svg/logo.svg',
     semanticsLabel: 'Logo',
   );
+
+  static const SvgData camera = SvgData(
+    'res/svg/camera.svg',
+    semanticsLabel: 'Camera',
+  );
+
+  static const SvgData photo = SvgData(
+    'res/svg/photo.svg',
+    semanticsLabel: 'Photo',
+  );
+
+  static const SvgData file = SvgData(
+    'res/svg/file.svg',
+    semanticsLabel: 'File',
+  );
 }
 
 /// Описание SVG-ресурса

@@ -121,4 +121,12 @@ class AppTextStyles {
     fontSize: 14.0,
     height: 18.0 / 14.0,
   );
+
+// AddPhotoDialog
+
+  static const addPhotoDialogButton = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 16.0,
+    height: 18.0 / 16.0,
+  );
 }
