@@ -8,7 +8,7 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
-import 'package:places/ui/screen/sight_details_screen/sight_details_screen.dart';
+import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
@@ -115,10 +115,12 @@ class _SightListScreenState extends State<SightListScreen> {
   }
 
   void _onCardTap(Sight sight) {
-    Navigator.of(context).pushNamed(
-      SightDetailsScreen.routeName,
-      arguments: sight,
-    );
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) {
+          return SightDetailsBottomSheet(sight: sight);
+        });
   }
 }
 
