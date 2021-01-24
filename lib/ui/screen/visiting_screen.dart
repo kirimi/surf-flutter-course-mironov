@@ -73,11 +73,11 @@ class _VisitingScreenState extends State<VisitingScreen>
         children: [
           SightListWidget(
             padding: const EdgeInsets.all(16.0),
-            children: _buildSightList(_toVisitSights),
+            children: _buildToVisitSightList(),
           ),
           SightListWidget(
             padding: const EdgeInsets.all(16.0),
-            children: _buildSightList(_visitedSights),
+            children: _buildVisitedSightList(),
           ),
         ],
       ),
@@ -90,23 +90,59 @@ class _VisitingScreenState extends State<VisitingScreen>
     super.dispose();
   }
 
-  List<Widget> _buildSightList(List<Sight> sights) {
+  // Карточки "Хочу посетить"
+  List<Widget> _buildToVisitSightList() {
     final List<Widget> res = [];
-    for (final sight in sights) {
+    for (final sight in _toVisitSights) {
       res.add(
         DraggableDismissibleSightCard(
           key: ObjectKey(sight),
           sight: sight,
           onTap: () => _onSightTap(sight),
-          onFavoriteTap: () {},
+          onCalendarTap: () => _onCalendarTap(sight),
+          onDeleteTap: () => _onDismissedSight(
+            sight: sight,
+            sights: _toVisitSights,
+          ),
           onSightDrop: (droppedSight) => _swapSights(
             target: sight,
             sight: droppedSight,
-            sights: sights,
+            sights: _toVisitSights,
           ),
-          onDismissed: (dismissedSight) => _onDismissedSight(
-            sight: dismissedSight,
-            sights: sights,
+          onDismissed: () => _onDismissedSight(
+            sight: sight,
+            sights: _toVisitSights,
+          ),
+        ),
+      );
+    }
+    return res;
+  }
+
+  // Карточки посещенные
+  // На карточке другие action-кнопки, поэтому для простоты разделил на 2 метода
+  // _buildToVisitSightList и _buildVisitedSightList
+  List<Widget> _buildVisitedSightList() {
+    final List<Widget> res = [];
+    for (final sight in _visitedSights) {
+      res.add(
+        DraggableDismissibleSightCard(
+          key: ObjectKey(sight),
+          sight: sight,
+          onTap: () => _onSightTap(sight),
+          onShareTap: () {},
+          onDeleteTap: () => _onDismissedSight(
+            sight: sight,
+            sights: _visitedSights,
+          ),
+          onSightDrop: (droppedSight) => _swapSights(
+            target: sight,
+            sight: droppedSight,
+            sights: _visitedSights,
+          ),
+          onDismissed: () => _onDismissedSight(
+            sight: sight,
+            sights: _visitedSights,
           ),
         ),
       );
@@ -140,5 +176,17 @@ class _VisitingScreenState extends State<VisitingScreen>
         builder: (_) {
           return SightDetailsBottomSheet(sight: sight);
         });
+  }
+
+  Future<void> _onCalendarTap(Sight sight) async {
+    final now = DateTime.now();
+    final DateTime date = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: now,
+      // на 30 лет вперед
+      lastDate: now.add(const Duration(days: 365 * 30)),
+    );
+    print('Выбрана дата посещения ${date.toString()}');
   }
 }

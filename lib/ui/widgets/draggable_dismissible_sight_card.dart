@@ -8,7 +8,6 @@ import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 
 typedef OnSightDrop = Function(Sight sight);
-typedef OnDismissed = Function(Sight sight);
 
 /// Карточка места, которую можно двигать по LongPress
 /// и удалить по свайпу налево
@@ -20,19 +19,24 @@ class DraggableDismissibleSightCard extends StatelessWidget {
   final Sight sight;
   final VoidCallback onTap;
   final VoidCallback onFavoriteTap;
+  final VoidCallback onDeleteTap;
+  final VoidCallback onShareTap;
+  final VoidCallback onCalendarTap;
   final OnSightDrop onSightDrop;
-  final OnDismissed onDismissed;
+  final VoidCallback onDismissed;
 
   const DraggableDismissibleSightCard({
     Key key,
     @required this.sight,
     @required this.onTap,
-    @required this.onFavoriteTap,
     @required this.onSightDrop,
     @required this.onDismissed,
+    this.onFavoriteTap,
+    this.onDeleteTap,
+    this.onShareTap,
+    this.onCalendarTap,
   })  : assert(sight != null),
         assert(onTap != null),
-        assert(onFavoriteTap != null),
         assert(onSightDrop != null),
         assert(onDismissed != null),
         super(key: key);
@@ -52,6 +56,9 @@ class DraggableDismissibleSightCard extends StatelessWidget {
               sight: sight,
               onTap: onTap,
               onFavoriteTap: onFavoriteTap,
+              onDeleteTap: onDeleteTap,
+              onShareTap: onShareTap,
+              onCalendarTap: onCalendarTap,
             );
 
             return LongPressDraggable<Sight>(
@@ -94,7 +101,7 @@ class DraggableDismissibleSightCard extends StatelessWidget {
                   Dismissible(
                     key: key,
                     direction: DismissDirection.endToStart,
-                    onDismissed: (_) => onDismissed(sight),
+                    onDismissed: (_) => onDismissed(),
                     child: sightWidget,
                   )
                 ],
