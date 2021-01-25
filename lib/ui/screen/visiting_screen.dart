@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
@@ -10,6 +13,7 @@ import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
 import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
+import 'package:places/ui/widgets/ios_date_picker.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
@@ -201,14 +205,30 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   Future<void> _onCalendarTap(Sight sight) async {
-    final now = DateTime.now();
-    final DateTime date = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now,
-      // на 30 лет вперед
-      lastDate: now.add(const Duration(days: 365 * 30)),
-    );
-    print('Выбрана дата посещения ${date.toString()}');
+    final first = DateTime.now();
+    // на 30 лет вперед
+    final last = first.add(const Duration(days: 365 * 30));
+
+    DateTime date;
+
+    if (Platform.isAndroid) {
+      date = await showDatePicker(
+        context: context,
+        initialDate: first,
+        firstDate: first,
+        lastDate: last,
+      );
+    } else if (Platform.isIOS) {
+      date = await showIosDatePicker(
+        context: context,
+        initialDate: first,
+        firstDate: first,
+        lastDate: last,
+      );
+    }
+
+    if (date != null) {
+      print('Выбрана дата посещения ${date.toString()}');
+    }
   }
 }
