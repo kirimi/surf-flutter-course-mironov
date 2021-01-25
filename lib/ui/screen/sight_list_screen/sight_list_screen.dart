@@ -40,6 +40,19 @@ class _SightListScreenState extends State<SightListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sightListWidget =
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? SliverList(
+                delegate: SliverChildListDelegate(_buildSightList()),
+              )
+            : SliverGrid(
+                delegate: SliverChildListDelegate(_buildSightList()),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 4 / 2,
+                ),
+              );
+
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -60,9 +73,7 @@ class _SightListScreenState extends State<SightListScreen> {
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(_buildSightList()),
-          ),
+          sightListWidget
         ],
       ),
     );
