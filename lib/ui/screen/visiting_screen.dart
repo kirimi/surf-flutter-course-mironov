@@ -1,14 +1,20 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
+import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
 import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
+import 'package:places/ui/widgets/ios_date_picker.dart';
+import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 
 /// Экран Хочу посетить/Посещенные места
@@ -99,11 +105,21 @@ class _VisitingScreenState extends State<VisitingScreen>
           key: ObjectKey(sight),
           sight: sight,
           onTap: () => _onSightTap(sight),
-          onCalendarTap: () => _onCalendarTap(sight),
-          onDeleteTap: () => _onDismissedSight(
-            sight: sight,
-            sights: _toVisitSights,
-          ),
+          actionsBuilder: (_) => [
+            // calendar btn
+            SightCardActionButton(
+              onTap: () => _onCalendarTap(sight),
+              icon: SvgIcons.calendar,
+            ),
+            // delete btn
+            SightCardActionButton(
+              onTap: () => _onDismissedSight(
+                sight: sight,
+                sights: _toVisitSights,
+              ),
+              icon: SvgIcons.delete,
+            ),
+          ],
           onSightDrop: (droppedSight) => _swapSights(
             target: sight,
             sight: droppedSight,
@@ -130,11 +146,21 @@ class _VisitingScreenState extends State<VisitingScreen>
           key: ObjectKey(sight),
           sight: sight,
           onTap: () => _onSightTap(sight),
-          onShareTap: () {},
-          onDeleteTap: () => _onDismissedSight(
-            sight: sight,
-            sights: _visitedSights,
-          ),
+          actionsBuilder: (_) => [
+            // share btn
+            SightCardActionButton(
+              onTap: () {},
+              icon: SvgIcons.share,
+            ),
+            // delete btn
+            SightCardActionButton(
+              onTap: () => _onDismissedSight(
+                sight: sight,
+                sights: _visitedSights,
+              ),
+              icon: SvgIcons.delete,
+            ),
+          ],
           onSightDrop: (droppedSight) => _swapSights(
             target: sight,
             sight: droppedSight,
@@ -179,14 +205,30 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   Future<void> _onCalendarTap(Sight sight) async {
-    final now = DateTime.now();
-    final DateTime date = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: now,
-      // на 30 лет вперед
-      lastDate: now.add(const Duration(days: 365 * 30)),
-    );
-    print('Выбрана дата посещения ${date.toString()}');
+    final first = DateTime.now();
+    // на 30 лет вперед
+    final last = first.add(const Duration(days: 365 * 30));
+
+    DateTime date;
+
+    if (Platform.isAndroid) {
+      date = await showDatePicker(
+        context: context,
+        initialDate: first,
+        firstDate: first,
+        lastDate: last,
+      );
+    } else if (Platform.isIOS) {
+      date = await showIosDatePicker(
+        context: context,
+        initialDate: first,
+        firstDate: first,
+        lastDate: last,
+      );
+    }
+
+    if (date != null) {
+      print('Выбрана дата посещения ${date.toString()}');
+    }
   }
 }

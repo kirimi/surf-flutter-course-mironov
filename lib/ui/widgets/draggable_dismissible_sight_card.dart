@@ -18,12 +18,9 @@ typedef OnSightDrop = Function(Sight sight);
 class DraggableDismissibleSightCard extends StatelessWidget {
   final Sight sight;
   final VoidCallback onTap;
-  final VoidCallback onFavoriteTap;
-  final VoidCallback onDeleteTap;
-  final VoidCallback onShareTap;
-  final VoidCallback onCalendarTap;
   final OnSightDrop onSightDrop;
   final VoidCallback onDismissed;
+  final SightCardActionsBuilder actionsBuilder;
 
   const DraggableDismissibleSightCard({
     Key key,
@@ -31,10 +28,7 @@ class DraggableDismissibleSightCard extends StatelessWidget {
     @required this.onTap,
     @required this.onSightDrop,
     @required this.onDismissed,
-    this.onFavoriteTap,
-    this.onDeleteTap,
-    this.onShareTap,
-    this.onCalendarTap,
+    this.actionsBuilder,
   })  : assert(sight != null),
         assert(onTap != null),
         assert(onSightDrop != null),
@@ -55,10 +49,7 @@ class DraggableDismissibleSightCard extends StatelessWidget {
             final Widget sightWidget = SightCard(
               sight: sight,
               onTap: onTap,
-              onFavoriteTap: onFavoriteTap,
-              onDeleteTap: onDeleteTap,
-              onShareTap: onShareTap,
-              onCalendarTap: onCalendarTap,
+              actionsBuilder: actionsBuilder,
             );
 
             return LongPressDraggable<Sight>(

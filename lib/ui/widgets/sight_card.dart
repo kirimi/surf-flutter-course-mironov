@@ -6,28 +6,25 @@ import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
+/// Билдер для кнопок в правом верхнем углу карточки [SightCard]
+typedef SightCardActionsBuilder = List<Widget> Function(BuildContext context);
+
 /// Карточка "Интересного места" для списка мест
 ///
-/// Используется в списке мест на странице [SightListScreen]
+/// Используется в списке мест
 /// [onTap] вызывается при тапе на карточку
-/// Если заданы [onFavoriteTap] [onDeleteTap] [onShareTap] [onCalendarTap], то на карточке
-/// выводится соответствующая кнопка
+/// [actionsBuilder] функция возвращающая список виджетов для отображения в Row
+/// в правом вернем углу карточки. К примеру, кнопка с иконкой [SightCardActionButton]
 class SightCard extends StatelessWidget {
   final Sight sight;
   final VoidCallback onTap;
-  final VoidCallback onFavoriteTap;
-  final VoidCallback onDeleteTap;
-  final VoidCallback onShareTap;
-  final VoidCallback onCalendarTap;
+  final SightCardActionsBuilder actionsBuilder;
 
   const SightCard({
     Key key,
     @required this.sight,
     @required this.onTap,
-    this.onFavoriteTap,
-    this.onDeleteTap,
-    this.onShareTap,
-    this.onCalendarTap,
+    this.actionsBuilder,
   })  : assert(sight != null),
         assert(onTap != null),
         super(key: key);
@@ -96,7 +93,7 @@ class SightCard extends StatelessWidget {
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: _buildActionButtons(),
+                      children: actionsBuilder?.call(context) ?? [],
                     )
                   ],
                 ),
@@ -107,57 +104,18 @@ class SightCard extends StatelessWidget {
       ),
     );
   }
-
-  List<Widget> _buildActionButtons() {
-    final List<Widget> actions = [];
-
-    if (onFavoriteTap != null) {
-      actions.add(
-        _ActionButton(
-          onTap: onFavoriteTap,
-          icon: SvgIcons.heart,
-        ),
-      );
-    }
-
-    if (onCalendarTap != null) {
-      actions.add(
-        _ActionButton(
-          onTap: onCalendarTap,
-          icon: SvgIcons.calendar,
-        ),
-      );
-    }
-
-    if (onShareTap != null) {
-      actions.add(
-        _ActionButton(
-          onTap: onShareTap,
-          icon: SvgIcons.share,
-        ),
-      );
-    }
-
-    if (onDeleteTap != null) {
-      actions.add(
-        _ActionButton(
-          onTap: onDeleteTap,
-          icon: SvgIcons.delete,
-        ),
-      );
-    }
-
-    return actions;
-  }
 }
 
-/// Кнопка которая выводится в правом верхнем углу.
-class _ActionButton extends StatelessWidget {
+/// Кнопка с иконкой для action в [SightCard].
+class SightCardActionButton extends StatelessWidget {
   final VoidCallback onTap;
   final SvgData icon;
 
-  const _ActionButton({Key key, @required this.onTap, @required this.icon})
-      : assert(onTap != null),
+  const SightCardActionButton({
+    Key key,
+    @required this.onTap,
+    @required this.icon,
+  })  : assert(onTap != null),
         assert(icon != null),
         super(key: key);
   @override
