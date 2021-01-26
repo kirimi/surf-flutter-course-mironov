@@ -74,4 +74,6 @@ class AppStrings {
   static const String addPhotoCamera = 'Камера';
   static const String addPhotoPhoto = 'Фотография';
   static const String addPhotoFile = 'Файл';
+
+  static const String ok = 'Ok';
 }

@@ -169,6 +169,11 @@ class SvgIcons {
     'res/svg/file.svg',
     semanticsLabel: 'File',
   );
+
+  static const SvgData share = SvgData(
+    'res/svg/share.svg',
+    semanticsLabel: 'Share',
+  );
 }
 
 /// Описание SVG-ресурса

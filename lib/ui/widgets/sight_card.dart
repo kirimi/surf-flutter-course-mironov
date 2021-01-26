@@ -6,24 +6,27 @@ import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
+/// Билдер для кнопок в правом верхнем углу карточки [SightCard]
+typedef SightCardActionsBuilder = List<Widget> Function(BuildContext context);
+
 /// Карточка "Интересного места" для списка мест
 ///
-/// Используется в списке мест на странице [SightListScreen]
+/// Используется в списке мест
 /// [onTap] вызывается при тапе на карточку
-/// [onFavoriteTap] вызывается при тапе на сердечко
+/// [actionsBuilder] функция возвращающая список виджетов для отображения в Row
+/// в правом вернем углу карточки. К примеру, кнопка с иконкой [SightCardActionButton]
 class SightCard extends StatelessWidget {
   final Sight sight;
   final VoidCallback onTap;
-  final VoidCallback onFavoriteTap;
+  final SightCardActionsBuilder actionsBuilder;
 
   const SightCard({
     Key key,
     @required this.sight,
     @required this.onTap,
-    @required this.onFavoriteTap,
+    this.actionsBuilder,
   })  : assert(sight != null),
         assert(onTap != null),
-        assert(onFavoriteTap != null),
         super(key: key);
 
   @override
@@ -88,26 +91,47 @@ class SightCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(24.0),
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: InkWell(
-                          onTap: onFavoriteTap,
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: SvgIcon(
-                              icon: SvgIcons.heart,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: actionsBuilder?.call(context) ?? [],
+                    )
                   ],
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Кнопка с иконкой для action в [SightCard].
+class SightCardActionButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final SvgData icon;
+
+  const SightCardActionButton({
+    Key key,
+    @required this.onTap,
+    @required this.icon,
+  })  : assert(onTap != null),
+        assert(icon != null),
+        super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24.0),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SvgIcon(
+              icon: icon,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
