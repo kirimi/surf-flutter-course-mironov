@@ -57,7 +57,7 @@ class SightCard extends StatelessWidget {
                         children: [
                           Text(
                             sight.name,
-                            maxLines: 2,
+                            maxLines: 1,
                             style: AppTextStyles.sightCardTitle,
                           ),
                           Text(
