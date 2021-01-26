@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:places/domain/geo_point.dart';
+import 'package:places/model/geo_point.dart';
 
-import 'domain/filter.dart';
-import 'domain/sight.dart';
+import 'model/filter.dart';
+import 'model/sight.dart';
 
 /// Отфильтровывает места по фильтру [filter]
 /// Только категории из фильтра или если нет категорий в фильтре, то все.

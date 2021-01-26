@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places/domain/sight_type.dart';
-import 'package:places/domain/sight_types.dart';
+import 'package:places/model/sight_type.dart';
+import 'package:places/model/sight_types.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 
 /// Виджет - элемент фильтра согласно дизайну

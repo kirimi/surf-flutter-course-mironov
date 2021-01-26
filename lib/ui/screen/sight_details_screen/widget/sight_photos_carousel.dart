@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/sight_photo.dart';
+import 'package:places/model/sight_photo.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Карусель фото  места, с индикатором.

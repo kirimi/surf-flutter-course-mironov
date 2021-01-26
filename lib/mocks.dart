@@ -1,7 +1,7 @@
-import 'package:places/domain/geo_point.dart';
-import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_photo.dart';
-import 'package:places/domain/sight_type.dart';
+import 'package:places/model/geo_point.dart';
+import 'package:places/model/sight.dart';
+import 'package:places/model/sight_photo.dart';
+import 'package:places/model/sight_type.dart';
 
 /// текущее местоположение
 final currentPoint = GeoPoint(lon: 59.685994, lat: 30.433278);

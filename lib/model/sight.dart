@@ -1,5 +1,5 @@
-import 'package:places/domain/geo_point.dart';
-import 'package:places/domain/sight_type.dart';
+import 'package:places/model/geo_point.dart';
+import 'package:places/model/sight_type.dart';
 
 /// Место
 class Sight {

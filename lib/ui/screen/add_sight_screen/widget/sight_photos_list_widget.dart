@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:places/domain/sight_photo.dart';
+import 'package:places/model/sight_photo.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_widget.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/sight_photo_widget.dart';
 

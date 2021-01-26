@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:places/config.dart';
-import 'package:places/domain/filter.dart';
-import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_type.dart';
-import 'package:places/domain/sight_types.dart';
 import 'package:places/filter_utils.dart';
 import 'package:places/mocks.dart';
+import 'package:places/model/filter.dart';
+import 'package:places/model/sight.dart';
+import 'package:places/model/sight_type.dart';
+import 'package:places/model/sight_types.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';

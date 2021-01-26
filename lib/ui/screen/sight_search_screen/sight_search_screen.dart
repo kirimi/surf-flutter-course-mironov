@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:places/domain/filter.dart';
-import 'package:places/domain/sight.dart';
 import 'package:places/filter_utils.dart';
 import 'package:places/main.dart';
 import 'package:places/mocks.dart';
+import 'package:places/model/filter.dart';
+import 'package:places/model/sight.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';

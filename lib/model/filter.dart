@@ -1,4 +1,4 @@
-import 'package:places/domain/sight_type.dart';
+import 'package:places/model/sight_type.dart';
 
 /// Класс описывающий параметры фильтра, который формируется
 /// на странице FiltersScreen.

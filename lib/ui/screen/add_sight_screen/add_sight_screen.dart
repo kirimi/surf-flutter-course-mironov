@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/geo_point.dart';
-import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_photo.dart';
-import 'package:places/domain/sight_type.dart';
 import 'package:places/mocks.dart';
+import 'package:places/model/geo_point.dart';
+import 'package:places/model/sight.dart';
+import 'package:places/model/sight_photo.dart';
+import 'package:places/model/sight_type.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
