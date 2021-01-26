@@ -56,6 +56,32 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isSmallScreen = MediaQuery.of(context).size.height < 800;
+
+    final categoryFilterWidget = isSmallScreen
+        ? SizedBox(
+            height: 115,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: _types.length,
+              itemBuilder: _buildFilterItem,
+              separatorBuilder: (_, __) {
+                return const SizedBox(width: 32.0);
+              },
+            ),
+          )
+        : GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: _types.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 20.0,
+              crossAxisSpacing: 20.0,
+            ),
+            itemBuilder: _buildFilterItem,
+          );
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -76,17 +102,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
               style: Theme.of(context).textTheme.headline6,
             ),
             const SizedBox(height: 24.0),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _types.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 20.0,
-                crossAxisSpacing: 20.0,
-              ),
-              itemBuilder: _buildFilterItem,
-            ),
+            categoryFilterWidget,
             const SizedBox(height: 60.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
