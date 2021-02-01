@@ -1,10 +1,10 @@
-import 'package:places/model/geo_point.dart';
-import 'package:places/model/sight.dart';
-import 'package:places/model/sight_photo.dart';
-import 'package:places/model/sight_type.dart';
+import 'package:places/data/repository/place_repository/place_repository.dart';
+import 'package:places/domain/mapper/mappers.dart';
+import 'package:places/domain/model/geo_point.dart';
+import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/model/sight_photo.dart';
 
-/// текущее местоположение
-final currentPoint = GeoPoint(lon: 59.685994, lat: 30.433278);
+import 'domain/model/sight_type/default_sight_types.dart';
 
 /// Места
 final List<Sight> mocks = [
@@ -18,10 +18,7 @@ final List<Sight> mocks = [
       lon: 59.940073,
       lat: 30.312733,
     ),
-    type: const SightType(
-      name: 'Особое место',
-      iconName: 'special',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Музей-заповедник Павловск',
@@ -33,10 +30,7 @@ final List<Sight> mocks = [
       lon: 59.685994,
       lat: 30.433278,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Петергоф',
@@ -47,10 +41,7 @@ final List<Sight> mocks = [
       lon: 59.881223,
       lat: 29.906775,
     ),
-    type: const SightType(
-      name: 'Особое место',
-      iconName: 'special',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Большой Екатерининский дворец',
@@ -62,10 +53,7 @@ final List<Sight> mocks = [
       lon: 59.715871,
       lat: 30.395414,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Государственный Эрмитаж',
@@ -76,12 +64,19 @@ final List<Sight> mocks = [
       lon: 59.940073,
       lat: 30.312733,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
 ];
+
+/// Загрузка созданных моков на сервер, чтобы вручную не создавать
+/// Вызывается в main()
+Future<void> uploadMocks(PlaceRepository placeRepository) async {
+  // final PlaceRepository placeRepository = PlaceRepositoryNetwork();
+  // final PlaceRepository placeRepository = PlaceRepositoryMemory();
+  for (final sight in mocks) {
+    await placeRepository.add(PlaceDtoMapper.fromSight(sight));
+  }
+}
 
 /// Фотографии мест
 final List<SightPhoto> sightPhotosMocks = [
