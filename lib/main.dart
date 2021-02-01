@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/data/repository/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/repository/location_repository/location_repository_mock.dart';
 import 'package:places/data/repository/place_repository/place_repository_memory.dart';
+import 'package:places/data/repository/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/interactor/sight_interactor.dart';
 import 'package:places/domain/model/filter.dart';
 import 'package:places/domain/model/sight.dart';
@@ -33,6 +34,7 @@ final searchHistoryState = SearchHistoryState();
 final SightInteractor sightInteractor = SightInteractor(
   placeRepository: PlaceRepositoryMemory(),
   favoritesRepository: FavoritesRepositoryMemory(),
+  visitedRepository: VisitedRepositoryMemory(),
   locationRepository: LocationRepositoryMock(),
 );
 

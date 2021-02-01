@@ -76,7 +76,6 @@ class _VisitingScreenState extends State<VisitingScreen>
           FutureBuilder<List<Sight>>(
               future: sightInteractor.getFavoritesSights(),
               builder: (context, snapshot) {
-                print(snapshot.connectionState);
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -85,10 +84,18 @@ class _VisitingScreenState extends State<VisitingScreen>
                   children: _buildToVisitSightList(snapshot.data),
                 );
               }),
-          SightListWidget(
-            padding: const EdgeInsets.all(16.0),
-            children: _buildVisitedSightList([]),
-          ),
+          FutureBuilder<List<Sight>>(
+              future: sightInteractor.getVisitedSights(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return SightListWidget(
+                  padding: const EdgeInsets.all(16.0),
+                  children: _buildVisitedSightList(snapshot.data),
+                );
+              }),
         ],
       ),
     );
@@ -106,7 +113,7 @@ class _VisitingScreenState extends State<VisitingScreen>
     for (var i = 0; i < sights.length; i++) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ObjectKey(sights[i]),
+          key: ValueKey(sights[i].id),
           sight: sights[i],
           onTap: () => _onSightTap(sights[i]),
           actionsBuilder: (_) => [
@@ -145,12 +152,12 @@ class _VisitingScreenState extends State<VisitingScreen>
   // _buildToVisitSightList и _buildVisitedSightList
   List<Widget> _buildVisitedSightList(List<Sight> sights) {
     final List<Widget> res = [];
-    for (final sight in sights) {
+    for (var i = 0; i < sights.length; i++) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ValueKey(sight.id),
-          sight: sight,
-          onTap: () => _onSightTap(sight),
+          key: ValueKey(sights[i].id),
+          sight: sights[i],
+          onTap: () => _onSightTap(sights[i]),
           actionsBuilder: (_) => [
             // share btn
             SightCardActionButton(
@@ -159,15 +166,19 @@ class _VisitingScreenState extends State<VisitingScreen>
             ),
             // delete btn
             SightCardActionButton(
-              onTap: () => _onDeleteFromVisited(sight),
+              onTap: () => _onDeleteFromVisited(sights[i]),
               icon: SvgIcons.delete,
             ),
           ],
           onSightDrop: (droppedSight) => _onSortVisited(
             sight: droppedSight,
-            target: sight,
+            target: sights[i],
           ),
-          onDismissed: () => _onDeleteFromVisited(sight),
+          onDismissed: () {
+            _onDeleteFromVisited(sights[i]);
+            // todo переделать
+            sights.removeAt(i);
+          },
         ),
       );
     }
@@ -185,7 +196,10 @@ class _VisitingScreenState extends State<VisitingScreen>
   Future<void> _onSortFavorites({Sight sight, Sight target}) async {}
 
   // Удаляем место из Visited
-  Future<void> _onDeleteFromVisited(Sight sight) async {}
+  Future<void> _onDeleteFromVisited(Sight sight) async {
+    await sightInteractor.removeFromVisited(sight);
+    setState(() {});
+  }
 
   // todo добавить функцию хранения сортировки в VisitedRepository
   // Сортируем место из Visited. Наверх target помещается sight
