@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:places/mocks.dart';
-import 'package:places/model/geo_point.dart';
-import 'package:places/model/sight.dart';
-import 'package:places/model/sight_photo.dart';
-import 'package:places/model/sight_type.dart';
+import 'package:places/domain/model/geo_point.dart';
+import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/model/sight_photo.dart';
+import 'package:places/domain/model/sight_type/sight_type.dart';
+import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
@@ -222,12 +222,12 @@ class _AddSightScreenState extends State<AddSightScreen> {
         lat: double.parse(_latController.text),
       ),
       details: _descrController.text,
-      // todo картинка
       url: 'https://republica-dominikana.ru/wp-content/uploads/2018/08/51.jpg',
       type: _selectedSightType,
     );
-    mocks.insert(0, newSight);
-    _onBack();
+
+    sightInteractor.addNewSight(newSight);
+    // _onBack();
   }
 
   // Добавление фото

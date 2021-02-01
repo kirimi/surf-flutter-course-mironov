@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places/model/sight_type.dart';
-import 'package:places/model/sight_types.dart';
+import 'package:places/domain/model/sight_type/sight_type.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 
 /// Виджет - элемент фильтра согласно дизайну
@@ -53,7 +52,7 @@ class TypeFilterItemWidget extends StatelessWidget {
                             builder: (BuildContext context,
                                 BoxConstraints constraints) {
                               return SvgIcon(
-                                icon: getIconByName(sightType.iconName),
+                                icon: sightType.icon,
                                 size: constraints.biggest.height,
                                 color: Theme.of(context).accentColor,
                               );

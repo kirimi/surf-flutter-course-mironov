@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:places/model/sight_type.dart';
-import 'package:places/model/sight_types.dart';
+import 'package:places/domain/model/sight_type/default_sight_types.dart';
+import 'package:places/domain/model/sight_type/sight_type.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';

@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:places/filter_utils.dart';
+import 'package:places/domain/model/filter.dart';
+import 'package:places/domain/model/sight.dart';
 import 'package:places/main.dart';
-import 'package:places/mocks.dart';
-import 'package:places/model/filter.dart';
-import 'package:places/model/sight.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
@@ -35,7 +33,6 @@ class SightSearchScreen extends StatefulWidget {
 }
 
 class _SightSearchScreenState extends State<SightSearchScreen> {
-  List<Sight> _sights;
   final SearchHistoryState _searchHistoryState = searchHistoryState;
 
   // Стрим, в котором данные результата запроса
@@ -55,7 +52,6 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
   @override
   void initState() {
     super.initState();
-    _sights = mocks;
     _streamController = StreamController();
     _textEditingController = TextEditingController();
   }
@@ -182,24 +178,9 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
 
   // Поиск с учетом фильтра
   Future<List<Sight>> _doSearch(String value) async {
-    // имитируем, что запрос длится 1 сек.
-    return Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        // применяем фильтр
-        final filteredSights =
-            filteredSightList(_sights, widget.filter, currentPoint);
-
-        // ищем подстроку в названии
-        final result = filteredSights.where((sight) =>
-            sight.name.toLowerCase().contains(value.trim().toLowerCase()));
-
-        return result.toList();
-
-        // Имитируем ошибку
-        // return Future.error("loading error");
-      },
-    );
+    final filter = widget.filter.copyWith(nameFilter: value);
+    final filtered = await sightInteractor.getFilteredSights(filter: filter);
+    return filtered.toList();
   }
 
   void _setLoading(bool isLoading) {
