@@ -30,7 +30,7 @@ final themeState = ThemeState();
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
 
-// Временное место для интерактора
+// Временное место для интерактора Мест
 final SightInteractor sightInteractor = SightInteractor(
   placeRepository: PlaceRepositoryMemory(),
   favoritesRepository: FavoritesRepositoryMemory(),
