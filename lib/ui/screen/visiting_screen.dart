@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/model/sight.dart';
-import 'package:places/mocks.dart';
+import 'package:places/main.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -28,10 +28,6 @@ class VisitingScreen extends StatefulWidget {
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
-
-  // моки мест которые хотим посетить и посещенные
-  final List<Sight> _toVisitSights = [mocks[0], mocks[1], mocks[2]];
-  final List<Sight> _visitedSights = [mocks[3]];
 
   @override
   void initState() {
@@ -77,13 +73,21 @@ class _VisitingScreenState extends State<VisitingScreen>
       body: TabBarView(
         controller: _controller,
         children: [
+          FutureBuilder<List<Sight>>(
+              future: sightInteractor.getFavoritesSights(),
+              builder: (context, snapshot) {
+                print(snapshot.connectionState);
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SightListWidget(
+                  padding: const EdgeInsets.all(16.0),
+                  children: _buildToVisitSightList(snapshot.data),
+                );
+              }),
           SightListWidget(
             padding: const EdgeInsets.all(16.0),
-            children: _buildToVisitSightList(),
-          ),
-          SightListWidget(
-            padding: const EdgeInsets.all(16.0),
-            children: _buildVisitedSightList(),
+            children: _buildVisitedSightList([]),
           ),
         ],
       ),
@@ -97,38 +101,39 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   // Карточки "Хочу посетить"
-  List<Widget> _buildToVisitSightList() {
+  List<Widget> _buildToVisitSightList(List<Sight> sights) {
     final List<Widget> res = [];
-    for (final sight in _toVisitSights) {
+    for (var i = 0; i < sights.length; i++) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ObjectKey(sight),
-          sight: sight,
-          onTap: () => _onSightTap(sight),
+          key: ObjectKey(sights[i]),
+          sight: sights[i],
+          onTap: () => _onSightTap(sights[i]),
           actionsBuilder: (_) => [
             // calendar btn
             SightCardActionButton(
-              onTap: () => _onCalendarTap(sight),
+              onTap: () => _onCalendarTap(sights[i]),
               icon: SvgIcons.calendar,
             ),
             // delete btn
             SightCardActionButton(
-              onTap: () => _onDismissedSight(
-                sight: sight,
-                sights: _toVisitSights,
-              ),
+              onTap: () => _onDeleteFromFavorites(sights[i]),
               icon: SvgIcons.delete,
             ),
           ],
-          onSightDrop: (droppedSight) => _swapSights(
-            target: sight,
+          onSightDrop: (droppedSight) => _onSortFavorites(
             sight: droppedSight,
-            sights: _toVisitSights,
+            target: sights[i],
           ),
-          onDismissed: () => _onDismissedSight(
-            sight: sight,
-            sights: _toVisitSights,
-          ),
+          onDismissed: () {
+            _onDeleteFromFavorites(sights[i]);
+            // тут костыль
+            // проблема в совместной работе FutureBuilder и Dismissible
+            // нашел вот такое решение: https://stackoverflow.com/a/60110974
+            // возможно когда буду прикручивать стейт-менеджмент дело исправится
+            // todo переделать
+            sights.removeAt(i);
+          },
         ),
       );
     }
@@ -138,12 +143,12 @@ class _VisitingScreenState extends State<VisitingScreen>
   // Карточки посещенные
   // На карточке другие action-кнопки, поэтому для простоты разделил на 2 метода
   // _buildToVisitSightList и _buildVisitedSightList
-  List<Widget> _buildVisitedSightList() {
+  List<Widget> _buildVisitedSightList(List<Sight> sights) {
     final List<Widget> res = [];
-    for (final sight in _visitedSights) {
+    for (final sight in sights) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ObjectKey(sight),
+          key: ValueKey(sight.id),
           sight: sight,
           onTap: () => _onSightTap(sight),
           actionsBuilder: (_) => [
@@ -154,46 +159,37 @@ class _VisitingScreenState extends State<VisitingScreen>
             ),
             // delete btn
             SightCardActionButton(
-              onTap: () => _onDismissedSight(
-                sight: sight,
-                sights: _visitedSights,
-              ),
+              onTap: () => _onDeleteFromVisited(sight),
               icon: SvgIcons.delete,
             ),
           ],
-          onSightDrop: (droppedSight) => _swapSights(
-            target: sight,
+          onSightDrop: (droppedSight) => _onSortVisited(
             sight: droppedSight,
-            sights: _visitedSights,
+            target: sight,
           ),
-          onDismissed: () => _onDismissedSight(
-            sight: sight,
-            sights: _visitedSights,
-          ),
+          onDismissed: () => _onDeleteFromVisited(sight),
         ),
       );
     }
     return res;
   }
 
-  // Меняем местами элементы списка
-  // передаем сюда sights, чтобы определить с каким именно списком работаем
-  // _toVisitSights или _visitedSights
-  void _swapSights({Sight target, Sight sight, List<Sight> sights}) {
-    final targetIndex = sights.indexOf(target);
-    final sightIndex = sights.indexOf(sight);
-    setState(() {
-      sights[targetIndex] = sight;
-      sights[sightIndex] = target;
-    });
+  // Удаляем место из Favorites
+  Future<void> _onDeleteFromFavorites(Sight sight) async {
+    await sightInteractor.removeFromFavorites(sight);
+    setState(() {});
   }
 
-  // удаляем место из списка
-  void _onDismissedSight({Sight sight, List<Sight> sights}) {
-    setState(() {
-      sights.removeWhere((element) => element == sight);
-    });
-  }
+  // todo добавить функцию хранения сортировки в FavoritesRepository
+  // Сортируем место из Favorites. Наверх target помещается sight
+  Future<void> _onSortFavorites({Sight sight, Sight target}) async {}
+
+  // Удаляем место из Visited
+  Future<void> _onDeleteFromVisited(Sight sight) async {}
+
+  // todo добавить функцию хранения сортировки в VisitedRepository
+  // Сортируем место из Visited. Наверх target помещается sight
+  Future<void> _onSortVisited({Sight sight, Sight target}) async {}
 
   void _onSightTap(Sight sight) {
     showModalBottomSheet(

@@ -79,9 +79,21 @@ class _SightListScreenState extends State<SightListScreen> {
           actionsBuilder: (_) {
             return [
               // favorite btn
-              SightCardActionButton(
-                onTap: () {},
-                icon: SvgIcons.heart,
+              FutureBuilder<bool>(
+                future: sightInteractor.isFavorite(sight),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+                  final bool isFav = snapshot.data;
+                  return SightCardActionButton(
+                    onTap: () async {
+                      await sightInteractor.switchFavorite(sight);
+                      setState(() {});
+                    },
+                    icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
+                  );
+                },
               ),
             ];
           },
