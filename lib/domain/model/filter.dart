@@ -1,4 +1,4 @@
-import 'package:places/model/sight_type.dart';
+import 'package:places/domain/model/sight_type/sight_type.dart';
 
 /// Класс описывающий параметры фильтра, который формируется
 /// на странице FiltersScreen.
@@ -7,12 +7,28 @@ class Filter {
   double minDistance;
   double maxDistance;
   List<SightType> types;
+  String nameFilter;
 
   Filter({
     this.minDistance,
     this.maxDistance,
     this.types,
+    this.nameFilter,
   });
+
+  Filter copyWith({
+    double minDistance,
+    double maxDistance,
+    List<SightType> types,
+    String nameFilter,
+  }) {
+    return Filter(
+      minDistance: minDistance ?? this.minDistance,
+      maxDistance: maxDistance ?? this.maxDistance,
+      types: types ?? this.types,
+      nameFilter: nameFilter ?? this.nameFilter,
+    );
+  }
 
   @override
   String toString() {
