@@ -3,11 +3,11 @@ import 'package:places/data/repository/favorites_repository/favorites_repository
 import 'package:places/data/repository/location_repository/location_repository_mock.dart';
 import 'package:places/data/repository/place_repository/place_repository_memory.dart';
 import 'package:places/data/repository/visited_repository/visited_repository_memory.dart';
+import 'package:places/domain/interactor/settings_interactor/settings_interactor.dart';
 import 'package:places/domain/interactor/sight_interactor.dart';
 import 'package:places/domain/model/filter.dart';
 import 'package:places/domain/model/sight.dart';
 import 'package:places/search_history_state.dart';
-import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -23,9 +23,6 @@ import 'package:places/ui/screen/visiting_screen.dart';
 
 import 'mocks.dart';
 
-// Хранилище для текущей темы приложения
-final themeState = ThemeState();
-
 // Хранилище для истории поиска.
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
@@ -37,6 +34,9 @@ final SightInteractor sightInteractor = SightInteractor(
   visitedRepository: VisitedRepositoryMemory(),
   locationRepository: LocationRepositoryMock(),
 );
+
+// Временное место для интерактора Настроек
+final SettingsInteractor settingsInteractor = SettingsInteractor();
 
 Future<void> main() async {
   await uploadMocks(sightInteractor.placeRepository);
@@ -52,12 +52,12 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    themeState.addListener(_onThemeChange);
+    settingsInteractor.themeState.addListener(_onThemeChange);
   }
 
   @override
   void dispose() {
-    themeState.removeListener(_onThemeChange);
+    settingsInteractor.themeState.removeListener(_onThemeChange);
     super.dispose();
   }
 
@@ -65,7 +65,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppStrings.appTitle,
-      theme: themeState.isDark ? darkTheme : lightTheme,
+      theme: settingsInteractor.themeState.isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
       routes: {

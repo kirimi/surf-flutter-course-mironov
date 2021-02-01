@@ -11,6 +11,7 @@ import 'package:places/domain/model/filter.dart';
 import 'package:places/domain/model/geo_point.dart';
 import 'package:places/domain/model/sight.dart';
 
+/// Интерактор Мест
 class SightInteractor {
   final PlaceRepository placeRepository;
   final LocationRepository locationRepository;
