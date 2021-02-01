@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:places/model/filter.dart';
-import 'package:places/model/sight.dart';
+import 'package:places/data/repository/location_repository/location_repository_mock.dart';
+import 'package:places/data/repository/place_repository/place_repository_memory.dart';
+import 'package:places/domain/interactor/sight_interactor.dart';
+import 'package:places/domain/model/filter.dart';
+import 'package:places/domain/model/sight.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -16,6 +19,8 @@ import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 
+import 'mocks.dart';
+
 // Хранилище для текущей темы приложения
 final themeState = ThemeState();
 
@@ -23,7 +28,14 @@ final themeState = ThemeState();
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
 
-void main() {
+// Временное место для интерактора
+final SightInteractor sightInteractor = SightInteractor(
+  placeRepository: PlaceRepositoryMemory(),
+  locationRepository: LocationRepositoryMock(),
+);
+
+Future<void> main() async {
+  await uploadMocks(sightInteractor.placeRepository);
   runApp(App());
 }
 
