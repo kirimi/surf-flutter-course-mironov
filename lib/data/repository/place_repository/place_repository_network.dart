@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:places/data/model/filter_request.dart';
 import 'package:places/data/model/flitered_place_dto.dart';
 import 'package:places/data/model/place_dto.dart';
@@ -48,7 +47,8 @@ class PlaceRepositoryNetwork implements PlaceRepository {
         await _dio.get<String>(_getListUrl, queryParameters: params);
 
     if (response.statusCode == 200) {
-      final placesJson = await compute(_parseJson, response.data);
+      // final placesJson = await compute(_parseJson, response.data);
+      final placesJson = jsonDecode(response.data);
       final places = (placesJson as List)
           .map((p) => PlaceDto.fromJson(p as Map<String, dynamic>))
           .toList();
@@ -67,7 +67,8 @@ class PlaceRepositoryNetwork implements PlaceRepository {
     final body = jsonEncode(filter.toJson());
     final response = await _dio.post<String>(_getFilteredUrl, data: body);
     if (response.statusCode == 200) {
-      final placesJson = await compute(_parseJson, response.data);
+      // final placesJson = await compute(_parseJson, response.data);
+      final placesJson = jsonDecode(response.data);
       List places;
       if (filter.radius != null && filter.lat != null && filter.lng != null) {
         places = (placesJson as List)
@@ -88,7 +89,8 @@ class PlaceRepositoryNetwork implements PlaceRepository {
     final body = jsonEncode(place.toJson());
     final response = await _dio.post<String>(_addUrl, data: body);
     if (response.statusCode == 200) {
-      final placeMap = await compute(_parseJson, response.data);
+      // final placeMap = await compute(_parseJson, response.data);
+      final placeMap = jsonDecode(response.data);
       return PlaceDto.fromJson(placeMap as Map<String, dynamic>);
     }
     throw Exception('Can not add place');

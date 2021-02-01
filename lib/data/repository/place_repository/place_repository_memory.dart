@@ -42,11 +42,13 @@ class PlaceRepositoryMemory implements PlaceRepository {
   Future<List> getFilteredList(FilterRequest filter) async {
     final filteredByNameAndType = _places.where((p) {
       // отфильтровываем по типу места
-      return filter.typeFilter.isEmpty ||
+      return filter.typeFilter == null ||
+          filter.typeFilter.isEmpty ||
           filter.typeFilter.contains(p.placeType);
     }).where((p) {
       // отфильтровываем по имени
       return filter.nameFilter == null ||
+          filter.nameFilter == '' ||
           p.name
               .trim()
               .toLowerCase()
