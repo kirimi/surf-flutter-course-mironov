@@ -7,6 +7,7 @@ import 'package:places/domain/interactor/settings_interactor/settings_interactor
 import 'package:places/domain/interactor/sight_interactor.dart';
 import 'package:places/domain/model/filter.dart';
 import 'package:places/domain/model/sight.dart';
+import 'package:places/mocks.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
@@ -20,8 +21,6 @@ import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
-
-import 'mocks.dart';
 
 // Хранилище для истории поиска.
 // Тут, пока не внедряли других решений
