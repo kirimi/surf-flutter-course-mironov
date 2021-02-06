@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Элемент списка результата поиска

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/config.dart';
-import 'package:places/domain/model/filter.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/filter.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';

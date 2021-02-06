@@ -23,17 +23,7 @@ class FilterRequest {
     this.nameFilter,
   });
 
-  factory FilterRequest.fromJson(Map<String, dynamic> json) {
-    return FilterRequest(
-      lat: json['lat'] as double,
-      lng: json['lng'] as double,
-      radius: json['radius'] as double,
-      typeFilter: json['typeFilter'] as List<String>,
-      nameFilter: json['nameFilter'] as String,
-    );
-  }
-
-  /// преобразуем в map, но не включаем поля, где значения null
+  /// преобразуем в map
   Map<String, dynamic> toJson() {
     return {
       'lat': lat,
@@ -41,6 +31,8 @@ class FilterRequest {
       'radius': radius,
       'typeFilter': typeFilter,
       'nameFilter': nameFilter,
-    }..removeWhere((key, value) => value == null);
+      // но не включаем поля, где значения null или пустой список
+    }..removeWhere(
+        (key, value) => value == null || (value is Iterable && value.isEmpty));
   }
 }

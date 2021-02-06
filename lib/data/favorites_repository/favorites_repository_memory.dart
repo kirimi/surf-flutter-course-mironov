@@ -1,4 +1,4 @@
-import 'package:places/data/repository/favorites_repository/favorites_repository.dart';
+import 'package:places/interactor/repository/favorites_repository.dart';
 
 /// Репозиторий мест "Хочу посетить".
 ///

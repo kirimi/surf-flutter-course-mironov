@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:places/domain/model/sight.dart';
-import 'package:places/domain/model/sight_photo.dart';
+import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_photo.dart';
 import 'package:places/main.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';

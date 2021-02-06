@@ -1,19 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:places/data/model/filter_request.dart';
-import 'package:places/data/model/flitered_place_dto.dart';
-import 'package:places/data/model/place_dto.dart';
-import 'package:places/data/repository/favorites_repository/favorites_repository.dart';
-import 'package:places/data/repository/location_repository/location_repository.dart';
-import 'package:places/data/repository/place_repository/place_repository.dart';
-import 'package:places/data/repository/visited_repository/visited_repository.dart';
-import 'package:places/domain/mapper/mappers.dart';
-import 'package:places/domain/model/filter.dart';
-import 'package:places/domain/model/geo_point.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/filter.dart';
+import 'package:places/domain/filter_request.dart';
+import 'package:places/domain/geo_point.dart';
+import 'package:places/domain/sight.dart';
+import 'package:places/interactor/repository/favorites_repository.dart';
+import 'package:places/interactor/repository/location_repository.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/interactor/repository/visited_repository.dart';
 
 /// Интерактор Мест
 class SightInteractor {
-  final PlaceRepository placeRepository;
+  // это интерфейсы, имплементация в data/,
+  final SightRepository placeRepository;
   final LocationRepository locationRepository;
   final FavoritesRepository favoritesRepository;
   final VisitedRepository visitedRepository;
@@ -52,25 +50,16 @@ class SightInteractor {
       );
     }
 
-    final places = await placeRepository.getFilteredList(filterReq);
+    final result = await placeRepository.getFilteredList(filterReq);
 
-    final sights = places.map((p) {
-      // В зависимости от того какой был запрос,
-      // приходят разные ответы.
-      if (p is FilteredPlaceDto) {
-        return SightMapper.fromFilteredPlaceDto(p);
-      }
-      if (p is PlaceDto) {
-        return SightMapper.fromPlaceDto(p);
-      }
-    }).toList();
+    final sights = result.map((e) => e.first);
 
-    return sights;
+    return sights.toList();
   }
 
   /// Добавляет новое место
   Future addNewSight(Sight sight) async {
-    placeRepository.add(PlaceDtoMapper.fromSight(sight));
+    placeRepository.add(sight);
   }
 
   /// Получает список Favorite мест отсортированных по удаленности
@@ -99,23 +88,19 @@ class SightInteractor {
     );
 
     // получаем все места
-    final allPlaces = await placeRepository.getFilteredList(filterReq)
-        as List<FilteredPlaceDto>;
+    final result = await placeRepository.getFilteredList(filterReq);
 
     // остаются только добавленные в favorites
-    final favoritesPlaces = allPlaces
-        .where((element) => favoritesIds.contains(element.id))
+    final favoritesPlaces = result
+        .where((element) => favoritesIds.contains(element.first.id))
         .toList();
 
     // Сортируем по расстоянию
-    favoritesPlaces.sort((a, b) => a.distance > b.distance ? 1 : -1);
+    favoritesPlaces.sort((a, b) => a.second > b.second ? 1 : -1);
 
-    // Мапим в List<Sight>
-    final sights = favoritesPlaces
-        .map((p) => SightMapper.fromFilteredPlaceDto(p))
-        .toList();
+    final sights = favoritesPlaces.map((e) => e.first);
 
-    return sights;
+    return sights.toList();
   }
 
   /// Добавляет место в Favorites
@@ -151,18 +136,14 @@ class SightInteractor {
 
     // в api не хватает параметра фильтра типа "список id".
     // получаем все места
-    final allPlaces = await placeRepository
-        .getFilteredList(const FilterRequest()) as List<PlaceDto>;
+    final result = await placeRepository.getFilteredList(const FilterRequest());
 
     // остаются только добавленные в favorites
-    final visitedPlaces =
-        allPlaces.where((element) => visitedIds.contains(element.id)).toList();
+    final visitedPlaces = result.where((e) => visitedIds.contains(e.first.id));
 
-    // Мапим в List<Sight>
-    final sights =
-        visitedPlaces.map((p) => SightMapper.fromPlaceDto(p)).toList();
+    final sights = visitedPlaces.map((e) => e.first);
 
-    return sights;
+    return sights.toList();
   }
 
   /// Добавляет место в Visited

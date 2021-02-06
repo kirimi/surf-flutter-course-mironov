@@ -1,5 +1,5 @@
-import 'package:places/data/repository/location_repository/location_repository.dart';
-import 'package:places/domain/model/geo_point.dart';
+import 'package:places/domain/geo_point.dart';
+import 'package:places/interactor/repository/location_repository.dart';
 
 /// Моковые данные для текущего местоположения
 class LocationRepositoryMock implements LocationRepository {

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/repository/favorites_repository/favorites_repository_memory.dart';
-import 'package:places/data/repository/location_repository/location_repository_mock.dart';
-import 'package:places/data/repository/place_repository/place_repository_memory.dart';
-import 'package:places/data/repository/visited_repository/visited_repository_memory.dart';
-import 'package:places/domain/interactor/settings_interactor/settings_interactor.dart';
-import 'package:places/domain/interactor/sight_interactor.dart';
-import 'package:places/domain/model/filter.dart';
-import 'package:places/domain/model/sight.dart';
-import 'package:places/mocks.dart';
+import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
+import 'package:places/data/location_repository/location_repository_mock.dart';
+import 'package:places/data/sight_repository/sight_repository_network.dart';
+import 'package:places/data/visited_repository/visited_repository_memory.dart';
+import 'package:places/domain/filter.dart';
+import 'package:places/domain/sight.dart';
+import 'package:places/interactor/settings_interactor/settings_interactor.dart';
+import 'package:places/interactor/sight_interactor/sight_interactor.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
@@ -28,7 +27,7 @@ final searchHistoryState = SearchHistoryState();
 
 // Временное место для интерактора Мест
 final SightInteractor sightInteractor = SightInteractor(
-  placeRepository: PlaceRepositoryMemory(),
+  placeRepository: SightRepositoryNetwork(),
   favoritesRepository: FavoritesRepositoryMemory(),
   visitedRepository: VisitedRepositoryMemory(),
   locationRepository: LocationRepositoryMock(),
@@ -38,7 +37,7 @@ final SightInteractor sightInteractor = SightInteractor(
 final SettingsInteractor settingsInteractor = SettingsInteractor();
 
 Future<void> main() async {
-  await uploadMocks(sightInteractor.placeRepository);
+  // await uploadMocks(sightInteractor.placeRepository);
   runApp(App());
 }
 

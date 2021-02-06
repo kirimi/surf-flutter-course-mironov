@@ -1,4 +1,4 @@
-import 'package:places/domain/model/sight_type/sight_type.dart';
+import 'package:places/domain/sight_type/sight_type.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 
 /// Предустановленные категории мест, используются в фильтре.

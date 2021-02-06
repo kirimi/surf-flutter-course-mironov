@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places/config.dart';
-import 'package:places/domain/model/filter.dart';
-import 'package:places/domain/model/sight_type/default_sight_types.dart';
-import 'package:places/domain/model/sight_type/sight_type.dart';
+import 'package:places/domain/filter.dart';
+import 'package:places/domain/sight_type/default_sight_types.dart';
+import 'package:places/domain/sight_type/sight_type.dart';
 import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/main.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
