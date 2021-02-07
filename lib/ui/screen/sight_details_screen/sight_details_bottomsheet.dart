@@ -82,7 +82,8 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                               text: AppStrings.sightDetailsPlanBtn,
                             ),
                             FutureBuilder<bool>(
-                              future: sightInteractor.isFavorite(widget.sight),
+                              future:
+                                  favoritesInteractor.isFavorite(widget.sight),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
                                   return const SizedBox.shrink();
@@ -90,7 +91,7 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                                 final bool isFav = snapshot.data;
                                 return IconTextButton(
                                   onPressed: () async {
-                                    await sightInteractor
+                                    await favoritesInteractor
                                         .switchFavorite(widget.sight);
                                     // todo при возврате из bottomsheet кнопка на карточке favorite не меняется
                                     // исправится когда прикручу стейт-менеджмент

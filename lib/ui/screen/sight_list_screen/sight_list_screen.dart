@@ -80,7 +80,7 @@ class _SightListScreenState extends State<SightListScreen> {
             return [
               // favorite btn
               FutureBuilder<bool>(
-                future: sightInteractor.isFavorite(sight),
+                future: favoritesInteractor.isFavorite(sight),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SizedBox.shrink();
@@ -88,7 +88,7 @@ class _SightListScreenState extends State<SightListScreen> {
                   final bool isFav = snapshot.data;
                   return SightCardActionButton(
                     onTap: () async {
-                      await sightInteractor.switchFavorite(sight);
+                      await favoritesInteractor.switchFavorite(sight);
                       setState(() {});
                     },
                     icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
