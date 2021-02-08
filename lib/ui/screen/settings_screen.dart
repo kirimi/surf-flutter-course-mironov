@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           SwitchListTile(
             title: const Text(AppStrings.settingsDarkTheme),
-            value: themeState.isDark,
+            value: settingsInteractor.themeState.isDark,
             onChanged: _onChangeTheme,
           ),
           ListTile(
@@ -48,5 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   // ignore: use_setters_to_change_properties
-  void _onChangeTheme(bool newValue) => themeState.isDark = newValue;
+  void _onChangeTheme(bool newValue) =>
+      settingsInteractor.themeState.isDark = newValue;
 }

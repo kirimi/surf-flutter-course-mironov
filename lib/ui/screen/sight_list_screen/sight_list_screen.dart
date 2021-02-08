@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/filter_utils.dart';
-import 'package:places/mocks.dart';
+import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -25,8 +24,6 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
-  List<Sight> _sights;
-
   Filter _filter = Filter(
     minDistance: Config.minRange,
     maxDistance: Config.maxRange,
@@ -34,57 +31,47 @@ class _SightListScreenState extends State<SightListScreen> {
   );
 
   @override
-  void initState() {
-    super.initState();
-    _sights = mocks;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final sightListWidget =
-        MediaQuery.of(context).orientation == Orientation.portrait
-            ? SliverList(
-                delegate: SliverChildListDelegate(_buildSightList()),
-              )
-            : SliverGrid(
-                delegate: SliverChildListDelegate(_buildSightList()),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 4 / 2,
-                ),
-              );
-
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
-      body: CustomScrollView(
-        slivers: [
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: SearchSliverPersistentHeaderDelegate(),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-              child: SearchBar(
-                readOnly: true,
-                onTap: _onSearchTap,
-                onFilterTap: _onFilterTap,
+      body: FutureBuilder<List<Sight>>(
+        future: sightInteractor.getFilteredSights(filter: _filter),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: SearchSliverPersistentHeaderDelegate(),
               ),
-            ),
-          ),
-          sightListWidget
-        ],
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+                  child: SearchBar(
+                    readOnly: true,
+                    onTap: _onSearchTap,
+                    onFilterTap: _onFilterTap,
+                  ),
+                ),
+              ),
+              _buildSightListWidget(snapshot.data),
+            ],
+          );
+        },
       ),
     );
   }
 
-  List<Widget> _buildSightList() {
-    final List<Widget> result = [];
-    final filteredSights = filteredSightList(_sights, _filter, currentPoint);
-    for (final sight in filteredSights) {
-      result.add(Padding(
+  Widget _buildSightListWidget(List<Sight> sights) {
+    final List<Widget> sightCardsList = [];
+    for (final sight in sights) {
+      sightCardsList.add(Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: SightCard(
           sight: sight,
@@ -92,25 +79,45 @@ class _SightListScreenState extends State<SightListScreen> {
           actionsBuilder: (_) {
             return [
               // favorite btn
-              SightCardActionButton(
-                onTap: () {},
-                icon: SvgIcons.heart,
+              FutureBuilder<bool>(
+                future: favoritesInteractor.isFavorite(sight),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+                  final bool isFav = snapshot.data;
+                  return SightCardActionButton(
+                    onTap: () async {
+                      await favoritesInteractor.switchFavorite(sight);
+                      setState(() {});
+                    },
+                    icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
+                  );
+                },
               ),
             ];
           },
         ),
       ));
     }
-    return result;
+
+    return MediaQuery.of(context).orientation == Orientation.portrait
+        ? SliverList(
+            delegate: SliverChildListDelegate(sightCardsList),
+          )
+        : SliverGrid(
+            delegate: SliverChildListDelegate(sightCardsList),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 4 / 2,
+            ),
+          );
   }
 
   Future<void> _onAddPressed() async {
     await Navigator.of(context).pushNamed(
       AddSightScreen.routeName,
     );
-    setState(() {
-      _sights = mocks;
-    });
   }
 
   void _onSearchTap() {

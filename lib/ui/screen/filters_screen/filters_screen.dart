@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
-import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_type.dart';
-import 'package:places/domain/sight_types.dart';
-import 'package:places/filter_utils.dart';
-import 'package:places/mocks.dart';
+import 'package:places/domain/sight_type/default_sight_types.dart';
+import 'package:places/domain/sight_type/sight_type.dart';
+import 'package:places/main.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
@@ -33,9 +31,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
   // список категорий
   final List<SightType> _types = defaultSightTypes;
 
-  // список мест
-  List<Sight> _sights;
-
   // Фильтр
   Filter _filter;
 
@@ -48,10 +43,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
   @override
   void initState() {
     super.initState();
-    _sights = mocks;
     _filter = widget.filter;
     _rangeValues = RangeValues(_filter.minDistance, _filter.maxDistance);
-    _filteredCount = _calculateFilteredCount();
+    _updateFilteredCount();
   }
 
   @override
@@ -86,7 +80,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         actions: [
           TextButton(
-            onPressed: _clearFilters,
+            onPressed: _onClearFilters,
             child: const Text(AppStrings.filtersClear),
           ),
         ],
@@ -124,16 +118,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   // репозиторий при каждом движении слайдера
                   _filter.minDistance = _rangeValues.start;
                   _filter.maxDistance = _rangeValues.end;
-                  setState(() {
-                    _filteredCount = _calculateFilteredCount();
-                  });
+                  _updateFilteredCount();
                 },
                 onChanged: (newValues) {
                   setState(() => _rangeValues = newValues);
                 }),
             const Spacer(),
             IconElevatedButton(
-              text: _getShowButtonLabel(),
+              text: _buildShowButtonLabel(),
               onPressed: _onShowTap,
             ),
           ],
@@ -149,7 +141,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
       isSelected: _isTypeSelected(_types[index]),
       onTap: () {
         _onTypeSelect(_types[index]);
-        _filteredCount = _calculateFilteredCount();
+        _updateFilteredCount();
       },
     );
   }
@@ -167,27 +159,31 @@ class _FiltersScreenState extends State<FiltersScreen> {
   }
 
   // надпись на кнопке с количеством результатов по фильтру
-  String _getShowButtonLabel() {
+  String _buildShowButtonLabel() {
+    if (_filteredCount == null) {
+      return AppStrings.filtersShow.toUpperCase();
+    }
     return '${AppStrings.filtersShow.toUpperCase()} ($_filteredCount)';
   }
 
-  // возвращает количество точек, которые попадают под условие фильтра
-  // если тип места не выбран, то не применяем фильтр места, если хоть один тип
-  // выбран, то фильтруем по типу
-  int _calculateFilteredCount() {
-    final filteredSights = filteredSightList(_sights, _filter, currentPoint);
-    return filteredSights.length;
+  // количество точек, которые попадают под условие фильтра
+  Future<void> _updateFilteredCount() async {
+    final int count =
+        (await sightInteractor.getFilteredSights(filter: _filter)).length;
+    setState(() {
+      _filteredCount = count;
+    });
   }
 
   // сбрасывает фильтры в начальное значение
-  void _clearFilters() {
+  void _onClearFilters() {
     _filter.minDistance = Config.minRange;
     _filter.maxDistance = Config.maxRange;
     _filter.types.clear();
     setState(() {
       _rangeValues = RangeValues(_filter.minDistance, _filter.maxDistance);
-      _filteredCount = _calculateFilteredCount();
     });
+    _updateFilteredCount();
   }
 
   // При тапе на категорию добавляем или убираем ее в фильтре

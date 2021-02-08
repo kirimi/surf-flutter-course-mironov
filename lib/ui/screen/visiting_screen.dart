@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/mocks.dart';
+import 'package:places/main.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -27,17 +27,23 @@ class VisitingScreen extends StatefulWidget {
 
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
-  TabController _controller;
-
-  // моки мест которые хотим посетить и посещенные
-  final List<Sight> _toVisitSights = [mocks[0], mocks[1], mocks[2]];
-  final List<Sight> _visitedSights = [mocks[3]];
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 2, vsync: this);
-    _controller.addListener(() => setState(() {}));
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+      // при смене таба инициируем обновление Favorites или Visited
+      if (_tabController.index == 0) {
+        favoritesInteractor.getFavoritesSights();
+      } else if (_tabController.index == 1) {
+        visitedInteractor.getVisitedSights();
+      }
+    });
+    favoritesInteractor.getFavoritesSights();
+    visitedInteractor.getVisitedSights();
   }
 
   @override
@@ -53,8 +59,8 @@ class _VisitingScreenState extends State<VisitingScreen>
         backgroundColor: AppColors.transparent,
         elevation: 0,
         bottom: CustomTabBar(
-          controller: _controller,
-          onTabTap: (index) => _controller.animateTo(index),
+          controller: _tabController,
+          onTabTap: (index) => _tabController.animateTo(index),
           items: [
             CustomTabBarItem(
               text: AppStrings.visitingWantToVisitTab,
@@ -75,16 +81,31 @@ class _VisitingScreenState extends State<VisitingScreen>
       ),
       bottomNavigationBar: const CustomBottomNavBar(index: 2),
       body: TabBarView(
-        controller: _controller,
+        controller: _tabController,
         children: [
-          SightListWidget(
-            padding: const EdgeInsets.all(16.0),
-            children: _buildToVisitSightList(),
-          ),
-          SightListWidget(
-            padding: const EdgeInsets.all(16.0),
-            children: _buildVisitedSightList(),
-          ),
+          StreamBuilder<List<Sight>>(
+              stream: favoritesInteractor.favoritesStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return SightListWidget(
+                  padding: const EdgeInsets.all(16.0),
+                  children: _buildToVisitSightList(snapshot.data),
+                );
+              }),
+          StreamBuilder<List<Sight>>(
+              stream: visitedInteractor.visitedStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return SightListWidget(
+                  padding: const EdgeInsets.all(16.0),
+                  children: _buildVisitedSightList(snapshot.data),
+                );
+              }),
         ],
       ),
     );
@@ -92,43 +113,36 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
   // Карточки "Хочу посетить"
-  List<Widget> _buildToVisitSightList() {
+  List<Widget> _buildToVisitSightList(List<Sight> sights) {
     final List<Widget> res = [];
-    for (final sight in _toVisitSights) {
+    for (var i = 0; i < sights.length; i++) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ObjectKey(sight),
-          sight: sight,
-          onTap: () => _onSightTap(sight),
+          key: ValueKey(sights[i].id),
+          sight: sights[i],
+          onTap: () => _onSightTap(sights[i]),
           actionsBuilder: (_) => [
             // calendar btn
             SightCardActionButton(
-              onTap: () => _onCalendarTap(sight),
+              onTap: () => _onCalendarTap(sights[i]),
               icon: SvgIcons.calendar,
             ),
             // delete btn
             SightCardActionButton(
-              onTap: () => _onDismissedSight(
-                sight: sight,
-                sights: _toVisitSights,
-              ),
+              onTap: () => _onDeleteFromFavorites(sights[i]),
               icon: SvgIcons.delete,
             ),
           ],
-          onSightDrop: (droppedSight) => _swapSights(
-            target: sight,
+          onSightDrop: (droppedSight) => _onSortFavorites(
             sight: droppedSight,
-            sights: _toVisitSights,
+            target: sights[i],
           ),
-          onDismissed: () => _onDismissedSight(
-            sight: sight,
-            sights: _toVisitSights,
-          ),
+          onDismissed: () => _onDeleteFromFavorites(sights[i]),
         ),
       );
     }
@@ -138,14 +152,14 @@ class _VisitingScreenState extends State<VisitingScreen>
   // Карточки посещенные
   // На карточке другие action-кнопки, поэтому для простоты разделил на 2 метода
   // _buildToVisitSightList и _buildVisitedSightList
-  List<Widget> _buildVisitedSightList() {
+  List<Widget> _buildVisitedSightList(List<Sight> sights) {
     final List<Widget> res = [];
-    for (final sight in _visitedSights) {
+    for (var i = 0; i < sights.length; i++) {
       res.add(
         DraggableDismissibleSightCard(
-          key: ObjectKey(sight),
-          sight: sight,
-          onTap: () => _onSightTap(sight),
+          key: ValueKey(sights[i].id),
+          sight: sights[i],
+          onTap: () => _onSightTap(sights[i]),
           actionsBuilder: (_) => [
             // share btn
             SightCardActionButton(
@@ -154,46 +168,38 @@ class _VisitingScreenState extends State<VisitingScreen>
             ),
             // delete btn
             SightCardActionButton(
-              onTap: () => _onDismissedSight(
-                sight: sight,
-                sights: _visitedSights,
-              ),
+              onTap: () => _onDeleteFromVisited(sights[i]),
               icon: SvgIcons.delete,
             ),
           ],
-          onSightDrop: (droppedSight) => _swapSights(
-            target: sight,
+          onSightDrop: (droppedSight) => _onSortVisited(
             sight: droppedSight,
-            sights: _visitedSights,
+            target: sights[i],
           ),
-          onDismissed: () => _onDismissedSight(
-            sight: sight,
-            sights: _visitedSights,
-          ),
+          onDismissed: () => _onDeleteFromVisited(sights[i]),
         ),
       );
     }
     return res;
   }
 
-  // Меняем местами элементы списка
-  // передаем сюда sights, чтобы определить с каким именно списком работаем
-  // _toVisitSights или _visitedSights
-  void _swapSights({Sight target, Sight sight, List<Sight> sights}) {
-    final targetIndex = sights.indexOf(target);
-    final sightIndex = sights.indexOf(sight);
-    setState(() {
-      sights[targetIndex] = sight;
-      sights[sightIndex] = target;
-    });
+  // Удаляем место из Favorites
+  void _onDeleteFromFavorites(Sight sight) {
+    favoritesInteractor.removeFromFavorites(sight);
   }
 
-  // удаляем место из списка
-  void _onDismissedSight({Sight sight, List<Sight> sights}) {
-    setState(() {
-      sights.removeWhere((element) => element == sight);
-    });
+  // todo добавить функцию хранения сортировки в FavoritesRepository
+  // Сортируем место из Favorites. Наверх target помещается sight
+  Future<void> _onSortFavorites({Sight sight, Sight target}) async {}
+
+  // Удаляем место из Visited
+  void _onDeleteFromVisited(Sight sight) {
+    visitedInteractor.removeFromVisited(sight);
   }
+
+  // todo добавить функцию хранения сортировки в VisitedRepository
+  // Сортируем место из Visited. Наверх target помещается sight
+  Future<void> _onSortVisited({Sight sight, Sight target}) async {}
 
   void _onSightTap(Sight sight) {
     showModalBottomSheet(

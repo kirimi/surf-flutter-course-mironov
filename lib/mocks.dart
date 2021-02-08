@@ -1,10 +1,8 @@
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
-import 'package:places/domain/sight_type.dart';
-
-/// текущее местоположение
-final currentPoint = GeoPoint(lon: 59.685994, lat: 30.433278);
+import 'package:places/domain/sight_type/default_sight_types.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
 
 /// Места
 final List<Sight> mocks = [
@@ -18,10 +16,7 @@ final List<Sight> mocks = [
       lon: 59.940073,
       lat: 30.312733,
     ),
-    type: const SightType(
-      name: 'Особое место',
-      iconName: 'special',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Музей-заповедник Павловск',
@@ -33,10 +28,7 @@ final List<Sight> mocks = [
       lon: 59.685994,
       lat: 30.433278,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Петергоф',
@@ -47,10 +39,7 @@ final List<Sight> mocks = [
       lon: 59.881223,
       lat: 29.906775,
     ),
-    type: const SightType(
-      name: 'Особое место',
-      iconName: 'special',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Большой Екатерининский дворец',
@@ -62,10 +51,7 @@ final List<Sight> mocks = [
       lon: 59.715871,
       lat: 30.395414,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
   Sight(
     name: 'Государственный Эрмитаж',
@@ -76,12 +62,19 @@ final List<Sight> mocks = [
       lon: 59.940073,
       lat: 30.312733,
     ),
-    type: const SightType(
-      name: 'Музей',
-      iconName: 'museum',
-    ),
+    type: getSightTypeByCode('museum'),
   ),
 ];
+
+/// Загрузка созданных моков на сервер, чтобы вручную не создавать
+/// Вызывается в main()
+Future<void> uploadMocks(SightRepository placeRepository) async {
+  // final PlaceRepository placeRepository = PlaceRepositoryNetwork();
+  // final PlaceRepository placeRepository = PlaceRepositoryMemory();
+  for (final sight in mocks) {
+    await placeRepository.add(sight);
+  }
+}
 
 /// Фотографии мест
 final List<SightPhoto> sightPhotosMocks = [

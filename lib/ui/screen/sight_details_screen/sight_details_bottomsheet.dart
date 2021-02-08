@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
+import 'package:places/main.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -80,11 +81,29 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                               icon: SvgIcons.calendar,
                               text: AppStrings.sightDetailsPlanBtn,
                             ),
-                            IconTextButton(
-                              icon: SvgIcons.heart,
-                              text: AppStrings.sightDetailsToFavoriteBtn,
-                              onPressed: () {},
-                            ),
+                            FutureBuilder<bool>(
+                              future:
+                                  favoritesInteractor.isFavorite(widget.sight),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const SizedBox.shrink();
+                                }
+                                final bool isFav = snapshot.data;
+                                return IconTextButton(
+                                  onPressed: () async {
+                                    await favoritesInteractor
+                                        .switchFavorite(widget.sight);
+                                    // todo при возврате из bottomsheet кнопка на карточке favorite не меняется
+                                    // исправится когда прикручу стейт-менеджмент
+                                    setState(() {});
+                                  },
+                                  text: AppStrings.sightDetailsToFavoriteBtn,
+                                  icon: isFav
+                                      ? SvgIcons.heartFill
+                                      : SvgIcons.heart,
+                                );
+                              },
+                            )
                           ],
                         ),
                       ],

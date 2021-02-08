@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
+import 'package:places/data/location_repository/location_repository_mock.dart';
+import 'package:places/data/sight_repository/sight_repository_memory.dart';
+import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/repository/favorites_repository.dart';
+import 'package:places/interactor/repository/location_repository.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/interactor/repository/visited_repository.dart';
+import 'package:places/interactor/settings_interactor/settings_interactor.dart';
+import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/interactor/visiting_interactor.dart';
+import 'package:places/mocks.dart';
 import 'package:places/search_history_state.dart';
-import 'package:places/theme_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -16,14 +28,38 @@ import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 
-// Хранилище для текущей темы приложения
-final themeState = ThemeState();
-
 // Хранилище для истории поиска.
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
 
-void main() {
+// Временное место для интеракторов
+final SightRepository sightRepository = SightRepositoryMemory();
+final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
+final VisitedRepository visitedRepository = VisitedRepositoryMemory();
+final LocationRepository locationRepository = LocationRepositoryMock();
+
+final SightInteractor sightInteractor = SightInteractor(
+  sightRepository: sightRepository,
+  visitedRepository: visitedRepository,
+  locationRepository: locationRepository,
+);
+
+final FavoritesInteractor favoritesInteractor = FavoritesInteractor(
+  sightRepository: sightRepository,
+  favoritesRepository: favoritesRepository,
+  locationRepository: locationRepository,
+);
+
+final VisitedInteractor visitedInteractor = VisitedInteractor(
+  sightRepository: sightRepository,
+  visitedRepository: visitedRepository,
+);
+
+// Временное место для интерактора Настроек
+final SettingsInteractor settingsInteractor = SettingsInteractor();
+
+Future<void> main() async {
+  await uploadMocks(sightRepository);
   runApp(App());
 }
 
@@ -36,12 +72,12 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    themeState.addListener(_onThemeChange);
+    settingsInteractor.themeState.addListener(_onThemeChange);
   }
 
   @override
   void dispose() {
-    themeState.removeListener(_onThemeChange);
+    settingsInteractor.themeState.removeListener(_onThemeChange);
     super.dispose();
   }
 
@@ -49,7 +85,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppStrings.appTitle,
-      theme: themeState.isDark ? darkTheme : lightTheme,
+      theme: settingsInteractor.themeState.isDark ? darkTheme : lightTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: SplashScreen.routeName,
       routes: {
