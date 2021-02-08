@@ -1,3 +1,8 @@
+# 11.2 StreamBuilder
+- на странице SightListScreen использовал StreamBuilder для списка мест. Для этого в интеракторе завел StreamController куда проталкиваем результат запросов.
+- кнопочку Favorites переделал на StreamBuilder. Для этого в FavoritesInteractor завел механизм получения стрима для значения Favorites мета. Подключил на списке мест, и на details.
+- на странице VisitingScreen стримы уже были прикручены в прошлых pr.
+
 # 10.2 architeture fix
 - Вот что получилось в итоге по архитектуре:
 Выделил 4 слоя.

@@ -11,10 +11,16 @@ import 'package:places/interactor/repository/visited_repository.dart';
 
 /// Интерактор Мест
 class SightInteractor {
-  // это интерфейсы, имплементация в data/,
   final SightRepository sightRepository;
   final LocationRepository locationRepository;
   final VisitedRepository visitedRepository;
+
+  final StreamController<List<Sight>> _streamController =
+      StreamController.broadcast();
+
+  /// Стрим для списка отфильтрованных мест.
+  /// Обновляется при вызове [getFilteredSights]
+  Stream<List<Sight>> get sightsStream => _streamController.stream;
 
   SightInteractor({
     @required this.sightRepository,
@@ -50,7 +56,9 @@ class SightInteractor {
 
     final result = await sightRepository.getFilteredList(filterReq);
 
-    final sights = result.map((e) => e.first);
+    final sights = result.map((e) => e.first).toList();
+
+    _streamController.sink.add(sights);
 
     return sights.toList();
   }
@@ -58,5 +66,10 @@ class SightInteractor {
   /// Добавляет новое место
   Future addNewSight(Sight sight) async {
     sightRepository.add(sight);
+  }
+
+  /// Вызывать при уничтожении интерактора
+  void dispose() {
+    _streamController.close();
   }
 }

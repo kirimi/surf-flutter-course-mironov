@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
@@ -16,7 +17,11 @@ class FavoritesInteractor {
 
   final StreamController<List<Sight>> _favoritesStreamController =
       StreamController.broadcast();
-  Stream<List<Sight>> get favoritesStream => _favoritesStreamController.stream;
+  Stream<List<Sight>> get favoritesListStream =>
+      _favoritesStreamController.stream;
+
+  // Список стримов для состояния Favorite места
+  final List<Pair<int, StreamController<bool>>> _sightFavStreams = [];
 
   FavoritesInteractor({
     @required this.sightRepository,
@@ -81,10 +86,44 @@ class FavoritesInteractor {
     getFavoritesSights();
   }
 
-  /// Возвращает включена ли место в Favorites
-  Future<bool> isFavorite(Sight sight) async {
-    final bool isFav = await favoritesRepository.isFavorite(sight.id);
-    return isFav;
+  /// Возвращает стрим в который попадают обновления Favorite для [sight]
+  ///
+  /// Использовать так:
+  ///  StreamBuilder<bool>(
+  ///    stream: favoritesInteractor.favoriteStream(sight),
+  ///    ...
+  ///
+  /// Тут нужно передать в стрим начальное значение, чтобы в ui стразу было доступно.
+  /// Не нашел как просто сделать без RxDart с его BehaviorSubject,
+  /// поэтому значение пушится в стрим в очереди микротасков,
+  /// уже после подписки на стрим в StreamBuilder
+  Stream<bool> favoriteStream(Sight sight) async* {
+    final streamController = _getFavStreamById(sight.id);
+    scheduleMicrotask(() async {
+      final isFav = await favoritesRepository.isFavorite(sight.id);
+      _sinkFavStream(sight.id, isFav);
+    });
+    yield* streamController.stream;
+  }
+
+  // Добавляем значение value в Stream от Sight.id
+  void _sinkFavStream(int id, bool value) {
+    final streamController = _getFavStreamById(id);
+    streamController.sink.add(value);
+  }
+
+  // получаем StreamController из ранее созданных или создаем новый
+  StreamController<bool> _getFavStreamById(int id) {
+    final streamController = _sightFavStreams.firstWhere(
+      (e) => e.first == id,
+      orElse: () {
+        final newStreamCtrl = StreamController<bool>.broadcast();
+        final newPair = Pair(id, newStreamCtrl);
+        _sightFavStreams.add(newPair);
+        return newPair;
+      },
+    ).second;
+    return streamController;
   }
 
   /// Переключает место в Favorites и обратно
@@ -94,6 +133,17 @@ class FavoritesInteractor {
       removeFromFavorites(sight);
     } else {
       addToFavorites(sight);
+    }
+    // обновляем нужный стрим
+    _sinkFavStream(sight.id, !isFav);
+  }
+
+  /// Закрывает все StreamController
+  /// должен вызываться при уничтожении Интерактора
+  void dispose() {
+    _favoritesStreamController.close();
+    for (final favStreamCtrl in _sightFavStreams) {
+      favStreamCtrl.second?.close();
     }
   }
 }

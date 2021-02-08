@@ -81,21 +81,18 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                               icon: SvgIcons.calendar,
                               text: AppStrings.sightDetailsPlanBtn,
                             ),
-                            FutureBuilder<bool>(
-                              future:
-                                  favoritesInteractor.isFavorite(widget.sight),
+                            StreamBuilder<bool>(
+                              stream: favoritesInteractor
+                                  .favoriteStream(widget.sight),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
                                   return const SizedBox.shrink();
                                 }
                                 final bool isFav = snapshot.data;
                                 return IconTextButton(
-                                  onPressed: () async {
-                                    await favoritesInteractor
+                                  onPressed: () {
+                                    favoritesInteractor
                                         .switchFavorite(widget.sight);
-                                    // todo при возврате из bottomsheet кнопка на карточке favorite не меняется
-                                    // исправится когда прикручу стейт-менеджмент
-                                    setState(() {});
                                   },
                                   text: AppStrings.sightDetailsToFavoriteBtn,
                                   icon: isFav
