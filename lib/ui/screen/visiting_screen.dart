@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/main.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -27,13 +27,23 @@ class VisitingScreen extends StatefulWidget {
 
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
-  TabController _controller;
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 2, vsync: this);
-    _controller.addListener(() => setState(() {}));
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+      // при смене таба инициируем обновление Favorites или Visited
+      if (_tabController.index == 0) {
+        favoritesInteractor.getFavoritesSights();
+      } else if (_tabController.index == 1) {
+        visitedInteractor.getVisitedSights();
+      }
+    });
+    favoritesInteractor.getFavoritesSights();
+    visitedInteractor.getVisitedSights();
   }
 
   @override
@@ -49,8 +59,8 @@ class _VisitingScreenState extends State<VisitingScreen>
         backgroundColor: AppColors.transparent,
         elevation: 0,
         bottom: CustomTabBar(
-          controller: _controller,
-          onTabTap: (index) => _controller.animateTo(index),
+          controller: _tabController,
+          onTabTap: (index) => _tabController.animateTo(index),
           items: [
             CustomTabBarItem(
               text: AppStrings.visitingWantToVisitTab,
@@ -71,10 +81,10 @@ class _VisitingScreenState extends State<VisitingScreen>
       ),
       bottomNavigationBar: const CustomBottomNavBar(index: 2),
       body: TabBarView(
-        controller: _controller,
+        controller: _tabController,
         children: [
-          FutureBuilder<List<Sight>>(
-              future: sightInteractor.getFavoritesSights(),
+          StreamBuilder<List<Sight>>(
+              stream: favoritesInteractor.favoritesStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -84,8 +94,8 @@ class _VisitingScreenState extends State<VisitingScreen>
                   children: _buildToVisitSightList(snapshot.data),
                 );
               }),
-          FutureBuilder<List<Sight>>(
-              future: sightInteractor.getVisitedSights(),
+          StreamBuilder<List<Sight>>(
+              stream: visitedInteractor.visitedStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -103,7 +113,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -132,15 +142,7 @@ class _VisitingScreenState extends State<VisitingScreen>
             sight: droppedSight,
             target: sights[i],
           ),
-          onDismissed: () {
-            _onDeleteFromFavorites(sights[i]);
-            // тут костыль
-            // проблема в совместной работе FutureBuilder и Dismissible
-            // нашел вот такое решение: https://stackoverflow.com/a/60110974
-            // возможно когда буду прикручивать стейт-менеджмент дело исправится
-            // todo переделать
-            sights.removeAt(i);
-          },
+          onDismissed: () => _onDeleteFromFavorites(sights[i]),
         ),
       );
     }
@@ -174,11 +176,7 @@ class _VisitingScreenState extends State<VisitingScreen>
             sight: droppedSight,
             target: sights[i],
           ),
-          onDismissed: () {
-            _onDeleteFromVisited(sights[i]);
-            // todo переделать
-            sights.removeAt(i);
-          },
+          onDismissed: () => _onDeleteFromVisited(sights[i]),
         ),
       );
     }
@@ -186,9 +184,8 @@ class _VisitingScreenState extends State<VisitingScreen>
   }
 
   // Удаляем место из Favorites
-  Future<void> _onDeleteFromFavorites(Sight sight) async {
-    await sightInteractor.removeFromFavorites(sight);
-    setState(() {});
+  void _onDeleteFromFavorites(Sight sight) {
+    favoritesInteractor.removeFromFavorites(sight);
   }
 
   // todo добавить функцию хранения сортировки в FavoritesRepository
@@ -196,9 +193,8 @@ class _VisitingScreenState extends State<VisitingScreen>
   Future<void> _onSortFavorites({Sight sight, Sight target}) async {}
 
   // Удаляем место из Visited
-  Future<void> _onDeleteFromVisited(Sight sight) async {
-    await sightInteractor.removeFromVisited(sight);
-    setState(() {});
+  void _onDeleteFromVisited(Sight sight) {
+    visitedInteractor.removeFromVisited(sight);
   }
 
   // todo добавить функцию хранения сортировки в VisitedRepository

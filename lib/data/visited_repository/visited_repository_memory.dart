@@ -1,4 +1,4 @@
-import 'package:places/data/repository/visited_repository/visited_repository.dart';
+import 'package:places/interactor/repository/visited_repository.dart';
 
 /// Репозиторий мест "Посещенные".
 ///

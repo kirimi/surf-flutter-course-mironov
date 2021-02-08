@@ -1,10 +1,8 @@
-import 'package:places/data/repository/place_repository/place_repository.dart';
-import 'package:places/domain/mapper/mappers.dart';
-import 'package:places/domain/model/geo_point.dart';
-import 'package:places/domain/model/sight.dart';
-import 'package:places/domain/model/sight_photo.dart';
-
-import 'domain/model/sight_type/default_sight_types.dart';
+import 'package:places/domain/geo_point.dart';
+import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_photo.dart';
+import 'package:places/domain/sight_type/default_sight_types.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
 
 /// Места
 final List<Sight> mocks = [
@@ -70,11 +68,11 @@ final List<Sight> mocks = [
 
 /// Загрузка созданных моков на сервер, чтобы вручную не создавать
 /// Вызывается в main()
-Future<void> uploadMocks(PlaceRepository placeRepository) async {
+Future<void> uploadMocks(SightRepository placeRepository) async {
   // final PlaceRepository placeRepository = PlaceRepositoryNetwork();
   // final PlaceRepository placeRepository = PlaceRepositoryMemory();
   for (final sight in mocks) {
-    await placeRepository.add(PlaceDtoMapper.fromSight(sight));
+    await placeRepository.add(sight);
   }
 }
 

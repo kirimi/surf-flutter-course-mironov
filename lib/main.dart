@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:places/data/repository/favorites_repository/favorites_repository_memory.dart';
-import 'package:places/data/repository/location_repository/location_repository_mock.dart';
-import 'package:places/data/repository/place_repository/place_repository_memory.dart';
-import 'package:places/data/repository/visited_repository/visited_repository_memory.dart';
-import 'package:places/domain/interactor/settings_interactor/settings_interactor.dart';
-import 'package:places/domain/interactor/sight_interactor.dart';
-import 'package:places/domain/model/filter.dart';
-import 'package:places/domain/model/sight.dart';
+import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
+import 'package:places/data/location_repository/location_repository_mock.dart';
+import 'package:places/data/sight_repository/sight_repository_memory.dart';
+import 'package:places/data/visited_repository/visited_repository_memory.dart';
+import 'package:places/domain/filter.dart';
+import 'package:places/domain/sight.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/repository/favorites_repository.dart';
+import 'package:places/interactor/repository/location_repository.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/interactor/repository/visited_repository.dart';
+import 'package:places/interactor/settings_interactor/settings_interactor.dart';
+import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/mocks.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -26,19 +32,34 @@ import 'package:places/ui/screen/visiting_screen.dart';
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
 
-// Временное место для интерактора Мест
+// Временное место для интеракторов
+final SightRepository sightRepository = SightRepositoryMemory();
+final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
+final VisitedRepository visitedRepository = VisitedRepositoryMemory();
+final LocationRepository locationRepository = LocationRepositoryMock();
+
 final SightInteractor sightInteractor = SightInteractor(
-  placeRepository: PlaceRepositoryMemory(),
-  favoritesRepository: FavoritesRepositoryMemory(),
-  visitedRepository: VisitedRepositoryMemory(),
-  locationRepository: LocationRepositoryMock(),
+  sightRepository: sightRepository,
+  visitedRepository: visitedRepository,
+  locationRepository: locationRepository,
+);
+
+final FavoritesInteractor favoritesInteractor = FavoritesInteractor(
+  sightRepository: sightRepository,
+  favoritesRepository: favoritesRepository,
+  locationRepository: locationRepository,
+);
+
+final VisitedInteractor visitedInteractor = VisitedInteractor(
+  sightRepository: sightRepository,
+  visitedRepository: visitedRepository,
 );
 
 // Временное место для интерактора Настроек
 final SettingsInteractor settingsInteractor = SettingsInteractor();
 
 Future<void> main() async {
-  await uploadMocks(sightInteractor.placeRepository);
+  await uploadMocks(sightRepository);
   runApp(App());
 }
 
