@@ -11,6 +11,7 @@ import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
+import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
@@ -46,6 +47,16 @@ class _SightListScreenState extends State<SightListScreen> {
       body: StreamBuilder<List<Sight>>(
         stream: sightInteractor.sightsStream,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            // В случае ошибки показываем сообщение
+            return CenterMessage(
+              icon: SvgIcons.error,
+              title: AppStrings.sightSearchErrorTitle,
+              subtitle:
+                  '${AppStrings.sightSearchErrorSubtitle}\n\n${snapshot.error}',
+            );
+          }
+
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }

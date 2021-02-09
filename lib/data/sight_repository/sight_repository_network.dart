@@ -5,6 +5,8 @@ import 'package:places/data/sight_repository/sight_api_mapper.dart';
 import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/repository/exceptions/internet_exception.dart';
+import 'package:places/interactor/repository/exceptions/network_exception.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 
 /// Репозиторий мест. Данные на сервере
@@ -61,7 +63,11 @@ class SightRepositoryNetwork implements SightRepository {
           .toList();
       return sights;
     }
-    throw Exception('Can not get list of places');
+    throw NetworkException(
+      _getListUrl,
+      response.statusCode,
+      response.statusMessage,
+    );
   }
 
   /// Возвращает List<Map<Sight, double>> список мест удовлетворяющих фильтру.
@@ -72,10 +78,15 @@ class SightRepositoryNetwork implements SightRepository {
   Future<List<Pair<Sight, double>>> getFilteredList(
       FilterRequest filter) async {
     final body = jsonEncode(filter.toJson());
-    final response = await _dio.post<String>(
-      _getFilteredUrl,
-      data: body,
-    );
+
+    Response<String> response;
+
+    try {
+      response = await _dio.post<String>(_getFilteredUrl, data: body);
+    } on DioError catch (e) {
+      throw InternetException(_getFilteredUrl, e.message);
+    }
+
     if (response.statusCode == 200) {
       // final sightsJson = await compute(_parseJson, response.data);
       final sightsJson = jsonDecode(response.data);
@@ -87,19 +98,36 @@ class SightRepositoryNetwork implements SightRepository {
 
       return sights;
     }
-    throw Exception('Can not get list of places');
+    throw NetworkException(
+      _getFilteredUrl,
+      response.statusCode,
+      response.statusMessage,
+    );
   }
 
   @override
   Future<Sight> add(Sight sight) async {
     final body = jsonEncode(sight.toApiJson());
-    final response = await _dio.post<String>(_addUrl, data: body);
+
+    Response<String> response;
+
+    try {
+      response = await _dio.post<String>(_addUrl, data: body);
+    } on DioError catch (e) {
+      throw InternetException(_addUrl, e.message);
+    }
+
     if (response.statusCode == 200) {
       // final sightJson = await compute(_parseJson, response.data);
       final sightJson = jsonDecode(response.data);
       return Sight().fromApiJson(sightJson as Map<String, dynamic>);
     }
-    throw Exception('Can not add place');
+
+    throw NetworkException(
+      _addUrl,
+      response.statusCode,
+      response.statusMessage,
+    );
   }
 
   @override

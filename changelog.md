@@ -1,3 +1,9 @@
+# 12.2 Exceptions
+- добавил кастомные исключения для сетевой ошибки и ошибки соединения
+- в репозитории SightRepositoryNetwork добавил обработку исключений dio и выброску кастомных исключений
+- в интеракторе SightInteractor отлавливаются исключения и кидаются в stream и future
+- на экране SightListScreen в StreamBuilder показываем сообщение об ошибке, если есть такая.
+
 # 11.2 StreamBuilder
 - на странице SightListScreen использовал StreamBuilder для списка мест. Для этого в интеракторе завел StreamController куда проталкиваем результат запросов.
 - кнопочку Favorites переделал на StreamBuilder. Для этого в FavoritesInteractor завел механизм получения стрима для значения Favorites мета. Подключил на списке мест, и на details.

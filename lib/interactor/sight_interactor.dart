@@ -5,6 +5,8 @@ import 'package:places/domain/filter.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/repository/exceptions/internet_exception.dart';
+import 'package:places/interactor/repository/exceptions/network_exception.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
@@ -54,18 +56,29 @@ class SightInteractor {
       );
     }
 
-    final result = await sightRepository.getFilteredList(filterReq);
-
-    final sights = result.map((e) => e.first).toList();
-
-    _streamController.sink.add(sights);
-
-    return sights.toList();
+    try {
+      final result = await sightRepository.getFilteredList(filterReq);
+      final sights = result.map((e) => e.first).toList();
+      _streamController.sink.add(sights);
+      return sights.toList();
+    } on NetworkException catch (e) {
+      _streamController.sink.addError(e);
+      return Future.error(e);
+    } on InternetException catch (e) {
+      _streamController.sink.addError(e);
+      return Future.error(e);
+    }
   }
 
   /// Добавляет новое место
   Future addNewSight(Sight sight) async {
-    sightRepository.add(sight);
+    try {
+      sightRepository.add(sight);
+    } on NetworkException catch (e) {
+      return Future.error(e);
+    } on InternetException catch (e) {
+      return Future.error(e);
+    }
   }
 
   /// Вызывать при уничтожении интерактора
