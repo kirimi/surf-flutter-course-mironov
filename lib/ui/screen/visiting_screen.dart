@@ -84,7 +84,7 @@ class _VisitingScreenState extends State<VisitingScreen>
         controller: _tabController,
         children: [
           StreamBuilder<List<Sight>>(
-              stream: favoritesInteractor.favoritesStream,
+              stream: favoritesInteractor.favoritesListStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());

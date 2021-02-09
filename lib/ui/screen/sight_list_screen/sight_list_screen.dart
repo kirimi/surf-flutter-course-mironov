@@ -24,6 +24,7 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
+  // Фильтр, который применяется к списку мест на этом экране
   Filter _filter = Filter(
     minDistance: Config.minRange,
     maxDistance: Config.maxRange,
@@ -31,13 +32,19 @@ class _SightListScreenState extends State<SightListScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    sightInteractor.getFilteredSights(filter: _filter);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
-      body: FutureBuilder<List<Sight>>(
-        future: sightInteractor.getFilteredSights(filter: _filter),
+      body: StreamBuilder<List<Sight>>(
+        stream: sightInteractor.sightsStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
@@ -79,17 +86,16 @@ class _SightListScreenState extends State<SightListScreen> {
           actionsBuilder: (_) {
             return [
               // favorite btn
-              FutureBuilder<bool>(
-                future: favoritesInteractor.isFavorite(sight),
+              StreamBuilder<bool>(
+                stream: favoritesInteractor.favoriteStream(sight),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SizedBox.shrink();
                   }
                   final bool isFav = snapshot.data;
                   return SightCardActionButton(
-                    onTap: () async {
-                      await favoritesInteractor.switchFavorite(sight);
-                      setState(() {});
+                    onTap: () {
+                      favoritesInteractor.switchFavorite(sight);
                     },
                     icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
                   );
@@ -135,9 +141,8 @@ class _SightListScreenState extends State<SightListScreen> {
 
     if (newFilter != null) {
       // Обновляем в соответствии с новым фильтром
-      setState(() {
-        _filter = newFilter;
-      });
+      _filter = newFilter;
+      sightInteractor.getFilteredSights(filter: _filter);
     }
   }
 
