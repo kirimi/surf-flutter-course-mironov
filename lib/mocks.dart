@@ -13,8 +13,8 @@ final List<Sight> mocks = [
     url:
         'https://top10.travel/wp-content/uploads/2016/11/dvorcovaya-ploschad.jpg',
     point: GeoPoint(
-      lon: 59.940073,
-      lat: 30.312733,
+      lon: 30.312733,
+      lat: 59.940073,
     ),
     type: getSightTypeByCode('museum'),
   ),
@@ -25,8 +25,8 @@ final List<Sight> mocks = [
     url:
         'https://top10.travel/wp-content/uploads/2016/11/muzey-zapovednik-pavlovsk.jpg',
     point: GeoPoint(
-      lon: 59.685994,
-      lat: 30.433278,
+      lon: 30.433278,
+      lat: 59.685994,
     ),
     type: getSightTypeByCode('museum'),
   ),
@@ -36,8 +36,8 @@ final List<Sight> mocks = [
         'Бывшая императорская загородная резиденция, которую основал Петр Великий в начале XVIII столетия. Этот грандиозный дворцово-парковый ансамбль называют «русским Версалем». За три столетия существования облик Петергофа достаточно сильно изменился, а после Войны 1941-1945 гг. его восстановили буквально из обломков. На территории комплекса располагаются десятки фонтанов, цветники, прогулочные аллеи и павильоны, которые напоминают об имперской эпохе российской истории.',
     url: 'https://top10.travel/wp-content/uploads/2016/11/petergof.jpg',
     point: GeoPoint(
-      lon: 59.881223,
-      lat: 29.906775,
+      lon: 29.906775,
+      lat: 59.881223,
     ),
     type: getSightTypeByCode('museum'),
   ),
@@ -48,8 +48,8 @@ final List<Sight> mocks = [
     url:
         'https://top10.travel/wp-content/uploads/2016/11/bolshoy-ekaterininskiy-dvorets.jpg',
     point: GeoPoint(
-      lon: 59.715871,
-      lat: 30.395414,
+      lon: 30.395414,
+      lat: 59.715871,
     ),
     type: getSightTypeByCode('museum'),
   ),
@@ -59,8 +59,8 @@ final List<Sight> mocks = [
         'Крупнейший в России музей, который наряду с испанским Прадо, парижским Лувром и музеями Ватикана входит в список самых выдающихся и ценных собраний произведений искусства в мире. Экспозиции Эрмитажа занимают 6 зданий, здесь хранится порядка 3 млн. экспонатов. Настоящая гордость музея – здание Зимнего дворца, где располагалась резиденция царской фамилии. Этот великолепный комплекс был выстроен Бартоломео Растрелли в стиле «елизаветинского барокко».',
     url: 'https://top10.travel/wp-content/uploads/2016/11/ermitazh.jpg',
     point: GeoPoint(
-      lon: 59.940073,
-      lat: 30.312733,
+      lon: 30.312733,
+      lat: 59.940073,
     ),
     type: getSightTypeByCode('museum'),
   ),
