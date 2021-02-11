@@ -9,12 +9,13 @@ import 'package:places/interactor/repository/sight_repository.dart';
 
 /// Репозиторий мест. Данные на сервере
 class SightRepositoryNetwork implements SightRepository {
-  static const String _baseUrl = 'https://test-backend-flutter.surfstudio.ru';
   static const String _getListUrl = '/place';
   static const String _addUrl = '/place';
   static const String _getFilteredUrl = '/filtered_places';
 
-  final NetworkClient _client = NetworkClient(baseUrl: _baseUrl);
+  final NetworkClient client;
+
+  SightRepositoryNetwork(this.client);
 
   /// Возвращает список всех мест.
   ///
@@ -28,7 +29,7 @@ class SightRepositoryNetwork implements SightRepository {
     if (count != null) params['count'] = count;
     if (offset != null) params['offset'] = offset;
 
-    final response = await _client.get(_getListUrl, params);
+    final response = await client.get(_getListUrl, params);
 
     final sightsJson = jsonDecode(response);
     final sights = (sightsJson as List)
@@ -46,7 +47,7 @@ class SightRepositoryNetwork implements SightRepository {
       FilterRequest filter) async {
     final body = jsonEncode(filter.toJson());
 
-    final response = await _client.post(_getFilteredUrl, body);
+    final response = await client.post(_getFilteredUrl, body);
 
     final sightsJson = jsonDecode(response);
     final sights = (sightsJson as List).map((p) {
@@ -62,7 +63,7 @@ class SightRepositoryNetwork implements SightRepository {
   Future<Sight> add(Sight sight) async {
     final body = jsonEncode(sight.toApiJson());
 
-    final response = await _client.post(_addUrl, body);
+    final response = await client.post(_addUrl, body);
 
     final sightJson = jsonDecode(response);
     return Sight().fromApiJson(sightJson as Map<String, dynamic>);
