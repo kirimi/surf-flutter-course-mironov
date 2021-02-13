@@ -5,8 +5,6 @@ import 'package:places/domain/filter.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/repository/exceptions/internet_exception.dart';
-import 'package:places/interactor/repository/exceptions/network_exception.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
@@ -61,12 +59,8 @@ class SightInteractor {
       final sights = result.map((e) => e.first).toList();
       _streamController.sink.add(sights);
       return sights.toList();
-    } on NetworkException catch (e) {
+    } catch (e) {
       _streamController.sink.addError(e);
-      return Future.error(e);
-    } on InternetException catch (e) {
-      _streamController.sink.addError(e);
-      return Future.error(e);
     }
   }
 
@@ -74,9 +68,7 @@ class SightInteractor {
   Future addNewSight(Sight sight) async {
     try {
       sightRepository.add(sight);
-    } on NetworkException catch (e) {
-      return Future.error(e);
-    } on InternetException catch (e) {
+    } catch (e) {
       return Future.error(e);
     }
   }
