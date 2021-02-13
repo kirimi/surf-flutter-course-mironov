@@ -51,4 +51,9 @@ class VisitedInteractor {
     await visitedRepository.remove(sight.id);
     getVisitedSights();
   }
+
+  /// Вызывается при уничтожении интерактора
+  void dispose() {
+    _visitedStreamController.close();
+  }
 }

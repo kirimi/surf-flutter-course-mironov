@@ -58,6 +58,9 @@ class App extends StatelessWidget {
             visitedRepository: visitedRepository,
             locationRepository: locationRepository,
           ),
+          dispose: (context, interactor) {
+            interactor.dispose();
+          },
         ),
         Provider<FavoritesInteractor>(
           create: (context) => FavoritesInteractor(
@@ -65,15 +68,24 @@ class App extends StatelessWidget {
             favoritesRepository: favoritesRepository,
             locationRepository: locationRepository,
           ),
+          dispose: (context, interactor) {
+            interactor.dispose();
+          },
         ),
         Provider<VisitedInteractor>(
           create: (context) => VisitedInteractor(
             sightRepository: sightRepository,
             visitedRepository: visitedRepository,
           ),
+          dispose: (context, interactor) {
+            interactor.dispose();
+          },
         ),
         Provider<SearchHistoryInteractor>(
           create: (context) => SearchHistoryInteractor(),
+          dispose: (context, interactor) {
+            interactor.dispose();
+          },
         ),
         ChangeNotifierProvider<ThemeInteractor>(
           create: (context) => ThemeInteractor(),

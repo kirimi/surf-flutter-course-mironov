@@ -37,4 +37,9 @@ class SearchHistoryInteractor {
     _requests.removeAt(index);
     _requestsStreamController.sink.add(_requests);
   }
+
+  /// Вызывается при уничтожении интерактора
+  void dispose() {
+    _requestsStreamController.close();
+  }
 }
