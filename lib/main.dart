@@ -13,10 +13,10 @@ import 'package:places/interactor/repository/favorites_repository.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
+import 'package:places/interactor/search_history_interactor.dart';
 import 'package:places/interactor/settings_interactor/settings_interactor.dart';
 import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/interactor/visiting_interactor.dart';
-import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -30,10 +30,6 @@ import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 import 'package:provider/provider.dart';
-
-// Хранилище для истории поиска.
-// Тут, пока не внедряли других решений
-final searchHistoryState = SearchHistoryState();
 
 // Временное место для интерактора Настроек
 final SettingsInteractor settingsInteractor = SettingsInteractor();
@@ -96,6 +92,9 @@ class _AppState extends State<App> {
             sightRepository: sightRepository,
             visitedRepository: visitedRepository,
           ),
+        ),
+        Provider<SearchHistoryInteractor>(
+          create: (context) => SearchHistoryInteractor(),
         ),
       ],
       child: MaterialApp(

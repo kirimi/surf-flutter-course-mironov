@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/search_history_interactor.dart';
 import 'package:places/interactor/sight_interactor.dart';
-import 'package:places/main.dart';
-import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -35,8 +34,6 @@ class SightSearchScreen extends StatefulWidget {
 }
 
 class _SightSearchScreenState extends State<SightSearchScreen> {
-  final SearchHistoryState _searchHistoryState = searchHistoryState;
-
   // Стрим, в котором данные результата запроса
   StreamController<List<Sight>> _streamController;
 
@@ -130,7 +127,6 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
 
   Widget _buildHistory() {
     return HistoryList(
-      searchHistoryState: _searchHistoryState,
       onSelect: (request) {
         _textEditingController.text = request;
         _onSearch(request, performNow: true);
@@ -169,7 +165,7 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
           _setLoading(false);
           _streamController.sink.add(searchResult);
           // добавляем в историю запросы, которые удачно закончились
-          _searchHistoryState.add(value);
+          context.read<SearchHistoryInteractor>().add(value);
         }, onError: (error) {
           _setLoading(false);
           _streamController.addError(error);
