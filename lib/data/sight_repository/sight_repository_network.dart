@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/sight_repository/sight_api_mapper.dart';
 import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
@@ -9,32 +9,13 @@ import 'package:places/interactor/repository/sight_repository.dart';
 
 /// Репозиторий мест. Данные на сервере
 class SightRepositoryNetwork implements SightRepository {
-  static const String _baseUrl = 'https://test-backend-flutter.surfstudio.ru';
   static const String _getListUrl = '/place';
   static const String _addUrl = '/place';
   static const String _getFilteredUrl = '/filtered_places';
 
-  final Dio _dio = Dio();
+  final NetworkClient client;
 
-  SightRepositoryNetwork() {
-    _dio.options.baseUrl = _baseUrl;
-    _dio.options.connectTimeout = 5000;
-    _dio.options.receiveTimeout = 5000;
-    _dio.options.sendTimeout = 5000;
-    _dio.options.responseType = ResponseType.json;
-
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options) {
-          print('request: ${options.data}');
-        },
-        onResponse: (response) {
-          print('response: ${response.data}');
-        },
-        onError: (e) {},
-      ),
-    );
-  }
+  SightRepositoryNetwork(this.client);
 
   /// Возвращает список всех мест.
   ///
@@ -48,20 +29,13 @@ class SightRepositoryNetwork implements SightRepository {
     if (count != null) params['count'] = count;
     if (offset != null) params['offset'] = offset;
 
-    final response = await _dio.get<String>(
-      _getListUrl,
-      queryParameters: params,
-    );
+    final response = await client.get(_getListUrl, params);
 
-    if (response.statusCode == 200) {
-      // final placesJson = await compute(_parseJson, response.data);
-      final sightsJson = jsonDecode(response.data);
-      final sights = (sightsJson as List)
-          .map((p) => Sight().fromApiJson(p as Map<String, dynamic>))
-          .toList();
-      return sights;
-    }
-    throw Exception('Can not get list of places');
+    final sightsJson = jsonDecode(response);
+    final sights = (sightsJson as List)
+        .map((p) => Sight().fromApiJson(p as Map<String, dynamic>))
+        .toList();
+    return sights;
   }
 
   /// Возвращает List<Map<Sight, double>> список мест удовлетворяющих фильтру.
@@ -72,34 +46,27 @@ class SightRepositoryNetwork implements SightRepository {
   Future<List<Pair<Sight, double>>> getFilteredList(
       FilterRequest filter) async {
     final body = jsonEncode(filter.toJson());
-    final response = await _dio.post<String>(
-      _getFilteredUrl,
-      data: body,
-    );
-    if (response.statusCode == 200) {
-      // final sightsJson = await compute(_parseJson, response.data);
-      final sightsJson = jsonDecode(response.data);
-      final sights = (sightsJson as List).map((p) {
-        final sight = Sight().fromApiJson(p as Map<String, dynamic>);
-        final distance = p['distance'] as double;
-        return Pair(sight, distance);
-      }).toList();
 
-      return sights;
-    }
-    throw Exception('Can not get list of places');
+    final response = await client.post(_getFilteredUrl, body);
+
+    final sightsJson = jsonDecode(response);
+    final sights = (sightsJson as List).map((p) {
+      final sight = Sight().fromApiJson(p as Map<String, dynamic>);
+      final distance = p['distance'] as double;
+      return Pair(sight, distance);
+    }).toList();
+
+    return sights;
   }
 
   @override
   Future<Sight> add(Sight sight) async {
     final body = jsonEncode(sight.toApiJson());
-    final response = await _dio.post<String>(_addUrl, data: body);
-    if (response.statusCode == 200) {
-      // final sightJson = await compute(_parseJson, response.data);
-      final sightJson = jsonDecode(response.data);
-      return Sight().fromApiJson(sightJson as Map<String, dynamic>);
-    }
-    throw Exception('Can not add place');
+
+    final response = await client.post(_addUrl, body);
+
+    final sightJson = jsonDecode(response);
+    return Sight().fromApiJson(sightJson as Map<String, dynamic>);
   }
 
   @override

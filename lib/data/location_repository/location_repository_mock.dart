@@ -11,7 +11,7 @@ class LocationRepositoryMock implements LocationRepository {
     if (_currentLocation != null) {
       return Future.value(_currentLocation);
     } else {
-      _currentLocation = GeoPoint(lon: 59.685994, lat: 30.433278);
+      _currentLocation = GeoPoint(lon: 30.433278, lat: 59.685994);
       return Future.delayed(const Duration(milliseconds: 10), () {
         return Future.value(_currentLocation);
       });

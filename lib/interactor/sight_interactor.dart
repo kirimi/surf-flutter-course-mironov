@@ -54,18 +54,23 @@ class SightInteractor {
       );
     }
 
-    final result = await sightRepository.getFilteredList(filterReq);
-
-    final sights = result.map((e) => e.first).toList();
-
-    _streamController.sink.add(sights);
-
-    return sights.toList();
+    try {
+      final result = await sightRepository.getFilteredList(filterReq);
+      final sights = result.map((e) => e.first).toList();
+      _streamController.sink.add(sights);
+      return sights.toList();
+    } catch (e) {
+      _streamController.sink.addError(e);
+    }
   }
 
   /// Добавляет новое место
   Future addNewSight(Sight sight) async {
-    sightRepository.add(sight);
+    try {
+      sightRepository.add(sight);
+    } catch (e) {
+      return Future.error(e);
+    }
   }
 
   /// Вызывать при уничтожении интерактора

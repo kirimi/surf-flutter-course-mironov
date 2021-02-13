@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:places/config.dart';
 import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
-import 'package:places/data/sight_repository/sight_repository_memory.dart';
+import 'package:places/data/network_client/network_client.dart';
+import 'package:places/data/network_client/network_client_dio.dart';
+import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
@@ -13,7 +16,6 @@ import 'package:places/interactor/repository/visited_repository.dart';
 import 'package:places/interactor/settings_interactor/settings_interactor.dart';
 import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/interactor/visiting_interactor.dart';
-import 'package:places/mocks.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/themes.dart';
@@ -32,8 +34,14 @@ import 'package:places/ui/screen/visiting_screen.dart';
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
 
-// Временное место для интеракторов
-final SightRepository sightRepository = SightRepositoryMemory();
+// Временное место для интеракторов, репозиториев и тп
+// final SightRepository sightRepository = SightRepositoryMemory();
+
+final NetworkClient networkClient = NetworkClientDio(baseUrl: Config.baseUrl);
+// final NetworkClient networkClient = NetworkClientNoInternet();
+
+final SightRepository sightRepository = SightRepositoryNetwork(networkClient);
+
 final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
 final VisitedRepository visitedRepository = VisitedRepositoryMemory();
 final LocationRepository locationRepository = LocationRepositoryMock();
@@ -59,7 +67,7 @@ final VisitedInteractor visitedInteractor = VisitedInteractor(
 final SettingsInteractor settingsInteractor = SettingsInteractor();
 
 Future<void> main() async {
-  await uploadMocks(sightRepository);
+  // await uploadMocks(sightRepository);
   runApp(App());
 }
 

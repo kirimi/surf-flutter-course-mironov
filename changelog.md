@@ -1,3 +1,16 @@
+# 12.2 NetworkClient fix
+- отрефакторил NetworkClientDio, чтобы не было повторяющегося кода. Добавил функ. _executeRequest.
+- Для развязки с dio сделал интерфейс NetworkClient от которого теперь зависит SightRepositoryNetwork. И при создании SightRepositoryNetwork в него инжектится нужная имплементация, типа NetworkClientDio или для опытов NetworkClientNoInternet. Можно в целом теперь реализовать на пакете http, к примеру. Или для тестов, моковый клиент.
+
+# 12.2 NetworkClient
+- добавил NetworkClient, который совершает запросы с серверу и в случае успеха возвращает ответ или выкидывает соответствующий эксепшен. Логика взаимодействия с сервером и ошибок инкапсулирова в этом классе.
+
+# 12.2 Exceptions
+- добавил кастомные исключения для сетевой ошибки и ошибки соединения
+- в репозитории SightRepositoryNetwork добавил обработку исключений dio и выброску кастомных исключений
+- в интеракторе SightInteractor отлавливаются исключения и кидаются в stream и future
+- на экране SightListScreen в StreamBuilder показываем сообщение об ошибке, если есть такая.
+
 # 11.2 StreamBuilder
 - на странице SightListScreen использовал StreamBuilder для списка мест. Для этого в интеракторе завел StreamController куда проталкиваем результат запросов.
 - кнопочку Favorites переделал на StreamBuilder. Для этого в FavoritesInteractor завел механизм получения стрима для значения Favorites мета. Подключил на списке мест, и на details.
