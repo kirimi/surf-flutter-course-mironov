@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/favorites_interactor.dart';
 import 'package:places/mocks.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -11,6 +11,7 @@ import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_details_screen/widget/sight_photos_carousel.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/icon_text_button.dart';
+import 'package:provider/provider.dart';
 
 /// BottomSheet подробного представления "Интересного места"
 class SightDetailsBottomSheet extends StatefulWidget {
@@ -82,7 +83,8 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                               text: AppStrings.sightDetailsPlanBtn,
                             ),
                             StreamBuilder<bool>(
-                              stream: favoritesInteractor
+                              stream: context
+                                  .read<FavoritesInteractor>()
                                   .favoriteStream(widget.sight),
                               builder: (context, snapshot) {
                                 if (!snapshot.hasData) {
@@ -91,7 +93,8 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                                 final bool isFav = snapshot.data;
                                 return IconTextButton(
                                   onPressed: () {
-                                    favoritesInteractor
+                                    context
+                                        .read<FavoritesInteractor>()
                                         .switchFavorite(widget.sight);
                                   },
                                   text: AppStrings.sightDetailsToFavoriteBtn,

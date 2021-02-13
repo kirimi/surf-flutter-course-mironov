@@ -3,11 +3,12 @@ import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight_type/default_sight_types.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
+import 'package:provider/provider.dart';
 
 /// Экран с фильтрами
 ///
@@ -168,8 +169,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   // количество точек, которые попадают под условие фильтра
   Future<void> _updateFilteredCount() async {
-    final int count =
-        (await sightInteractor.getFilteredSights(filter: _filter)).length;
+    final int count = (await context
+            .read<SightInteractor>()
+            .getFilteredSights(filter: _filter))
+        .length;
     setState(() {
       _filteredCount = count;
     });

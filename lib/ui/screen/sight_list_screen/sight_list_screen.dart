@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -15,6 +16,7 @@ import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
+import 'package:provider/provider.dart';
 
 /// Экран со списком интересных мест
 class SightListScreen extends StatefulWidget {
@@ -35,7 +37,7 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   void initState() {
     super.initState();
-    sightInteractor.getFilteredSights(filter: _filter);
+    context.read<SightInteractor>().getFilteredSights(filter: _filter);
   }
 
   @override
@@ -45,7 +47,7 @@ class _SightListScreenState extends State<SightListScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
       body: StreamBuilder<List<Sight>>(
-        stream: sightInteractor.sightsStream,
+        stream: context.read<SightInteractor>().sightsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             // В случае ошибки показываем сообщение
@@ -98,7 +100,8 @@ class _SightListScreenState extends State<SightListScreen> {
             return [
               // favorite btn
               StreamBuilder<bool>(
-                stream: favoritesInteractor.favoriteStream(sight),
+                stream:
+                    context.read<FavoritesInteractor>().favoriteStream(sight),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SizedBox.shrink();
@@ -106,7 +109,7 @@ class _SightListScreenState extends State<SightListScreen> {
                   final bool isFav = snapshot.data;
                   return SightCardActionButton(
                     onTap: () {
-                      favoritesInteractor.switchFavorite(sight);
+                      context.read<FavoritesInteractor>().switchFavorite(sight);
                     },
                     icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
                   );
@@ -153,7 +156,7 @@ class _SightListScreenState extends State<SightListScreen> {
     if (newFilter != null) {
       // Обновляем в соответствии с новым фильтром
       _filter = newFilter;
-      sightInteractor.getFilteredSights(filter: _filter);
+      context.read<SightInteractor>().getFilteredSights(filter: _filter);
     }
   }
 

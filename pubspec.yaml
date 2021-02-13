@@ -14,8 +14,8 @@ dependencies:
 
   # поддержка svg
   flutter_svg: ^0.19.1
-
   dio: ^3.0.10
+  provider: ^4.3.3
 
 dev_dependencies:
   flutter_test:

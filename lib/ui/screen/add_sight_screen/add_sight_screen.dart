@@ -3,7 +3,7 @@ import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
@@ -12,6 +12,7 @@ import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/label.dart';
 import 'package:places/ui/widgets/text_field_with_clear.dart';
+import 'package:provider/provider.dart';
 
 /// Экран добавления нового места
 class AddSightScreen extends StatefulWidget {
@@ -226,8 +227,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
       type: _selectedSightType,
     );
 
-    sightInteractor.addNewSight(newSight);
-    // _onBack();
+    context.read<SightInteractor>().addNewSight(newSight);
   }
 
   // Добавление фото

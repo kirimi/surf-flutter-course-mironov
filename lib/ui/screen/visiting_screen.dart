@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -16,6 +17,7 @@ import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
 import 'package:places/ui/widgets/ios_date_picker.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
+import 'package:provider/provider.dart';
 
 /// Экран Хочу посетить/Посещенные места
 class VisitingScreen extends StatefulWidget {
@@ -37,13 +39,13 @@ class _VisitingScreenState extends State<VisitingScreen>
       setState(() {});
       // при смене таба инициируем обновление Favorites или Visited
       if (_tabController.index == 0) {
-        favoritesInteractor.getFavoritesSights();
+        context.read<FavoritesInteractor>().getFavoritesSights();
       } else if (_tabController.index == 1) {
-        visitedInteractor.getVisitedSights();
+        context.read<VisitedInteractor>().getVisitedSights();
       }
     });
-    favoritesInteractor.getFavoritesSights();
-    visitedInteractor.getVisitedSights();
+    context.read<FavoritesInteractor>().getFavoritesSights();
+    context.read<VisitedInteractor>().getVisitedSights();
   }
 
   @override
@@ -84,7 +86,7 @@ class _VisitingScreenState extends State<VisitingScreen>
         controller: _tabController,
         children: [
           StreamBuilder<List<Sight>>(
-              stream: favoritesInteractor.favoritesListStream,
+              stream: context.read<FavoritesInteractor>().favoritesListStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -95,7 +97,7 @@ class _VisitingScreenState extends State<VisitingScreen>
                 );
               }),
           StreamBuilder<List<Sight>>(
-              stream: visitedInteractor.visitedStream,
+              stream: context.read<VisitedInteractor>().visitedStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -185,7 +187,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Favorites
   void _onDeleteFromFavorites(Sight sight) {
-    favoritesInteractor.removeFromFavorites(sight);
+    context.read<FavoritesInteractor>().removeFromFavorites(sight);
   }
 
   // todo добавить функцию хранения сортировки в FavoritesRepository
@@ -194,7 +196,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Visited
   void _onDeleteFromVisited(Sight sight) {
-    visitedInteractor.removeFromVisited(sight);
+    context.read<VisitedInteractor>().removeFromVisited(sight);
   }
 
   // todo добавить функцию хранения сортировки в VisitedRepository

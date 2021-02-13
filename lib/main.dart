@@ -29,39 +29,11 @@ import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
+import 'package:provider/provider.dart';
 
 // Хранилище для истории поиска.
 // Тут, пока не внедряли других решений
 final searchHistoryState = SearchHistoryState();
-
-// Временное место для интеракторов, репозиториев и тп
-// final SightRepository sightRepository = SightRepositoryMemory();
-
-final NetworkClient networkClient = NetworkClientDio(baseUrl: Config.baseUrl);
-// final NetworkClient networkClient = NetworkClientNoInternet();
-
-final SightRepository sightRepository = SightRepositoryNetwork(networkClient);
-
-final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
-final VisitedRepository visitedRepository = VisitedRepositoryMemory();
-final LocationRepository locationRepository = LocationRepositoryMock();
-
-final SightInteractor sightInteractor = SightInteractor(
-  sightRepository: sightRepository,
-  visitedRepository: visitedRepository,
-  locationRepository: locationRepository,
-);
-
-final FavoritesInteractor favoritesInteractor = FavoritesInteractor(
-  sightRepository: sightRepository,
-  favoritesRepository: favoritesRepository,
-  locationRepository: locationRepository,
-);
-
-final VisitedInteractor visitedInteractor = VisitedInteractor(
-  sightRepository: sightRepository,
-  visitedRepository: visitedRepository,
-);
 
 // Временное место для интерактора Настроек
 final SettingsInteractor settingsInteractor = SettingsInteractor();
@@ -91,43 +63,79 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppStrings.appTitle,
-      theme: settingsInteractor.themeState.isDark ? darkTheme : lightTheme,
-      debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.routeName,
-      routes: {
-        SplashScreen.routeName: (context) => SplashScreen(),
-        OnboardingScreen.routeName: (context) => OnboardingScreen(),
-        SightListScreen.routeName: (context) => SightListScreen(),
-        AddSightScreen.routeName: (context) => AddSightScreen(),
-        SelectCategoryScreen.routeName: (context) => SelectCategoryScreen(),
-        VisitingScreen.routeName: (context) => VisitingScreen(),
-        SettingsScreen.routeName: (context) => SettingsScreen(),
-      },
+    final NetworkClient networkClient =
+        NetworkClientDio(baseUrl: Config.baseUrl);
+    // final NetworkClient networkClient = NetworkClientNoInternet();
 
-      // Аргументы на этих страницах передаются через конструктор,
-      // т.к. в FiltersScreen они используются в initState,
-      // остальные страницы так сделано для однородности и на будущее
-      onGenerateRoute: (settings) {
-        if (settings.name == SightDetailsScreen.routeName) {
-          final sight = settings.arguments as Sight;
-          return MaterialPageRoute(
-            builder: (context) => SightDetailsScreen(sight: sight),
-          );
-        } else if (settings.name == FiltersScreen.routeName) {
-          final filter = settings.arguments as Filter;
-          return MaterialPageRoute(
-            builder: (context) => FiltersScreen(filter: filter),
-          );
-        } else if (settings.name == SightSearchScreen.routeName) {
-          final filter = settings.arguments as Filter;
-          return MaterialPageRoute(
-            builder: (context) => SightSearchScreen(filter: filter),
-          );
-        }
-        return null;
-      },
+    final SightRepository sightRepository =
+        SightRepositoryNetwork(networkClient);
+    // final SightRepository sightRepository = SightRepositoryMemory();
+
+    final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
+    final VisitedRepository visitedRepository = VisitedRepositoryMemory();
+    final LocationRepository locationRepository = LocationRepositoryMock();
+
+    return MultiProvider(
+      providers: [
+        Provider<SightInteractor>(
+          create: (context) => SightInteractor(
+            sightRepository: sightRepository,
+            visitedRepository: visitedRepository,
+            locationRepository: locationRepository,
+          ),
+        ),
+        Provider<FavoritesInteractor>(
+          create: (context) => FavoritesInteractor(
+            sightRepository: sightRepository,
+            favoritesRepository: favoritesRepository,
+            locationRepository: locationRepository,
+          ),
+        ),
+        Provider<VisitedInteractor>(
+          create: (context) => VisitedInteractor(
+            sightRepository: sightRepository,
+            visitedRepository: visitedRepository,
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        title: AppStrings.appTitle,
+        theme: settingsInteractor.themeState.isDark ? darkTheme : lightTheme,
+        debugShowCheckedModeBanner: false,
+        initialRoute: SplashScreen.routeName,
+        routes: {
+          SplashScreen.routeName: (context) => SplashScreen(),
+          OnboardingScreen.routeName: (context) => OnboardingScreen(),
+          SightListScreen.routeName: (context) => SightListScreen(),
+          AddSightScreen.routeName: (context) => AddSightScreen(),
+          SelectCategoryScreen.routeName: (context) => SelectCategoryScreen(),
+          VisitingScreen.routeName: (context) => VisitingScreen(),
+          SettingsScreen.routeName: (context) => SettingsScreen(),
+        },
+
+        // Аргументы на этих страницах передаются через конструктор,
+        // т.к. в FiltersScreen они используются в initState,
+        // остальные страницы так сделано для однородности и на будущее
+        onGenerateRoute: (settings) {
+          if (settings.name == SightDetailsScreen.routeName) {
+            final sight = settings.arguments as Sight;
+            return MaterialPageRoute(
+              builder: (context) => SightDetailsScreen(sight: sight),
+            );
+          } else if (settings.name == FiltersScreen.routeName) {
+            final filter = settings.arguments as Filter;
+            return MaterialPageRoute(
+              builder: (context) => FiltersScreen(filter: filter),
+            );
+          } else if (settings.name == SightSearchScreen.routeName) {
+            final filter = settings.arguments as Filter;
+            return MaterialPageRoute(
+              builder: (context) => SightSearchScreen(filter: filter),
+            );
+          }
+          return null;
+        },
+      ),
     );
   }
 

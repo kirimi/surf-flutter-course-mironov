@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/main.dart';
 import 'package:places/search_history_state.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -13,6 +14,7 @@ import 'package:places/ui/screen/sight_search_screen/widget/history_list.dart';
 import 'package:places/ui/screen/sight_search_screen/widget/search_result_item.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/search_bar.dart';
+import 'package:provider/provider.dart';
 
 /// Экран поиска места
 ///
@@ -179,7 +181,8 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
   // Поиск с учетом фильтра
   Future<List<Sight>> _doSearch(String value) async {
     final filter = widget.filter.copyWith(nameFilter: value);
-    final filtered = await sightInteractor.getFilteredSights(filter: filter);
+    final filtered =
+        await context.read<SightInteractor>().getFilteredSights(filter: filter);
     return filtered.toList();
   }
 
