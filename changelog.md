@@ -1,6 +1,7 @@
 # 13.2 Provider
 - интеракторы провайдятся в ui с помощью Provider
 - переделал интерактор истории поиска на стримы.
+- переделал интерактор темы. Провайдится с помощью ChangeNotifierProvider
 
 # 12.2 NetworkClient fix
 - отрефакторил NetworkClientDio, чтобы не было повторяющегося кода. Добавил функ. _executeRequest.

@@ -14,11 +14,10 @@ import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
 import 'package:places/interactor/search_history_interactor.dart';
-import 'package:places/interactor/settings_interactor/settings_interactor.dart';
 import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
-import 'package:places/ui/res/themes.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
@@ -31,32 +30,12 @@ import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 import 'package:provider/provider.dart';
 
-// Временное место для интерактора Настроек
-final SettingsInteractor settingsInteractor = SettingsInteractor();
-
 Future<void> main() async {
   // await uploadMocks(sightRepository);
   runApp(App());
 }
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  @override
-  void initState() {
-    super.initState();
-    settingsInteractor.themeState.addListener(_onThemeChange);
-  }
-
-  @override
-  void dispose() {
-    settingsInteractor.themeState.removeListener(_onThemeChange);
-    super.dispose();
-  }
-
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NetworkClient networkClient =
@@ -96,47 +75,53 @@ class _AppState extends State<App> {
         Provider<SearchHistoryInteractor>(
           create: (context) => SearchHistoryInteractor(),
         ),
+        ChangeNotifierProvider<ThemeInteractor>(
+          create: (context) => ThemeInteractor(),
+        ),
       ],
-      child: MaterialApp(
-        title: AppStrings.appTitle,
-        theme: settingsInteractor.themeState.isDark ? darkTheme : lightTheme,
-        debugShowCheckedModeBanner: false,
-        initialRoute: SplashScreen.routeName,
-        routes: {
-          SplashScreen.routeName: (context) => SplashScreen(),
-          OnboardingScreen.routeName: (context) => OnboardingScreen(),
-          SightListScreen.routeName: (context) => SightListScreen(),
-          AddSightScreen.routeName: (context) => AddSightScreen(),
-          SelectCategoryScreen.routeName: (context) => SelectCategoryScreen(),
-          VisitingScreen.routeName: (context) => VisitingScreen(),
-          SettingsScreen.routeName: (context) => SettingsScreen(),
-        },
+      child: Consumer<ThemeInteractor>(
+        builder: (context, themeInteractor, _) {
+          return MaterialApp(
+            title: AppStrings.appTitle,
+            theme: themeInteractor.theme,
+            debugShowCheckedModeBanner: false,
+            initialRoute: SplashScreen.routeName,
+            routes: {
+              SplashScreen.routeName: (context) => SplashScreen(),
+              OnboardingScreen.routeName: (context) => OnboardingScreen(),
+              SightListScreen.routeName: (context) => SightListScreen(),
+              AddSightScreen.routeName: (context) => AddSightScreen(),
+              SelectCategoryScreen.routeName: (context) =>
+                  SelectCategoryScreen(),
+              VisitingScreen.routeName: (context) => VisitingScreen(),
+              SettingsScreen.routeName: (context) => SettingsScreen(),
+            },
 
-        // Аргументы на этих страницах передаются через конструктор,
-        // т.к. в FiltersScreen они используются в initState,
-        // остальные страницы так сделано для однородности и на будущее
-        onGenerateRoute: (settings) {
-          if (settings.name == SightDetailsScreen.routeName) {
-            final sight = settings.arguments as Sight;
-            return MaterialPageRoute(
-              builder: (context) => SightDetailsScreen(sight: sight),
-            );
-          } else if (settings.name == FiltersScreen.routeName) {
-            final filter = settings.arguments as Filter;
-            return MaterialPageRoute(
-              builder: (context) => FiltersScreen(filter: filter),
-            );
-          } else if (settings.name == SightSearchScreen.routeName) {
-            final filter = settings.arguments as Filter;
-            return MaterialPageRoute(
-              builder: (context) => SightSearchScreen(filter: filter),
-            );
-          }
-          return null;
+            // Аргументы на этих страницах передаются через конструктор,
+            // т.к. в FiltersScreen они используются в initState,
+            // остальные страницы так сделано для однородности и на будущее
+            onGenerateRoute: (settings) {
+              if (settings.name == SightDetailsScreen.routeName) {
+                final sight = settings.arguments as Sight;
+                return MaterialPageRoute(
+                  builder: (context) => SightDetailsScreen(sight: sight),
+                );
+              } else if (settings.name == FiltersScreen.routeName) {
+                final filter = settings.arguments as Filter;
+                return MaterialPageRoute(
+                  builder: (context) => FiltersScreen(filter: filter),
+                );
+              } else if (settings.name == SightSearchScreen.routeName) {
+                final filter = settings.arguments as Filter;
+                return MaterialPageRoute(
+                  builder: (context) => SightSearchScreen(filter: filter),
+                );
+              }
+              return null;
+            },
+          );
         },
       ),
     );
   }
-
-  void _onThemeChange() => setState(() {});
 }

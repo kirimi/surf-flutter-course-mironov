@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
 
 /// Экран настроек
 class SettingsScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           SwitchListTile(
             title: const Text(AppStrings.settingsDarkTheme),
-            value: settingsInteractor.themeState.isDark,
+            value: context.read<ThemeInteractor>().isDark,
             onChanged: _onChangeTheme,
           ),
           ListTile(
@@ -49,5 +50,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   // ignore: use_setters_to_change_properties
   void _onChangeTheme(bool newValue) =>
-      settingsInteractor.themeState.isDark = newValue;
+      context.read<ThemeInteractor>().isDark = newValue;
 }
