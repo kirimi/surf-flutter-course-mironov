@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:places/interactor/search_history_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -26,14 +24,12 @@ class HistoryList extends StatefulWidget {
 }
 
 class _HistoryListState extends State<HistoryList> {
+  SearchHistoryInteractor interactor;
+
   @override
   void initState() {
     super.initState();
-
-    // Начальное значение для стрима
-    scheduleMicrotask(() {
-      context.read<SearchHistoryInteractor>().fetchRequests();
-    });
+    interactor = context.read<SearchHistoryInteractor>();
   }
 
   @override
@@ -46,8 +42,7 @@ class _HistoryListState extends State<HistoryList> {
           children: [
             const Label(text: AppStrings.searchHistoryTitle),
             StreamBuilder<List<String>>(
-              stream:
-                  context.read<SearchHistoryInteractor>().requestsListStream,
+              stream: interactor.requestsListStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError || !snapshot.hasData) {
                   return const SizedBox.shrink();
@@ -86,11 +81,11 @@ class _HistoryListState extends State<HistoryList> {
   }
 
   void _onDeleteItem(int index) {
-    context.read<SearchHistoryInteractor>().remove(index);
+    interactor.remove(index);
   }
 
   void _onClearHistory() {
-    context.read<SearchHistoryInteractor>().clear();
+    interactor.clear();
   }
 }
 

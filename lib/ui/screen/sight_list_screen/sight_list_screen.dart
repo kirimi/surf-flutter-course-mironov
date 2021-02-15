@@ -27,6 +27,9 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
+  FavoritesInteractor favoritesInteractor;
+  SightInteractor sightInteractor;
+
   // Фильтр, который применяется к списку мест на этом экране
   Filter _filter = Filter(
     minDistance: Config.minRange,
@@ -37,7 +40,10 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<SightInteractor>().getFilteredSights(filter: _filter);
+    sightInteractor = context.read<SightInteractor>();
+    favoritesInteractor = context.read<FavoritesInteractor>();
+
+    sightInteractor.getFilteredSights(filter: _filter);
   }
 
   @override
@@ -47,7 +53,7 @@ class _SightListScreenState extends State<SightListScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
       body: StreamBuilder<List<Sight>>(
-        stream: context.read<SightInteractor>().sightsStream,
+        stream: sightInteractor.sightsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             // В случае ошибки показываем сообщение
@@ -100,8 +106,7 @@ class _SightListScreenState extends State<SightListScreen> {
             return [
               // favorite btn
               StreamBuilder<bool>(
-                stream:
-                    context.read<FavoritesInteractor>().favoriteStream(sight),
+                stream: favoritesInteractor.favoriteStream(sight),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const SizedBox.shrink();
@@ -109,7 +114,7 @@ class _SightListScreenState extends State<SightListScreen> {
                   final bool isFav = snapshot.data;
                   return SightCardActionButton(
                     onTap: () {
-                      context.read<FavoritesInteractor>().switchFavorite(sight);
+                      favoritesInteractor.switchFavorite(sight);
                     },
                     icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
                   );
@@ -156,7 +161,7 @@ class _SightListScreenState extends State<SightListScreen> {
     if (newFilter != null) {
       // Обновляем в соответствии с новым фильтром
       _filter = newFilter;
-      context.read<SightInteractor>().getFilteredSights(filter: _filter);
+      sightInteractor.getFilteredSights(filter: _filter);
     }
   }
 

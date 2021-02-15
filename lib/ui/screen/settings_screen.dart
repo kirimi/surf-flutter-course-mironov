@@ -16,6 +16,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  ThemeInteractor themeInteractor;
+
+  @override
+  void initState() {
+    super.initState();
+    themeInteractor = context.read<ThemeInteractor>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           SwitchListTile(
             title: const Text(AppStrings.settingsDarkTheme),
-            value: context.read<ThemeInteractor>().isDark,
+            value: themeInteractor.isDark,
             onChanged: _onChangeTheme,
           ),
           ListTile(
@@ -49,6 +57,5 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   // ignore: use_setters_to_change_properties
-  void _onChangeTheme(bool newValue) =>
-      context.read<ThemeInteractor>().isDark = newValue;
+  void _onChangeTheme(bool newValue) => themeInteractor.isDark = newValue;
 }

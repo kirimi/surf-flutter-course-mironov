@@ -33,6 +33,8 @@ class _AddSightScreenState extends State<AddSightScreen> {
   final TextEditingController _lonController = TextEditingController();
   final TextEditingController _descrController = TextEditingController();
 
+  SightInteractor sightInteractor;
+
   // Выбранная категория
   SightType _selectedSightType;
 
@@ -41,6 +43,12 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
   // Доступность кнопки submit
   bool _isSubmitEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    sightInteractor = context.read<SightInteractor>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +235,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
       type: _selectedSightType,
     );
 
-    context.read<SightInteractor>().addNewSight(newSight);
+    sightInteractor.addNewSight(newSight);
   }
 
   // Добавление фото

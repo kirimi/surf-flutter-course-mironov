@@ -1,20 +1,16 @@
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
+
 /// Интерактор для истории поиска
 class SearchHistoryInteractor {
   // Хранилище для списка прошлых запросов
   final List<String> _requests = [];
 
-  /// Стрим со списком истории запросов
-  final StreamController<List<String>> _requestsStreamController =
-      StreamController.broadcast();
-  Stream<List<String>> get requestsListStream =>
-      _requestsStreamController.stream;
+  final BehaviorSubject<List<String>> _subj = BehaviorSubject();
 
-  /// добавляет в стим текущий список истории поиска
-  void fetchRequests() {
-    _requestsStreamController.sink.add(_requests);
-  }
+  /// Стрим со списком истории запросов
+  Stream<List<String>> get requestsListStream => _subj.stream;
 
   /// Добавить в историю.
   ///
@@ -23,23 +19,23 @@ class SearchHistoryInteractor {
   void add(String request) {
     _requests.removeWhere((element) => element == request);
     _requests.insert(0, request);
-    _requestsStreamController.sink.add(_requests);
+    _subj.sink.add(_requests);
   }
 
   /// Очистить всю историю
   void clear() {
     _requests.clear();
-    _requestsStreamController.sink.add(_requests);
+    _subj.sink.add(_requests);
   }
 
   /// Удаляет запись из истории по индексу
   void remove(int index) {
     _requests.removeAt(index);
-    _requestsStreamController.sink.add(_requests);
+    _subj.sink.add(_requests);
   }
 
   /// Вызывается при уничтожении интерактора
   void dispose() {
-    _requestsStreamController.close();
+    _subj.close();
   }
 }

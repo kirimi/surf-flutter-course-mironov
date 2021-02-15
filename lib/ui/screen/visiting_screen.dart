@@ -30,22 +30,27 @@ class VisitingScreen extends StatefulWidget {
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  FavoritesInteractor favoritesInteractor;
+  VisitedInteractor visitedInteractor;
 
   @override
   void initState() {
     super.initState();
+    favoritesInteractor = context.read<FavoritesInteractor>();
+    visitedInteractor = context.read<VisitedInteractor>();
+
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {});
       // при смене таба инициируем обновление Favorites или Visited
       if (_tabController.index == 0) {
-        context.read<FavoritesInteractor>().getFavoritesSights();
+        favoritesInteractor.getFavoritesSights();
       } else if (_tabController.index == 1) {
-        context.read<VisitedInteractor>().getVisitedSights();
+        visitedInteractor.getVisitedSights();
       }
     });
-    context.read<FavoritesInteractor>().getFavoritesSights();
-    context.read<VisitedInteractor>().getVisitedSights();
+    favoritesInteractor.getFavoritesSights();
+    visitedInteractor.getVisitedSights();
   }
 
   @override
@@ -86,7 +91,7 @@ class _VisitingScreenState extends State<VisitingScreen>
         controller: _tabController,
         children: [
           StreamBuilder<List<Sight>>(
-              stream: context.read<FavoritesInteractor>().favoritesListStream,
+              stream: favoritesInteractor.favoritesListStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -97,7 +102,7 @@ class _VisitingScreenState extends State<VisitingScreen>
                 );
               }),
           StreamBuilder<List<Sight>>(
-              stream: context.read<VisitedInteractor>().visitedStream,
+              stream: visitedInteractor.visitedStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -187,7 +192,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Favorites
   void _onDeleteFromFavorites(Sight sight) {
-    context.read<FavoritesInteractor>().removeFromFavorites(sight);
+    favoritesInteractor.removeFromFavorites(sight);
   }
 
   // todo добавить функцию хранения сортировки в FavoritesRepository
@@ -196,7 +201,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Visited
   void _onDeleteFromVisited(Sight sight) {
-    context.read<VisitedInteractor>().removeFromVisited(sight);
+    visitedInteractor.removeFromVisited(sight);
   }
 
   // todo добавить функцию хранения сортировки в VisitedRepository
