@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -15,6 +16,7 @@ import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
+import 'package:provider/provider.dart';
 
 /// Экран со списком интересных мест
 class SightListScreen extends StatefulWidget {
@@ -25,6 +27,9 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
+  FavoritesInteractor favoritesInteractor;
+  SightInteractor sightInteractor;
+
   // Фильтр, который применяется к списку мест на этом экране
   Filter _filter = Filter(
     minDistance: Config.minRange,
@@ -35,6 +40,9 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   void initState() {
     super.initState();
+    sightInteractor = context.read<SightInteractor>();
+    favoritesInteractor = context.read<FavoritesInteractor>();
+
     sightInteractor.getFilteredSights(filter: _filter);
   }
 

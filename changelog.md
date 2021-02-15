@@ -1,3 +1,12 @@
+# 13.2 Provider  fix
+- добавлен rxdart в местах где удобно BehaviourSubject
+- рефакторинг
+
+# 13.2 Provider
+- интеракторы провайдятся в ui с помощью Provider
+- переделал интерактор истории поиска на стримы.
+- переделал интерактор темы. Провайдится с помощью ChangeNotifierProvider
+
 # 12.2 NetworkClient fix
 - отрефакторил NetworkClientDio, чтобы не было повторяющегося кода. Добавил функ. _executeRequest.
 - Для развязки с dio сделал интерфейс NetworkClient от которого теперь зависит SightRepositoryNetwork. И при создании SightRepositoryNetwork в него инжектится нужная имплементация, типа NetworkClientDio или для опытов NetworkClientNoInternet. Можно в целом теперь реализовать на пакете http, к примеру. Или для тестов, моковый клиент.

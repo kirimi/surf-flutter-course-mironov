@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/main.dart';
+import 'package:places/interactor/favorites_interactor.dart';
+import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
@@ -16,6 +17,7 @@ import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
 import 'package:places/ui/widgets/ios_date_picker.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
+import 'package:provider/provider.dart';
 
 /// Экран Хочу посетить/Посещенные места
 class VisitingScreen extends StatefulWidget {
@@ -28,10 +30,15 @@ class VisitingScreen extends StatefulWidget {
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  FavoritesInteractor favoritesInteractor;
+  VisitedInteractor visitedInteractor;
 
   @override
   void initState() {
     super.initState();
+    favoritesInteractor = context.read<FavoritesInteractor>();
+    visitedInteractor = context.read<VisitedInteractor>();
+
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {});
