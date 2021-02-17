@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/interactor/favorites_interactor.dart';
-import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/interactor/repository/location_repository.dart';
+import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/store/sight_list_store/sight_list_store.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -27,8 +30,8 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
+  SightListStore _store;
   FavoritesInteractor favoritesInteractor;
-  SightInteractor sightInteractor;
 
   // Фильтр, который применяется к списку мест на этом экране
   Filter _filter = Filter(
@@ -40,10 +43,13 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   void initState() {
     super.initState();
-    sightInteractor = context.read<SightInteractor>();
-    favoritesInteractor = context.read<FavoritesInteractor>();
+    _store = SightListStore(
+      sightRepository: context.read<SightRepository>(),
+      locationRepository: context.read<LocationRepository>(),
+    );
+    _store.getFilteredSights(filter: _filter);
 
-    sightInteractor.getFilteredSights(filter: _filter);
+    favoritesInteractor = context.read<FavoritesInteractor>();
   }
 
   @override
@@ -52,21 +58,21 @@ class _SightListScreenState extends State<SightListScreen> {
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: AddButton(onPressed: _onAddPressed),
-      body: StreamBuilder<List<Sight>>(
-        stream: sightInteractor.sightsStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            // В случае ошибки показываем сообщение
+      body: Observer(
+        builder: (context) {
+          // в случае загрузки показываем крутилку
+          if (_store.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // В случае ошибки показываем сообщение
+          if (_store.hasError) {
             return CenterMessage(
               icon: SvgIcons.error,
               title: AppStrings.sightSearchErrorTitle,
               subtitle:
-                  '${AppStrings.sightSearchErrorSubtitle}\n\n${snapshot.error}',
+                  '${AppStrings.sightSearchErrorSubtitle}\n\n${_store.sightListFuture.error}',
             );
-          }
-
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
           }
 
           return CustomScrollView(
@@ -86,7 +92,7 @@ class _SightListScreenState extends State<SightListScreen> {
                   ),
                 ),
               ),
-              _buildSightListWidget(snapshot.data),
+              _buildSightListWidget(_store.sightListFuture.value),
             ],
           );
         },
@@ -161,7 +167,7 @@ class _SightListScreenState extends State<SightListScreen> {
     if (newFilter != null) {
       // Обновляем в соответствии с новым фильтром
       _filter = newFilter;
-      sightInteractor.getFilteredSights(filter: _filter);
+      _store.getFilteredSights(filter: _filter);
     }
   }
 

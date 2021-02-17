@@ -1,3 +1,6 @@
+# 13.6 mobx
+- экран SightListScreen. Список интересных мест на mobx
+
 # 13.2 Provider  fix
 - добавлен rxdart в местах где удобно BehaviourSubject
 - рефакторинг
