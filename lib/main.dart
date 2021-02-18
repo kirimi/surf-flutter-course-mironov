@@ -38,25 +38,33 @@ Future<void> main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final NetworkClient networkClient =
-        NetworkClientDio(baseUrl: Config.baseUrl);
-    // final NetworkClient networkClient = NetworkClientNoInternet();
-
-    final SightRepository sightRepository =
-        SightRepositoryNetwork(networkClient);
-    // final SightRepository sightRepository = SightRepositoryMemory();
-
-    final FavoritesRepository favoritesRepository = FavoritesRepositoryMemory();
-    final VisitedRepository visitedRepository = VisitedRepositoryMemory();
-    final LocationRepository locationRepository = LocationRepositoryMock();
-
     return MultiProvider(
       providers: [
+        Provider<SightRepository>(
+          create: (context) {
+            final NetworkClient networkClient = NetworkClientDio(
+              baseUrl: Config.baseUrl,
+            );
+            final SightRepository repo = SightRepositoryNetwork(networkClient);
+            // final NetworkClient networkClient = NetworkClientNoInternet();
+            // final SightRepository sightRepository = SightRepositoryMemory();
+            return repo;
+          },
+        ),
+        Provider<LocationRepository>(
+          create: (_) => LocationRepositoryMock(),
+        ),
+        Provider<FavoritesRepository>(
+          create: (_) => FavoritesRepositoryMemory(),
+        ),
+        Provider<VisitedRepository>(
+          create: (_) => VisitedRepositoryMemory(),
+        ),
         Provider<SightInteractor>(
           create: (context) => SightInteractor(
-            sightRepository: sightRepository,
-            visitedRepository: visitedRepository,
-            locationRepository: locationRepository,
+            sightRepository: context.read<SightRepository>(),
+            visitedRepository: context.read<VisitedRepository>(),
+            locationRepository: context.read<LocationRepository>(),
           ),
           dispose: (context, interactor) {
             interactor.dispose();
@@ -64,9 +72,9 @@ class App extends StatelessWidget {
         ),
         Provider<FavoritesInteractor>(
           create: (context) => FavoritesInteractor(
-            sightRepository: sightRepository,
-            favoritesRepository: favoritesRepository,
-            locationRepository: locationRepository,
+            sightRepository: context.read<SightRepository>(),
+            favoritesRepository: context.read<FavoritesRepository>(),
+            locationRepository: context.read<LocationRepository>(),
           ),
           dispose: (context, interactor) {
             interactor.dispose();
@@ -74,8 +82,8 @@ class App extends StatelessWidget {
         ),
         Provider<VisitedInteractor>(
           create: (context) => VisitedInteractor(
-            sightRepository: sightRepository,
-            visitedRepository: visitedRepository,
+            sightRepository: context.read<SightRepository>(),
+            visitedRepository: context.read<VisitedRepository>(),
           ),
           dispose: (context, interactor) {
             interactor.dispose();
