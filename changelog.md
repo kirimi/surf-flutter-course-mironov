@@ -1,3 +1,6 @@
+# 13.8 bloc
+- экран VisitingScreen.  Списки Favorites и Visiting сделаны с помощью bloc
+
 # 13.6 mobx
 - экран SightListScreen. Список интересных мест на mobx
 
