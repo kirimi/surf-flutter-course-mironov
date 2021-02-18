@@ -40,13 +40,13 @@ mixin _$SightListStore on SightListStoreBase, Store {
     });
   }
 
-  final _$getFilteredSightsAsyncAction =
-      AsyncAction('SightListStoreBase.getFilteredSights');
+  final _$requestFilteredSightsAsyncAction =
+      AsyncAction('SightListStoreBase.requestFilteredSights');
 
   @override
-  Future<void> getFilteredSights({@required Filter filter}) {
-    return _$getFilteredSightsAsyncAction
-        .run(() => super.getFilteredSights(filter: filter));
+  Future<void> requestFilteredSights({@required Filter filter}) {
+    return _$requestFilteredSightsAsyncAction
+        .run(() => super.requestFilteredSights(filter: filter));
   }
 
   @override

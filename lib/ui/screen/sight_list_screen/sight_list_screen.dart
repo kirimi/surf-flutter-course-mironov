@@ -47,7 +47,7 @@ class _SightListScreenState extends State<SightListScreen> {
       sightRepository: context.read<SightRepository>(),
       locationRepository: context.read<LocationRepository>(),
     );
-    _store.getFilteredSights(filter: _filter);
+    _store.requestFilteredSights(filter: _filter);
 
     favoritesInteractor = context.read<FavoritesInteractor>();
   }
@@ -167,7 +167,7 @@ class _SightListScreenState extends State<SightListScreen> {
     if (newFilter != null) {
       // Обновляем в соответствии с новым фильтром
       _filter = newFilter;
-      _store.getFilteredSights(filter: _filter);
+      _store.requestFilteredSights(filter: _filter);
     }
   }
 

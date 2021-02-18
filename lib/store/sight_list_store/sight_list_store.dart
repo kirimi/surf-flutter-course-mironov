@@ -38,7 +38,7 @@ abstract class SightListStoreBase with Store {
 
   /// Загружает места, которые соответствуют фильтру [filter]
   @action
-  Future<void> getFilteredSights({@required Filter filter}) async {
+  Future<void> requestFilteredSights({@required Filter filter}) async {
     FilterRequest filterReq;
 
     if (filter.maxDistance != null) {
