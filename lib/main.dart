@@ -48,6 +48,7 @@ class App extends StatelessWidget {
             final NetworkClient networkClient = NetworkClientDio(
               baseUrl: Config.baseUrl,
             );
+            // final NetworkClient networkClient = NetworkClientNoInternet();
             final SightRepository repo = SightRepositoryNetwork(networkClient);
             // final NetworkClient networkClient = NetworkClientNoInternet();
             // final SightRepository sightRepository = SightRepositoryMemory();
