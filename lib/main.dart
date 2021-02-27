@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:places/blocs/favorites_list_bloc/favorites_list_bloc.dart';
+import 'package:places/blocs/visited_list_bloc/visited_list_bloc.dart';
 import 'package:places/config.dart';
 import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
@@ -45,6 +48,7 @@ class App extends StatelessWidget {
             final NetworkClient networkClient = NetworkClientDio(
               baseUrl: Config.baseUrl,
             );
+            // final NetworkClient networkClient = NetworkClientNoInternet();
             final SightRepository repo = SightRepositoryNetwork(networkClient);
             // final NetworkClient networkClient = NetworkClientNoInternet();
             // final SightRepository sightRepository = SightRepositoryMemory();
@@ -113,7 +117,26 @@ class App extends StatelessWidget {
               AddSightScreen.routeName: (context) => AddSightScreen(),
               SelectCategoryScreen.routeName: (context) =>
                   SelectCategoryScreen(),
-              VisitingScreen.routeName: (context) => VisitingScreen(),
+              VisitingScreen.routeName: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider<FavoritesListBloc>(
+                        create: (context) => FavoritesListBloc(
+                          sightRepository: context.read<SightRepository>(),
+                          favoritesRepository:
+                              context.read<FavoritesRepository>(),
+                          locationRepository:
+                              context.read<LocationRepository>(),
+                        )..add(const LoadFavoritesListEvent(isHidden: false)),
+                      ),
+                      BlocProvider<VisitedListBloc>(
+                        create: (context) => VisitedListBloc(
+                          sightRepository: context.read<SightRepository>(),
+                          visitedRepository: context.read<VisitedRepository>(),
+                        )..add(const LoadVisitedListEvent(isHidden: false)),
+                      ),
+                    ],
+                    child: VisitingScreen(),
+                  ),
               SettingsScreen.routeName: (context) => SettingsScreen(),
             },
 

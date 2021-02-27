@@ -2,14 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:places/blocs/favorites_list_bloc/favorites_list_bloc.dart';
+import 'package:places/blocs/visited_list_bloc/visited_list_bloc.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/favorites_interactor.dart';
-import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
+import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
 import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
@@ -17,7 +19,6 @@ import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
 import 'package:places/ui/widgets/ios_date_picker.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
-import 'package:provider/provider.dart';
 
 /// Экран Хочу посетить/Посещенные места
 class VisitingScreen extends StatefulWidget {
@@ -30,27 +31,26 @@ class VisitingScreen extends StatefulWidget {
 class _VisitingScreenState extends State<VisitingScreen>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  FavoritesInteractor favoritesInteractor;
-  VisitedInteractor visitedInteractor;
+  FavoritesListBloc _favoritesListBloc;
+  VisitedListBloc _visitedListBloc;
 
   @override
   void initState() {
     super.initState();
-    favoritesInteractor = context.read<FavoritesInteractor>();
-    visitedInteractor = context.read<VisitedInteractor>();
+
+    _favoritesListBloc = BlocProvider.of<FavoritesListBloc>(context);
+    _visitedListBloc = BlocProvider.of<VisitedListBloc>(context);
 
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {});
       // при смене таба инициируем обновление Favorites или Visited
       if (_tabController.index == 0) {
-        favoritesInteractor.getFavoritesSights();
+        _favoritesListBloc.add(const LoadFavoritesListEvent(isHidden: false));
       } else if (_tabController.index == 1) {
-        visitedInteractor.getVisitedSights();
+        _visitedListBloc.add(const LoadVisitedListEvent(isHidden: false));
       }
     });
-    favoritesInteractor.getFavoritesSights();
-    visitedInteractor.getVisitedSights();
   }
 
   @override
@@ -90,29 +90,46 @@ class _VisitingScreenState extends State<VisitingScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          StreamBuilder<List<Sight>>(
-              stream: favoritesInteractor.favoritesListStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          BlocBuilder<FavoritesListBloc, FavoritesListState>(
+            cubit: _favoritesListBloc,
+            builder: (context, state) {
+              if (state is LoadFavoritesListInProgressState) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is LoadedFavoritesState) {
                 return SightListWidget(
                   padding: const EdgeInsets.all(16.0),
-                  children: _buildToVisitSightList(snapshot.data),
+                  children: _buildToVisitSightList(state.sights),
                 );
-              }),
-          StreamBuilder<List<Sight>>(
-              stream: visitedInteractor.visitedStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              }
 
+              // Если явно передана ошибка, то показываем сообщение из нее
+              // или если неизвестный state, то просто показываем ошибку
+              final errorMessage = state is ErrorFavoritesListState
+                  ? state.message
+                  : 'Unknown state';
+              return _ErrorMessage(message: errorMessage);
+            },
+          ),
+          BlocBuilder<VisitedListBloc, VisitedListState>(
+            cubit: _visitedListBloc,
+            builder: (context, state) {
+              if (state is VisitedListLoadingInProgress) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state is VisitedListLoaded) {
                 return SightListWidget(
                   padding: const EdgeInsets.all(16.0),
-                  children: _buildVisitedSightList(snapshot.data),
+                  children: _buildVisitedSightList(state.sights),
                 );
-              }),
+              }
+
+              final errorMessage = state is ErrorVisitedListState
+                  ? state.message
+                  : 'Unknown state';
+              return _ErrorMessage(message: errorMessage);
+            },
+          ),
         ],
       ),
     );
@@ -192,7 +209,7 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Favorites
   void _onDeleteFromFavorites(Sight sight) {
-    favoritesInteractor.removeFromFavorites(sight);
+    _favoritesListBloc.add(RemoveFromFavoritesListEvent(sight));
   }
 
   // todo добавить функцию хранения сортировки в FavoritesRepository
@@ -201,20 +218,24 @@ class _VisitingScreenState extends State<VisitingScreen>
 
   // Удаляем место из Visited
   void _onDeleteFromVisited(Sight sight) {
-    visitedInteractor.removeFromVisited(sight);
+    _visitedListBloc.add(RemoveFromVisitedListEvent(sight));
   }
 
   // todo добавить функцию хранения сортировки в VisitedRepository
   // Сортируем место из Visited. Наверх target помещается sight
   Future<void> _onSortVisited({Sight sight, Sight target}) async {}
 
-  void _onSightTap(Sight sight) {
-    showModalBottomSheet(
+  Future<void> _onSightTap(Sight sight) async {
+    // На bottomSheet может быть нажато сердечко,
+    // поэтому при возврате обновляем списки
+    await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (_) {
           return SightDetailsBottomSheet(sight: sight);
         });
+    _favoritesListBloc.add(const LoadFavoritesListEvent());
+    _visitedListBloc.add(const LoadVisitedListEvent());
   }
 
   Future<void> _onCalendarTap(Sight sight) async {
@@ -243,5 +264,21 @@ class _VisitingScreenState extends State<VisitingScreen>
     if (date != null) {
       print('Выбрана дата посещения ${date.toString()}');
     }
+  }
+}
+
+/// Виджет для показа сообщения об ошибке на экране VisitingScreen
+class _ErrorMessage extends StatelessWidget {
+  const _ErrorMessage({Key key, this.message}) : super(key: key);
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return CenterMessage(
+      icon: SvgIcons.error,
+      title: AppStrings.sightSearchErrorTitle,
+      subtitle: '${AppStrings.sightSearchErrorSubtitle}\n\n$message',
+    );
   }
 }

@@ -52,7 +52,8 @@ class SightRepositoryNetwork implements SightRepository {
     final sightsJson = jsonDecode(response);
     final sights = (sightsJson as List).map((p) {
       final sight = Sight().fromApiJson(p as Map<String, dynamic>);
-      final distance = p['distance'] as double;
+      // api не возвращает distance, хотя в swagger описано.
+      final distance = p['distance'] as double ?? 0;
       return Pair(sight, distance);
     }).toList();
 
