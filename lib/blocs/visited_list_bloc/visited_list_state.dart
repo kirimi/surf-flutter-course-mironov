@@ -10,6 +10,16 @@ class VisitedListLoadingInProgress extends VisitedListState {
   List<Object> get props => [];
 }
 
+/// Ошибка загрузки
+class ErrorVisitedListState extends VisitedListState {
+  final String message;
+
+  const ErrorVisitedListState(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
 /// Посещенные места загружены
 class VisitedListLoaded extends VisitedListState {
   final List<Sight> sights;

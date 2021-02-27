@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/repository/exceptions/internet_exception.dart';
+import 'package:places/interactor/repository/exceptions/network_exception.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
 
@@ -31,6 +33,8 @@ class VisitedListBloc extends Bloc<VisitedListEvent, VisitedListState> {
       yield* _mapAddToVisitedEventToState(event);
     } else if (event is RemoveFromVisitedListEvent) {
       yield* _mapRemoveFromVisitedEventToState(event);
+    } else {
+      yield ErrorVisitedListState('Unknown event. ${event.runtimeType}');
     }
   }
 
@@ -41,8 +45,15 @@ class VisitedListBloc extends Bloc<VisitedListEvent, VisitedListState> {
     if (!event.isHidden) {
       yield VisitedListLoadingInProgress();
     }
-    final sights = await _getVisitedSights();
-    yield VisitedListLoaded(sights);
+
+    try {
+      final sights = await _getVisitedSights();
+      yield VisitedListLoaded(sights);
+    } on NetworkException catch (e) {
+      yield ErrorVisitedListState('${e.request} ${e.errorCode}:${e.errorText}');
+    } on InternetException catch (e) {
+      yield ErrorVisitedListState('${e.request} ${e.errorText}');
+    }
   }
 
   /// Добавляет место в Visited

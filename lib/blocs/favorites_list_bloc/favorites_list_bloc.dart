@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/interactor/repository/exceptions/internet_exception.dart';
+import 'package:places/interactor/repository/exceptions/network_exception.dart';
 import 'package:places/interactor/repository/favorites_repository.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
@@ -34,6 +36,8 @@ class FavoritesListBloc extends Bloc<FavoritesListEvent, FavoritesListState> {
       yield* _mapLoadFavoritesListEventToState(event);
     } else if (event is RemoveFromFavoritesListEvent) {
       yield* _mapRemoveFromFavoritesListEventToState(event);
+    } else {
+      yield ErrorFavoritesListState('Unknown event. ${event.runtimeType}');
     }
   }
 
@@ -44,8 +48,15 @@ class FavoritesListBloc extends Bloc<FavoritesListEvent, FavoritesListState> {
     if (!event.isHidden) {
       yield LoadFavoritesListInProgressState();
     }
-    final sights = await _getFavoritesSights();
-    yield LoadedFavoritesState(sights);
+    try {
+      final sights = await _getFavoritesSights();
+      yield LoadedFavoritesState(sights);
+    } on NetworkException catch (e) {
+      yield ErrorFavoritesListState(
+          '${e.request} ${e.errorCode}:${e.errorText}');
+    } on InternetException catch (e) {
+      yield ErrorFavoritesListState('${e.request} ${e.errorText}');
+    }
   }
 
   /// Удаляет место из Favorites
