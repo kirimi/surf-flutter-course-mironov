@@ -6,7 +6,7 @@ import 'package:places/domain/sight.dart';
 import 'package:places/interactor/favorites_interactor.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
-import 'package:places/store/sight_list_store/sight_list_store.dart';
+import 'package:places/mobx_store/sight_list_store/sight_list_store.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
