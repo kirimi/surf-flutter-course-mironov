@@ -1,10 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/search_history_interactor.dart';
-import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/redux/action/search_action.dart';
+import 'package:places/redux/state/search_state.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -13,7 +12,7 @@ import 'package:places/ui/screen/sight_search_screen/widget/history_list.dart';
 import 'package:places/ui/screen/sight_search_screen/widget/search_result_item.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/search_bar.dart';
-import 'package:provider/provider.dart';
+import 'package:redux/redux.dart';
 
 /// Экран поиска места
 ///
@@ -34,24 +33,13 @@ class SightSearchScreen extends StatefulWidget {
 }
 
 class _SightSearchScreenState extends State<SightSearchScreen> {
-  // Стрим, в котором данные результата запроса
-  StreamController<List<Sight>> _streamController;
-
-  // Подписка для отмены текущего запроса
-  StreamSubscription<List> _loadingDataSubscr;
-
-  // Таймер для паузы между запросом и вводом пользователя.
-  Timer _debounceTimer;
-
-  // Флаг о том, что происходит загрузка новых данных
-  bool _isLoading = false;
-
   TextEditingController _textEditingController;
+  Store<SearchState> _store;
 
   @override
   void initState() {
     super.initState();
-    _streamController = StreamController();
+    _store = StoreProvider.of<SearchState>(context);
     _textEditingController = TextEditingController();
   }
 
@@ -73,42 +61,34 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
           onClear: _onClear,
         ),
       ),
-      body: Column(
-        children: [
-          if (_isLoading)
-            const SizedBox(
-              height: 40.0,
-              width: 40.0,
-              child: CircularProgressIndicator(),
-            ),
-          Expanded(
-            child: StreamBuilder<List<Sight>>(
-              stream: _streamController.stream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData && !snapshot.hasError) {
-                  if (snapshot.data.isNotEmpty) {
-                    return _buildResultList(snapshot.data);
-                  } else {
-                    return _buildEmpty();
-                  }
-                }
-                if (snapshot.hasError) {
-                  return _buildError();
-                }
-                return _buildHistory();
-              },
-            ),
-          ),
-        ],
+      body: StoreConnector<SearchState, SearchState>(
+        onInit: (store) {
+          store.dispatch(HistorySearchAction());
+        },
+        converter: (store) {
+          return store.state;
+        },
+        builder: (context, state) {
+          if (state is LoadingSearchState) {
+            return _buildLoading();
+          } else if (state is ResultSearchState) {
+            if (state.sights.isEmpty) {
+              return _buildEmpty();
+            } else {
+              return _buildResultList(state.sights);
+            }
+          } else if (state is ErrorSearchState) {
+            return _buildError();
+          } else {
+            return _buildHistory();
+          }
+        },
       ),
     );
   }
 
   @override
   void dispose() {
-    _streamController.close();
-    _loadingDataSubscr?.cancel();
-    _debounceTimer?.cancel();
     _textEditingController.dispose();
     super.dispose();
   }
@@ -150,40 +130,24 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
     );
   }
 
+  Widget _buildLoading() {
+    return const SizedBox(
+      height: 40.0,
+      width: 40.0,
+      child: CircularProgressIndicator(),
+    );
+  }
+
   // performNow - флаг, что запрос должен немедленно выполнится.
   // Например при книке на Историю
-  Future<void> _onSearch(String value, {bool performNow = false}) async {
-    _debounceTimer?.cancel();
-    if (value != '') {
-      // делаем запрос только через секунду после последнего ввода пользователя
-      final int time = performNow ? 0 : 1000;
-      _debounceTimer = Timer(Duration(milliseconds: time), () {
-        _setLoading(true);
-        // отменяем предыдущий запрос.
-        _loadingDataSubscr?.cancel();
-        _loadingDataSubscr = _doSearch(value).asStream().listen((searchResult) {
-          _setLoading(false);
-          _streamController.sink.add(searchResult);
-          // добавляем в историю запросы, которые удачно закончились
-          context.read<SearchHistoryInteractor>().add(value);
-        }, onError: (error) {
-          _setLoading(false);
-          _streamController.addError(error);
-        });
-      });
-    }
-  }
-
-  // Поиск с учетом фильтра
-  Future<List<Sight>> _doSearch(String value) async {
-    final filter = widget.filter.copyWith(nameFilter: value);
-    final filtered =
-        await context.read<SightInteractor>().getFilteredSights(filter: filter);
-    return filtered.toList();
-  }
-
-  void _setLoading(bool isLoading) {
-    setState(() => _isLoading = isLoading);
+  void _onSearch(String value, {bool performNow = false}) {
+    _store.dispatch(
+      RequestSearchAction(
+        value,
+        filter: widget.filter,
+        performNow: performNow,
+      ),
+    );
   }
 
   void _onCardTap(Sight sight) {
@@ -195,11 +159,8 @@ class _SightSearchScreenState extends State<SightSearchScreen> {
         });
   }
 
-  // при очистке текстового поля
-  void _onClear() {
-    // посылаем null в стрим, чтобы показать историю
-    _streamController.sink.add(null);
-  }
+  // при очистке текстового поля показываем историю
+  void _onClear() => _store.dispatch(HistorySearchAction());
 
   void _onBack() => Navigator.of(context).pop();
 }
