@@ -53,7 +53,8 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
             // Отступ  снизу, чтобы скролл под кнопку не забирался.
             Padding(
               padding: const EdgeInsets.only(bottom: 60.0),
-              // SingleChildScrollView - чтобы при появлении клавиатуры не было overflow
+              // SingleChildScrollView - чтобы при появлении клавиатуры
+              // не было overflow
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
