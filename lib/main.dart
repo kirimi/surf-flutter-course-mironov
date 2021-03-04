@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:mwwm/mwwm.dart';
 import 'package:places/blocs/favorites_list_bloc/favorites_list_bloc.dart';
 import 'package:places/blocs/visited_list_bloc/visited_list_bloc.dart';
 import 'package:places/config.dart';
@@ -23,6 +24,7 @@ import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/interactor/visiting_interactor.dart';
 import 'package:places/redux/state/search_state.dart';
 import 'package:places/redux/store.dart';
+import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
@@ -101,6 +103,12 @@ class App extends StatelessWidget {
           dispose: (context, interactor) {
             interactor.dispose();
           },
+        ),
+        // Провайдим ErrorHandler для mwwm
+        Provider<WidgetModelDependencies>(
+          create: (context) => WidgetModelDependencies(
+            errorHandler: DefaultErrorHandler(),
+          ),
         ),
         ChangeNotifierProvider<ThemeInteractor>(
           create: (context) => ThemeInteractor(),

@@ -1,3 +1,6 @@
+# 13.12 mwwm
+- Экран AddSightScreen на mwwm
+
 # 13.10 redux
 - Экран SightSearchScreen на redux
 

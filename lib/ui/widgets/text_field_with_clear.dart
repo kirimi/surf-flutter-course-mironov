@@ -34,7 +34,7 @@ class TextFieldWithClear extends StatefulWidget {
     this.maxLines = 1,
     this.textInputAction,
     this.keyboardType,
-    this.text,
+    this.text = "",
     this.hintText,
     this.onTap,
     this.readOnly = false,
