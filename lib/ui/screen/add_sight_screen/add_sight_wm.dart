@@ -52,7 +52,7 @@ class AddScreenWm extends WidgetModel {
   // Actions
 
   /// Создать место
-  final Action submit = Action();
+  final Action submit = Action<void>();
 
   /// Поля ввода текста
   final TextEditingAction title = TextEditingAction();
@@ -60,32 +60,28 @@ class AddScreenWm extends WidgetModel {
   final TextEditingAction lon = TextEditingAction();
   final TextEditingAction description = TextEditingAction();
 
-  /// Проверить доступна ли кнопка создания места
-  final Action checkSubmitEnabled = Action();
+  /// Выбор категории места
+  final selectSightType = Action<void>();
 
   /// Выбор категории места
-  final Action selectSightType = Action();
+  final backPressed = Action<void>();
 
-  /// Выбор категории места
-  final Action backPressed = Action();
-
-  /// Обновление фокуса для текстовых полей
-  final Action<FocusNode> updateFocusNode = Action();
+  /// При submit текстового поля, в параметре следующий фокус
+  final submitTextField = Action<FocusNode>();
 
   /// Добавление фотографии
-  final Action addPhoto = Action();
+  final addPhoto = Action<void>();
 
   /// Удаление фотографии
-  final Action<int> deletePhoto = Action();
+  final deletePhoto = Action<int>();
 
   @override
   void onBind() {
     super.onBind();
     subscribe(submit.stream, _onSubmit);
     subscribe(selectSightType.stream, _onSelectSightType);
-    subscribe(checkSubmitEnabled.stream, _checkSubmitEnabled);
     subscribe(backPressed.stream, _onBackPressed);
-    subscribe(updateFocusNode.stream, _onUpdateFocusNode);
+    subscribe(submitTextField.stream, _onSubmitTextField);
     subscribe(addPhoto.stream, _onAddPhoto);
     subscribe(deletePhoto.stream, _onDeletePhoto);
   }
@@ -99,13 +95,20 @@ class AddScreenWm extends WidgetModel {
     if (result != null) {
       sightType.accept(result);
       // если выбрана категория, то фокус на первом поле.
-      _onUpdateFocusNode(titleFocusNode);
+      _onSubmitTextField(titleFocusNode);
     }
+  }
+
+  void _onSubmitTextField(FocusNode focusNode) {
+    // Обновляем фокус текущего поля ввода
+    focusNode?.requestFocus();
+    // Обновляем доступность кнопки создания места
+    _checkSubmitEnabled();
   }
 
   // проверяем и устанавливаем доступность кнопки сознания места
   // если все заполнено, то кнопка доступна
-  void _checkSubmitEnabled(_) {
+  void _checkSubmitEnabled() {
     final bool isEnabled = sightType.value != null &&
         title.controller.text != '' &&
         lat.controller.text != '' &&
@@ -113,11 +116,6 @@ class AddScreenWm extends WidgetModel {
         description.controller.text != '';
 
     isSubmitEnabled.accept(isEnabled);
-  }
-
-  // Обновляем фокус текущего поля ввода
-  void _onUpdateFocusNode(FocusNode focusNode) {
-    focusNode.requestFocus();
   }
 
   // Создание нового места

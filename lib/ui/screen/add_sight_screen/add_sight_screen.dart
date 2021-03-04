@@ -41,7 +41,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
       appBar: AppBar(
         title: const Text(AppStrings.addSightAppbarTitle),
         leading: TextButton(
-          onPressed: () => wm.backPressed.accept(),
+          onPressed: wm.backPressed,
           child: const Text(AppStrings.addSightAppbarCancel),
         ),
         leadingWidth: 100.0,
@@ -64,7 +64,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                         return SightPhotosListWidget(
                           sightPhotos: list,
                           onTap: (int index) {},
-                          onAdd: () => wm.addPhoto.accept(),
+                          onAdd: wm.addPhoto,
                           onDelete: (int index) => wm.deletePhoto(index),
                         );
                       },
@@ -78,7 +78,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                       builder: (context, sightType) {
                         return CategorySelector(
                           value: sightType,
-                          onTap: () => wm.selectSightType.accept(),
+                          onTap: wm.selectSightType,
                         );
                       },
                     ),
@@ -89,8 +89,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                       hintText: AppStrings.addSightHintTitle,
                       controller: wm.title.controller,
                       focusNode: wm.titleFocusNode,
-                      onSubmitted: (_) =>
-                          _onSubmitTextField(next: wm.latFocusNode),
+                      onSubmitted: (_) => wm.submitTextField(wm.latFocusNode),
                       textInputAction: TextInputAction.next,
                     ),
                     const SizedBox(height: 24.0),
@@ -106,7 +105,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                                 hintText: AppStrings.addSightHintLatitude,
                                 focusNode: wm.latFocusNode,
                                 onSubmitted: (_) =>
-                                    _onSubmitTextField(next: wm.lonFocusNode),
+                                    wm.submitTextField(wm.lonFocusNode),
                                 controller: wm.lat.controller,
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.number,
@@ -125,7 +124,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                                 hintText: AppStrings.addSightHintLongitude,
                                 focusNode: wm.lonFocusNode,
                                 onSubmitted: (_) =>
-                                    _onSubmitTextField(next: wm.descrFocusNode),
+                                    wm.submitTextField(wm.descrFocusNode),
                                 controller: wm.lon.controller,
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.number,
@@ -147,7 +146,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                       hintText: AppStrings.addSightHintDescription,
                       maxLines: 3,
                       focusNode: wm.descrFocusNode,
-                      onSubmitted: (_) => _onSubmitTextField(),
+                      onSubmitted: (_) => wm.submitTextField(),
                       controller: wm.description.controller,
                       textInputAction: TextInputAction.go,
                     ),
@@ -164,7 +163,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                 builder: (context, inEnabled) {
                   return IconElevatedButton(
                     text: AppStrings.addSightBtnCreate,
-                    onPressed: inEnabled ? () => wm.submit.accept() : null,
+                    onPressed: inEnabled ? wm.submit : null,
                   );
                 },
               ),
@@ -173,15 +172,5 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
         ),
       ),
     );
-  }
-
-  // попадаем сюда после submit на любом textField,
-  void _onSubmitTextField({FocusNode next}) {
-    // обновляем фокус
-    if (next != null) {
-      wm.updateFocusNode.accept(next);
-    }
-    // обновляем состояние кнопки submit
-    wm.checkSubmitEnabled.accept();
   }
 }
