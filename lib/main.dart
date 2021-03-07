@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/blocs/favorites_list_bloc/favorites_list_bloc.dart';
-import 'package:places/blocs/visited_list_bloc/visited_list_bloc.dart';
 import 'package:places/config.dart';
 import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
@@ -12,8 +9,6 @@ import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
-import 'package:places/domain/sight.dart';
-import 'package:places/interactor/favorites_interactor.dart';
 import 'package:places/interactor/repository/favorites_repository.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
@@ -27,15 +22,17 @@ import 'package:places/redux/store.dart';
 import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
+import 'package:places/ui/screen/add_sight_screen/add_sight_screen_route.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/screen/settings_screen.dart';
-import 'package:places/ui/screen/sight_details_screen/sight_details_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
+import 'package:places/ui/screen/sight_list_screen/sight_list_screen_route.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/splash_screen.dart';
-import 'package:places/ui/screen/visiting_screen.dart';
+import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
+import 'package:places/ui/screen/visiting_screen/visiting_screen_router.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -79,16 +76,6 @@ class App extends StatelessWidget {
             interactor.dispose();
           },
         ),
-        Provider<FavoritesInteractor>(
-          create: (context) => FavoritesInteractor(
-            sightRepository: context.read<SightRepository>(),
-            favoritesRepository: context.read<FavoritesRepository>(),
-            locationRepository: context.read<LocationRepository>(),
-          ),
-          dispose: (context, interactor) {
-            interactor.dispose();
-          },
-        ),
         Provider<VisitedInteractor>(
           create: (context) => VisitedInteractor(
             sightRepository: context.read<SightRepository>(),
@@ -126,55 +113,31 @@ class App extends StatelessWidget {
               routes: {
                 SplashScreen.routeName: (context) => SplashScreen(),
                 OnboardingScreen.routeName: (context) => OnboardingScreen(),
-                SightListScreen.routeName: (context) => SightListScreen(),
-                AddSightScreen.routeName: (context) => AddSightScreen(),
                 SelectCategoryScreen.routeName: (context) =>
                     SelectCategoryScreen(),
-                VisitingScreen.routeName: (context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider<FavoritesListBloc>(
-                          create: (context) => FavoritesListBloc(
-                            sightRepository: context.read<SightRepository>(),
-                            favoritesRepository:
-                                context.read<FavoritesRepository>(),
-                            locationRepository:
-                                context.read<LocationRepository>(),
-                          )..add(const LoadFavoritesListEvent(isHidden: false)),
-                        ),
-                        BlocProvider<VisitedListBloc>(
-                          create: (context) => VisitedListBloc(
-                            sightRepository: context.read<SightRepository>(),
-                            visitedRepository:
-                                context.read<VisitedRepository>(),
-                          )..add(const LoadVisitedListEvent(isHidden: false)),
-                        ),
-                      ],
-                      child: VisitingScreen(),
-                    ),
                 SettingsScreen.routeName: (context) => SettingsScreen(),
               },
-
-              // Аргументы на этих страницах передаются через конструктор,
-              // т.к. в FiltersScreen они используются в initState,
-              // остальные страницы так сделано для однородности и на будущее
               onGenerateRoute: (settings) {
-                if (settings.name == SightDetailsScreen.routeName) {
-                  final sight = settings.arguments as Sight;
-                  return MaterialPageRoute(
-                    builder: (context) => SightDetailsScreen(sight: sight),
-                  );
-                } else if (settings.name == FiltersScreen.routeName) {
-                  final filter = settings.arguments as Filter;
-                  return MaterialPageRoute(
-                    builder: (context) => FiltersScreen(filter: filter),
-                  );
-                } else if (settings.name == SightSearchScreen.routeName) {
-                  final filter = settings.arguments as Filter;
-                  return MaterialPageRoute(
-                    builder: (context) => SightSearchScreen(filter: filter),
-                  );
+                switch (settings.name) {
+                  case AddSightScreen.routeName:
+                    return AddSightScreenRoute();
+                  case FiltersScreen.routeName:
+                    final filter = settings.arguments as Filter;
+                    return MaterialPageRoute(
+                      builder: (context) => FiltersScreen(filter: filter),
+                    );
+                  case SightSearchScreen.routeName:
+                    final filter = settings.arguments as Filter;
+                    return MaterialPageRoute(
+                      builder: (context) => SightSearchScreen(filter: filter),
+                    );
+                  case SightListScreen.routeName:
+                    return SightListScreenRoute();
+                  case VisitingScreen.routeName:
+                    return VisitingScreenRoute();
+                  default:
+                    return null;
                 }
-                return null;
               },
             ),
           );

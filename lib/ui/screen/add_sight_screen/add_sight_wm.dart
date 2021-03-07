@@ -4,7 +4,7 @@ import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
-import 'package:places/interactor/sight_interactor.dart';
+import 'package:places/model/sights/changes.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:relation/relation.dart';
@@ -12,15 +12,11 @@ import 'package:relation/relation.dart';
 /// WidgetModel для эрана добавления места
 class AddScreenWm extends WidgetModel {
   AddScreenWm(
-    WidgetModelDependencies baseDependencies, {
-    @required this.sightInteractor,
+    WidgetModelDependencies baseDependencies,
+    Model model, {
     @required this.navigator,
-  })  : assert(sightInteractor != null),
-        assert(navigator != null),
-        super(baseDependencies);
-
-  /// Интерактор мест
-  final SightInteractor sightInteractor;
+  })  : assert(navigator != null),
+        super(baseDependencies, model: model);
 
   /// Навигатор
   final NavigatorState navigator;
@@ -131,7 +127,7 @@ class AddScreenWm extends WidgetModel {
       type: sightType.value,
     );
 
-    await sightInteractor.addNewSight(newSight);
+    model.perform(AddNewSight(newSight));
     navigator.pop();
   }
 

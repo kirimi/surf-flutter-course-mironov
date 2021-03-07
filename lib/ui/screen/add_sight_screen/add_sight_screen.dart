@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
-import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_wm.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
@@ -10,25 +9,15 @@ import 'package:places/ui/screen/add_sight_screen/widget/sight_photos_list_widge
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/label.dart';
 import 'package:places/ui/widgets/text_field_with_clear.dart';
-import 'package:provider/provider.dart';
 import 'package:relation/relation.dart';
-
-// Билдер для WidgetModel
-WidgetModel _buildWm(BuildContext context) {
-  return AddScreenWm(
-    context.read<WidgetModelDependencies>(),
-    sightInteractor: context.read<SightInteractor>(),
-    navigator: Navigator.of(context),
-  );
-}
 
 /// Экран добавления нового места
 class AddSightScreen extends CoreMwwmWidget {
   static const String routeName = 'AddSightScreen';
 
-  const AddSightScreen({
-    WidgetModelBuilder wmBuilder,
-  }) : super(widgetModelBuilder: wmBuilder ?? _buildWm);
+  const AddSightScreen({@required WidgetModelBuilder wmBuilder})
+      : assert(wmBuilder != null),
+        super(widgetModelBuilder: wmBuilder);
 
   @override
   _AddSightScreenState createState() => _AddSightScreenState();
