@@ -76,4 +76,8 @@ class AppStrings {
   static const String addPhotoFile = 'Файл';
 
   static const String ok = 'Ok';
+
+  static const String historyErrorTitle = 'Ошибка';
+  static const String historyErrorSubtitle =
+      'Что-то пошло не так.\nПопробуйте позже.';
 }

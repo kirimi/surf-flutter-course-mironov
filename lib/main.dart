@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
 import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
+import 'package:places/data/search_history_repository/search_history_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
@@ -13,12 +13,8 @@ import 'package:places/interactor/repository/favorites_repository.dart';
 import 'package:places/interactor/repository/location_repository.dart';
 import 'package:places/interactor/repository/sight_repository.dart';
 import 'package:places/interactor/repository/visited_repository.dart';
-import 'package:places/interactor/search_history_interactor.dart';
 import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/interactor/theme_interactor.dart';
-import 'package:places/interactor/visiting_interactor.dart';
-import 'package:places/redux/state/search_state.dart';
-import 'package:places/redux/store.dart';
 import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -30,6 +26,7 @@ import 'package:places/ui/screen/settings_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen_route.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
+import 'package:places/ui/screen/sight_search_screen/sight_search_screen_route.dart';
 import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen_router.dart';
@@ -76,20 +73,8 @@ class App extends StatelessWidget {
             interactor.dispose();
           },
         ),
-        Provider<VisitedInteractor>(
-          create: (context) => VisitedInteractor(
-            sightRepository: context.read<SightRepository>(),
-            visitedRepository: context.read<VisitedRepository>(),
-          ),
-          dispose: (context, interactor) {
-            interactor.dispose();
-          },
-        ),
-        Provider<SearchHistoryInteractor>(
-          create: (context) => SearchHistoryInteractor(),
-          dispose: (context, interactor) {
-            interactor.dispose();
-          },
+        Provider<SearchHistoryRepository>(
+          create: (context) => SearchHistoryRepository(),
         ),
         // Провайдим ErrorHandler для mwwm
         Provider<WidgetModelDependencies>(
@@ -103,43 +88,38 @@ class App extends StatelessWidget {
       ],
       child: Consumer<ThemeInteractor>(
         builder: (context, themeInteractor, _) {
-          return StoreProvider<SearchState>(
-            store: buildReduxStore(context),
-            child: MaterialApp(
-              title: AppStrings.appTitle,
-              theme: themeInteractor.theme,
-              debugShowCheckedModeBanner: false,
-              initialRoute: SplashScreen.routeName,
-              routes: {
-                SplashScreen.routeName: (context) => SplashScreen(),
-                OnboardingScreen.routeName: (context) => OnboardingScreen(),
-                SelectCategoryScreen.routeName: (context) =>
-                    SelectCategoryScreen(),
-                SettingsScreen.routeName: (context) => SettingsScreen(),
-              },
-              onGenerateRoute: (settings) {
-                switch (settings.name) {
-                  case AddSightScreen.routeName:
-                    return AddSightScreenRoute();
-                  case FiltersScreen.routeName:
-                    final filter = settings.arguments as Filter;
-                    return MaterialPageRoute(
-                      builder: (context) => FiltersScreen(filter: filter),
-                    );
-                  case SightSearchScreen.routeName:
-                    final filter = settings.arguments as Filter;
-                    return MaterialPageRoute(
-                      builder: (context) => SightSearchScreen(filter: filter),
-                    );
-                  case SightListScreen.routeName:
-                    return SightListScreenRoute();
-                  case VisitingScreen.routeName:
-                    return VisitingScreenRoute();
-                  default:
-                    return null;
-                }
-              },
-            ),
+          return MaterialApp(
+            title: AppStrings.appTitle,
+            theme: themeInteractor.theme,
+            debugShowCheckedModeBanner: false,
+            initialRoute: SplashScreen.routeName,
+            routes: {
+              SplashScreen.routeName: (context) => SplashScreen(),
+              OnboardingScreen.routeName: (context) => OnboardingScreen(),
+              SelectCategoryScreen.routeName: (context) =>
+                  SelectCategoryScreen(),
+              SettingsScreen.routeName: (context) => SettingsScreen(),
+            },
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case AddSightScreen.routeName:
+                  return AddSightScreenRoute();
+                case FiltersScreen.routeName:
+                  final filter = settings.arguments as Filter;
+                  return MaterialPageRoute(
+                    builder: (context) => FiltersScreen(filter: filter),
+                  );
+                case SightSearchScreen.routeName:
+                  final filter = settings.arguments as Filter;
+                  return SightSearchScreenRoute(filter: filter);
+                case SightListScreen.routeName:
+                  return SightListScreenRoute();
+                case VisitingScreen.routeName:
+                  return VisitingScreenRoute();
+                default:
+                  return null;
+              }
+            },
           );
         },
       ),
