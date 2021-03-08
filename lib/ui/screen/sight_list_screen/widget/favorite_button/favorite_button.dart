@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/repository/favorites_repository.dart';
 import 'package:places/model/favorites/performers.dart';
+import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/favorite_button/favorite_button_wm.dart';
 import 'package:places/ui/widgets/sight_card.dart';

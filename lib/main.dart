@@ -9,12 +9,11 @@ import 'package:places/data/search_history_repository/search_history_repository.
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
-import 'package:places/interactor/repository/favorites_repository.dart';
-import 'package:places/interactor/repository/location_repository.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
-import 'package:places/interactor/repository/visited_repository.dart';
-import 'package:places/interactor/sight_interactor.dart';
 import 'package:places/interactor/theme_interactor.dart';
+import 'package:places/model/repository/favorites_repository.dart';
+import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
+import 'package:places/model/repository/visited_repository.dart';
 import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -63,16 +62,6 @@ class App extends StatelessWidget {
         ),
         Provider<VisitedRepository>(
           create: (_) => VisitedRepositoryMemory(),
-        ),
-        Provider<SightInteractor>(
-          create: (context) => SightInteractor(
-            sightRepository: context.read<SightRepository>(),
-            visitedRepository: context.read<VisitedRepository>(),
-            locationRepository: context.read<LocationRepository>(),
-          ),
-          dispose: (context, interactor) {
-            interactor.dispose();
-          },
         ),
         Provider<SearchHistoryRepository>(
           create: (context) => SearchHistoryRepository(),

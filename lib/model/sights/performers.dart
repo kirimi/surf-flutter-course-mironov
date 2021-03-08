@@ -4,8 +4,8 @@ import 'package:places/domain/filter.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/repository/location_repository.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/sights/changes.dart';
 
 /// Добавление нового места

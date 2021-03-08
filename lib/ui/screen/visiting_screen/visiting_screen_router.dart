@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/interactor/repository/favorites_repository.dart';
-import 'package:places/interactor/repository/location_repository.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
-import 'package:places/interactor/repository/visited_repository.dart';
 import 'package:places/model/favorites/performers.dart';
+import 'package:places/model/repository/favorites_repository.dart';
+import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
+import 'package:places/model/repository/visited_repository.dart';
 import 'package:places/model/visited/performers.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_wm.dart';

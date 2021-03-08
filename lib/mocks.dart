@@ -2,7 +2,7 @@ import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/default_sight_types.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
 
 /// Места
 final List<Sight> mocks = [

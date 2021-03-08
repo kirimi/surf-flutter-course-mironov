@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:places/data/network_client/network_client.dart';
-import 'package:places/interactor/repository/exceptions/internet_exception.dart';
-import 'package:places/interactor/repository/exceptions/network_exception.dart';
+import 'package:places/model/repository/exceptions/internet_exception.dart';
+import 'package:places/model/repository/exceptions/network_exception.dart';
 
 /// Клиент для сетевого взаимодействия через Dio
 ///

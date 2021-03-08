@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/filter.dart';
-import 'package:places/interactor/repository/location_repository.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/sights/performers.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/filters_screen/filters_wm.dart';

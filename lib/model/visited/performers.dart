@@ -1,8 +1,8 @@
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
-import 'package:places/interactor/repository/visited_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
+import 'package:places/model/repository/visited_repository.dart';
 import 'package:places/model/visited/changes.dart';
 
 /// Добавление в список посещенных мест
