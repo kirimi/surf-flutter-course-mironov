@@ -20,6 +20,7 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen_route.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
+import 'package:places/ui/screen/filters_screen/fliters_screen_route.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/screen/settings_screen.dart';
@@ -106,9 +107,7 @@ class App extends StatelessWidget {
                   return AddSightScreenRoute();
                 case FiltersScreen.routeName:
                   final filter = settings.arguments as Filter;
-                  return MaterialPageRoute(
-                    builder: (context) => FiltersScreen(filter: filter),
-                  );
+                  return FiltersScreenRoute(filter: filter);
                 case SightSearchScreen.routeName:
                   final filter = settings.arguments as Filter;
                   return SightSearchScreenRoute(filter: filter);
