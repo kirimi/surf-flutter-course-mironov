@@ -106,7 +106,10 @@ class SightListWm extends WidgetModel {
         context: navigator.context,
         isScrollControlled: true,
         builder: (_) {
-          return SightDetailsBottomSheet(sight: sight);
+          return SightDetailsBottomSheet(
+            sight: sight,
+            model: model,
+          );
         });
   }
 }

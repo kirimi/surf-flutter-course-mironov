@@ -8,6 +8,39 @@ import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
 
+/// результат работы ToggleFavoritePerformer
+class ToggleFavoriteResult {
+  final int sightId;
+  final bool isFavorite;
+
+  ToggleFavoriteResult({this.sightId, this.isFavorite});
+}
+
+/// Переключение состояния избранного
+class ToggleFavoritePerformer
+    extends Broadcast<ToggleFavoriteResult, ToggleFavorite> {
+  final FavoritesRepository favoritesRepository;
+
+  ToggleFavoritePerformer(this.favoritesRepository);
+
+  @override
+  Future<ToggleFavoriteResult> performInternal(ToggleFavorite change) async {
+    final bool isFav = await favoritesRepository.isFavorite(change.sight.id);
+
+    if (isFav) {
+      favoritesRepository.remove(change.sight.id);
+    } else {
+      favoritesRepository.add(change.sight.id);
+    }
+    return Future.value(
+      ToggleFavoriteResult(
+        sightId: change.sight.id,
+        isFavorite: !isFav,
+      ),
+    );
+  }
+}
+
 /// Добавление места в избранное
 class AddToFavoritePerformer extends FuturePerformer<void, AddToFavorite> {
   final FavoritesRepository favoritesRepository;

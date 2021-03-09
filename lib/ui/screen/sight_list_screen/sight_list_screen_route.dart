@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
+import 'package:places/model/favorites/performers.dart';
+import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/sights/performers.dart';
@@ -23,6 +25,8 @@ WidgetModel _wmBuilder(BuildContext context) {
         sightRepository: context.read<SightRepository>(),
         locationRepository: context.read<LocationRepository>(),
       ),
+      GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
+      ToggleFavoritePerformer(context.read<FavoritesRepository>()),
     ]),
     Navigator.of(context),
   );

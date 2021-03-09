@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/favorites/changes.dart';
+import 'package:places/model/favorites/performers.dart';
 import 'package:relation/relation.dart';
 
 /// wm для SightDetailsBottomSheet
@@ -31,6 +32,13 @@ class SightDetailsWm extends WidgetModel {
     super.onBind();
     subscribe(onBack.stream, (_) => _onBack());
     subscribe(onFavorite.stream, (_) => _onFavorite());
+
+    /// Слушаем change и обновляем стейт, если прилетело событие про наш sight
+    model.listen<ToggleFavoriteResult, ToggleFavorite>().listen((res) {
+      if (res.sightId == sight.id) {
+        isFavorite.accept(res.isFavorite);
+      }
+    });
   }
 
   @override
@@ -45,14 +53,7 @@ class SightDetailsWm extends WidgetModel {
     isFavorite.accept(isFav);
   }
 
-  void _onFavorite() {
-    if (isFavorite.value) {
-      model.perform(RemoveFromFavorite(sight));
-    } else {
-      model.perform(AddToFavorite(sight));
-    }
-    isFavorite.accept(!isFavorite.value);
-  }
+  void _onFavorite() => model.perform(ToggleFavorite(sight));
 
   void _onBack() => navigator.pop();
 }

@@ -17,16 +17,23 @@ import 'package:relation/relation.dart';
 
 /// BottomSheet подробного представления "Интересного места"
 class SightDetailsBottomSheet extends CoreMwwmWidget {
-  SightDetailsBottomSheet({@required Sight sight})
+  SightDetailsBottomSheet({@required Sight sight, Model model})
       : assert(sight != null),
         super(widgetModelBuilder: (context) {
           return SightDetailsWm(
             context.read<WidgetModelDependencies>(),
-            Model([
-              AddToFavoritePerformer(context.read<FavoritesRepository>()),
-              RemoveFromFavoritePerformer(context.read<FavoritesRepository>()),
-              GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
-            ]),
+            model ??
+                Model([
+                  AddToFavoritePerformer(
+                    context.read<FavoritesRepository>(),
+                  ),
+                  RemoveFromFavoritePerformer(
+                    context.read<FavoritesRepository>(),
+                  ),
+                  GetFavoriteStatePerformer(
+                    context.read<FavoritesRepository>(),
+                  ),
+                ]),
             Navigator.of(context),
             sight: sight,
           );

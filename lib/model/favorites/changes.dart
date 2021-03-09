@@ -1,5 +1,15 @@
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/model/favorites/performers.dart';
+
+/// Переключает состояние Favorite
+/// перформер Возвращает ToggleFavoriteResult,
+/// в котором есть sight.id и новое состояние Favorite
+class ToggleFavorite extends FutureChange<ToggleFavoriteResult> {
+  final Sight sight;
+
+  ToggleFavorite(this.sight);
+}
 
 /// Добавить место в избранное
 class AddToFavorite extends FutureChange<void> {

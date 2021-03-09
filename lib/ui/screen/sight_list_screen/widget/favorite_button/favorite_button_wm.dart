@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/favorites/changes.dart';
+import 'package:places/model/favorites/performers.dart';
 import 'package:relation/relation.dart';
 
 /// wm для кнопки избранного.
@@ -26,6 +27,14 @@ class FavoriteButtonWm extends WidgetModel {
   void onBind() {
     super.onBind();
     subscribe(onTap.stream, _onTap);
+
+    /// Слушаем ToggleFavorite и обновляем стейт,
+    /// если прилетело событие про наш sight
+    model.listen<ToggleFavoriteResult, ToggleFavorite>().listen((res) {
+      if (res.sightId == sight.id) {
+        isFavorite.accept(res.isFavorite);
+      }
+    });
   }
 
   @override
@@ -41,12 +50,5 @@ class FavoriteButtonWm extends WidgetModel {
   }
 
   // при тапе на кнопку меняем состояние избранного
-  void _onTap(_) {
-    if (isFavorite.value) {
-      model.perform(RemoveFromFavorite(sight));
-    } else {
-      model.perform(AddToFavorite(sight));
-    }
-    isFavorite.accept(!isFavorite.value);
-  }
+  void _onTap(_) => model.perform(ToggleFavorite(sight));
 }
