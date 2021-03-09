@@ -10,10 +10,13 @@ import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/interactor/theme_interactor.dart';
+import 'package:places/model/favorites/model.dart';
+import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/repository/visited_repository.dart';
+import 'package:places/model/sights/performers.dart';
 import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
@@ -72,6 +75,16 @@ class App extends StatelessWidget {
             errorHandler: DefaultErrorHandler(),
           ),
         ),
+        Provider<FavoritesModel>(
+            create: (context) => FavoritesModel([
+                  GetSightsPerformer(
+                    sightRepository: context.read<SightRepository>(),
+                    locationRepository: context.read<LocationRepository>(),
+                  ),
+                  GetFavoriteStatePerformer(
+                      context.read<FavoritesRepository>()),
+                  ToggleFavoritePerformer(context.read<FavoritesRepository>()),
+                ])),
         ChangeNotifierProvider<ThemeInteractor>(
           create: (context) => ThemeInteractor(),
         ),

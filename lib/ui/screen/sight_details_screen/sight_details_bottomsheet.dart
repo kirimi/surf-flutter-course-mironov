@@ -3,8 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/mocks.dart';
-import 'package:places/model/favorites/performers.dart';
-import 'package:places/model/repository/favorites_repository.dart';
+import 'package:places/model/favorites/model.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
@@ -17,23 +16,12 @@ import 'package:relation/relation.dart';
 
 /// BottomSheet подробного представления "Интересного места"
 class SightDetailsBottomSheet extends CoreMwwmWidget {
-  SightDetailsBottomSheet({@required Sight sight, Model model})
+  SightDetailsBottomSheet({@required Sight sight})
       : assert(sight != null),
         super(widgetModelBuilder: (context) {
           return SightDetailsWm(
             context.read<WidgetModelDependencies>(),
-            model ??
-                Model([
-                  AddToFavoritePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                  RemoveFromFavoritePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                  GetFavoriteStatePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                ]),
+            context.read<FavoritesModel>(),
             Navigator.of(context),
             sight: sight,
           );

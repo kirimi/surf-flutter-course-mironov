@@ -80,12 +80,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
           onTap: () => wm.showDetails(sight),
           actionsBuilder: (_) {
             return [
-              /// ?????????????????????????
-              /// Вот тут wm.model @protected и ругается
-              FavoriteButton(
-                sight: sight,
-                model: wm.model,
-              ),
+              FavoriteButton(sight: sight),
             ];
           },
         ),
