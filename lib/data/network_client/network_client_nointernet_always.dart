@@ -1,5 +1,5 @@
 import 'package:places/data/network_client/network_client.dart';
-import 'package:places/interactor/repository/exceptions/internet_exception.dart';
+import 'package:places/model/repository/exceptions/internet_exception.dart';
 
 /// NetworkClient который всегда всегда [InternetException], нет интернета
 class NetworkClientNoInternet implements NetworkClient {

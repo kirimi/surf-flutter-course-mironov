@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/interactor/repository/sight_repository.dart';
+import 'package:places/model/repository/sight_repository.dart';
 
 /// Репозиторий мест.
 ///

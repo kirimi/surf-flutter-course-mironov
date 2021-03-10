@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_photo.dart';
-import 'package:places/interactor/favorites_interactor.dart';
 import 'package:places/mocks.dart';
+import 'package:places/model/favorites/performers.dart';
+import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
-import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
-import 'package:places/ui/screen/sight_details_screen/widget/sight_photos_carousel.dart';
+import 'package:places/ui/screen/sight_details_screen/sight_details_wm.dart';
+import 'package:places/ui/screen/sight_details_screen/widget/details_sliver_persistent_header_delegate.dart';
 import 'package:places/ui/widgets/icon_elevated_button.dart';
 import 'package:places/ui/widgets/icon_text_button.dart';
 import 'package:provider/provider.dart';
+import 'package:relation/relation.dart';
 
 /// BottomSheet подробного представления "Интересного места"
-class SightDetailsBottomSheet extends StatefulWidget {
-  final Sight sight;
-
-  const SightDetailsBottomSheet({
-    Key key,
-    @required this.sight,
-  })  : assert(sight != null),
-        super(key: key);
+class SightDetailsBottomSheet extends CoreMwwmWidget {
+  SightDetailsBottomSheet({@required Sight sight, Model model})
+      : assert(sight != null),
+        super(widgetModelBuilder: (context) {
+          return SightDetailsWm(
+            context.read<WidgetModelDependencies>(),
+            Model([
+              GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
+              context.read<ToggleFavoritePerformer>(),
+            ]),
+            Navigator.of(context),
+            sight: sight,
+          );
+        });
 
   @override
   _SightDetailsBottomSheetState createState() =>
       _SightDetailsBottomSheetState();
 }
 
-class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
+class _SightDetailsBottomSheetState extends WidgetState<SightDetailsWm> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -50,7 +58,7 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                 SliverPersistentHeader(
                   delegate: DetailsSliverPersistentHeaderDelegate(
                     photos: sightPhotosMocks,
-                    onBackTap: _onBack,
+                    onBackTap: wm.onBack,
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -60,13 +68,13 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(widget.sight.name,
+                        Text(wm.sight.name,
                             style: AppTextStyles.sightDetailsTitle),
                         const SizedBox(height: 2.0),
-                        Text(widget.sight.type.name,
+                        Text(wm.sight.type.name,
                             style: AppTextStyles.sightDetailsType),
                         const SizedBox(height: 24.0),
-                        Text(widget.sight.details,
+                        Text(wm.sight.details,
                             style: AppTextStyles.sightDetailsDetails),
                         const SizedBox(height: 24.0),
                         IconElevatedButton(
@@ -82,28 +90,18 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
                               icon: SvgIcons.calendar,
                               text: AppStrings.sightDetailsPlanBtn,
                             ),
-                            StreamBuilder<bool>(
-                              stream: context
-                                  .read<FavoritesInteractor>()
-                                  .favoriteStream(widget.sight),
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData) {
-                                  return const SizedBox.shrink();
-                                }
-                                final bool isFav = snapshot.data;
+                            StreamedStateBuilder<bool>(
+                              streamedState: wm.isFavorite,
+                              builder: (context, isFavorite) {
                                 return IconTextButton(
-                                  onPressed: () {
-                                    context
-                                        .read<FavoritesInteractor>()
-                                        .switchFavorite(widget.sight);
-                                  },
+                                  onPressed: wm.onFavorite,
                                   text: AppStrings.sightDetailsToFavoriteBtn,
-                                  icon: isFav
+                                  icon: isFavorite
                                       ? SvgIcons.heartFill
                                       : SvgIcons.heart,
                                 );
                               },
-                            )
+                            ),
                           ],
                         ),
                       ],
@@ -116,95 +114,5 @@ class _SightDetailsBottomSheetState extends State<SightDetailsBottomSheet> {
         );
       },
     );
-  }
-
-  void _onBack() {
-    Navigator.of(context).pop();
-  }
-}
-
-/// Sliver-делегат для заголовка с каруселью фото
-///
-/// [photos] - список фото для карусели
-/// [onBackTap] - при тапе на кнопку back
-class DetailsSliverPersistentHeaderDelegate
-    extends SliverPersistentHeaderDelegate {
-  final List<SightPhoto> photos;
-  final VoidCallback onBackTap;
-
-  DetailsSliverPersistentHeaderDelegate({
-    @required this.photos,
-    @required this.onBackTap,
-  })  : assert(photos != null && onBackTap != null),
-        super();
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    // При скролле кнопка "back" и ушко делаеются прозрачными,
-    // в середине скролла.
-    // Высчитываем прозрачность в соответствии с shrinkOffset
-    final startOpacityOffset = maxExtent - 200;
-    final endOpacityOffset = maxExtent - 100;
-    final currentOpacityOffset =
-        shrinkOffset.clamp(startOpacityOffset, endOpacityOffset).toDouble() -
-            startOpacityOffset;
-    final opacity =
-        1 - currentOpacityOffset / (endOpacityOffset - startOpacityOffset);
-
-    return Stack(
-      children: [
-        SightPhotosCarousel(list: photos),
-
-        // Кнопка закрытия
-        Opacity(
-          opacity: opacity,
-          child: Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0, top: 16.0),
-              child: InkWell(
-                onTap: onBackTap,
-                child: SvgIcon(
-                  icon: SvgIcons.clear,
-                  size: 40,
-                  color: Theme.of(context).backgroundColor,
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Ушко
-        Opacity(
-          opacity: opacity,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Container(
-                height: 4.0,
-                width: 40.0,
-                color: Theme.of(context).backgroundColor,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  double get maxExtent => 300;
-
-  @override
-  double get minExtent => 0;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
   }
 }

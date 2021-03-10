@@ -29,7 +29,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
     this.onSubmitted,
     this.onTap,
     this.readOnly = false,
-    this.text,
+    this.text = "",
     this.onFilterTap,
     this.onChanged,
     this.onClear,
