@@ -6,10 +6,9 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_wm.dart';
+import 'package:places/ui/screen/visiting_screen/widget/visiting_tab_bar.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
-import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar.dart';
-import 'package:places/ui/widgets/custom_tab_bar/custom_tab_bar_item.dart';
 import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
@@ -27,16 +26,7 @@ class VisitingScreen extends CoreMwwmWidget {
   _VisitingScreenState createState() => _VisitingScreenState();
 }
 
-class _VisitingScreenState extends WidgetState<VisitingWm>
-    with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    // ??????????????????????????
-    // Вопрос. Как поступать с TabController, AnimationController?
-    wm.tabController = TabController(length: 2, vsync: this);
-  }
-
+class _VisitingScreenState extends WidgetState<VisitingWm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,25 +39,9 @@ class _VisitingScreenState extends WidgetState<VisitingWm>
         ),
         backgroundColor: AppColors.transparent,
         elevation: 0,
-        bottom: CustomTabBar(
+        bottom: VisitingTabBar(
           controller: wm.tabController,
-          onTabTap: (index) => wm.tabController.animateTo(index),
-          items: [
-            CustomTabBarItem(
-              text: AppStrings.visitingWantToVisitTab,
-              activeStyle:
-                  AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
-              style: AppTextStyles.visitingTab
-                  .copyWith(color: Theme.of(context).disabledColor),
-            ),
-            CustomTabBarItem(
-              text: AppStrings.visitingVisitedTab,
-              activeStyle:
-                  AppTextStyles.visitingActiveTab.copyWith(color: Colors.white),
-              style: AppTextStyles.visitingTab
-                  .copyWith(color: Theme.of(context).disabledColor),
-            ),
-          ],
+          onTap: wm.tabTap,
         ),
       ),
       bottomNavigationBar: const CustomBottomNavBar(index: 2),
@@ -107,12 +81,6 @@ class _VisitingScreenState extends WidgetState<VisitingWm>
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    wm.tabController.dispose();
-    super.dispose();
   }
 
   // Карточки "Избранное"

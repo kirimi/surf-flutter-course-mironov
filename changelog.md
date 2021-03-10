@@ -3,6 +3,9 @@
 Перенес экран на mwwm. AnimationController создаю внутри wm, подсовывая ему TickerProvider.
 Там же и dispose у него делаю.  Нет ли каких-то побочных эффектов при таком подходе?
 
+- добавлена анимация tabbar на экране favorites.
+Реализовал в виде Stateful виджета VisitingTabBar.
+
 
 # 13.12 mwwm
 - Выбрал mwwm для архитектуры
