@@ -10,6 +10,7 @@ import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/interactor/theme_interactor.dart';
+import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
@@ -71,6 +72,10 @@ class App extends StatelessWidget {
           create: (context) => WidgetModelDependencies(
             errorHandler: DefaultErrorHandler(),
           ),
+        ),
+        Provider<ToggleFavoritePerformer>(
+          create: (context) =>
+              ToggleFavoritePerformer(context.read<FavoritesRepository>()),
         ),
         ChangeNotifierProvider<ThemeInteractor>(
           create: (context) => ThemeInteractor(),

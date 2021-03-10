@@ -26,7 +26,7 @@ WidgetModel _wmBuilder(BuildContext context) {
         locationRepository: context.read<LocationRepository>(),
       ),
       GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
-      ToggleFavoritePerformer(context.read<FavoritesRepository>()),
+      context.read<ToggleFavoritePerformer>(),
     ]),
     Navigator.of(context),
   );

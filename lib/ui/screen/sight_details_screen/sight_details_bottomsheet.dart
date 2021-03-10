@@ -22,18 +22,10 @@ class SightDetailsBottomSheet extends CoreMwwmWidget {
         super(widgetModelBuilder: (context) {
           return SightDetailsWm(
             context.read<WidgetModelDependencies>(),
-            model ??
-                Model([
-                  AddToFavoritePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                  RemoveFromFavoritePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                  GetFavoriteStatePerformer(
-                    context.read<FavoritesRepository>(),
-                  ),
-                ]),
+            Model([
+              GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
+              context.read<ToggleFavoritePerformer>(),
+            ]),
             Navigator.of(context),
             sight: sight,
           );

@@ -15,14 +15,10 @@ class FavoriteButton extends CoreMwwmWidget {
       : super(widgetModelBuilder: (context) {
           return FavoriteButtonWm(
             context.read<WidgetModelDependencies>(),
-            model ??
-                Model([
-                  AddToFavoritePerformer(context.read<FavoritesRepository>()),
-                  RemoveFromFavoritePerformer(
-                      context.read<FavoritesRepository>()),
-                  GetFavoriteStatePerformer(
-                      context.read<FavoritesRepository>()),
-                ]),
+            Model([
+              GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
+              context.read<ToggleFavoritePerformer>(),
+            ]),
             sight: sight,
           );
         });
