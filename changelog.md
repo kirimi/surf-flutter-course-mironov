@@ -6,6 +6,8 @@
 - добавлена анимация tabbar на экране favorites.
 Реализовал в виде Stateful виджета VisitingTabBar.
 
+- Добавлена анимация иконок на слайдах в onboarding
+
 
 # 13.12 mwwm
 - Выбрал mwwm для архитектуры

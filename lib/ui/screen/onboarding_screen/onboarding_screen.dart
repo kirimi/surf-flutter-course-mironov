@@ -15,7 +15,8 @@ class OnboardingScreen extends StatefulWidget {
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen>
+    with TickerProviderStateMixin {
   final List<OnboardingItem> _items = [
     OnboardingItem(
       title: AppStrings.onboarding1Title,
@@ -34,6 +35,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     )
   ];
 
+  /// Анимации для иконки
+  List<AnimationController> _animations;
+
   PageController _pageController;
   int _currentIndex = 0;
   bool _isLastPage = false;
@@ -42,6 +46,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    _animations = [
+      AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 300),
+      ),
+      AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 300),
+      ),
+      AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 300),
+      ),
+    ];
+    _animations[0].forward();
   }
 
   @override
@@ -69,9 +88,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _currentIndex = index;
                 _isLastPage = index == _items.length - 1;
               });
+              _animations[index].forward(from: 0);
             },
             itemBuilder: (context, index) {
-              return OnboardingContent(item: _items[index]);
+              return OnboardingContent(
+                item: _items[index],
+                animationController: _animations[index],
+              );
             },
           ),
           Align(
@@ -106,6 +129,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   void dispose() {
     _pageController.dispose();
+    for (final anim in _animations) {
+      anim.dispose();
+    }
     super.dispose();
   }
 
