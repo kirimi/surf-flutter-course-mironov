@@ -1,3 +1,9 @@
+# 14.2 animations
+- добавлена анимация сплеш-экрана.
+Перенес экран на mwwm. AnimationController создаю внутри wm, подсовывая ему TickerProvider.
+Там же и dispose у него делаю.  Нет ли каких-то побочных эффектов при таком подходе?
+
+
 # 13.12 mwwm
 - Экран AddSightScreen на mwwm
 

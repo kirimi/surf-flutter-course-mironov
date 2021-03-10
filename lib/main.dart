@@ -34,7 +34,7 @@ import 'package:places/ui/screen/settings_screen.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
-import 'package:places/ui/screen/splash_screen.dart';
+import 'package:places/ui/screen/splash_screen/splash_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 import 'package:provider/provider.dart';
 
