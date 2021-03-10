@@ -28,7 +28,8 @@ import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen_route.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:places/ui/screen/sight_search_screen/sight_search_screen_route.dart';
-import 'package:places/ui/screen/splash_screen.dart';
+import 'package:places/ui/screen/splash_screen/splash_screen.dart';
+import 'package:places/ui/screen/splash_screen/splash_screen_route.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen_router.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +90,6 @@ class App extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: SplashScreen.routeName,
             routes: {
-              SplashScreen.routeName: (context) => SplashScreen(),
               OnboardingScreen.routeName: (context) => OnboardingScreen(),
               SelectCategoryScreen.routeName: (context) =>
                   SelectCategoryScreen(),
@@ -97,6 +97,8 @@ class App extends StatelessWidget {
             },
             onGenerateRoute: (settings) {
               switch (settings.name) {
+                case SplashScreen.routeName:
+                  return SplashScreenRoute();
                 case AddSightScreen.routeName:
                   return AddSightScreenRoute();
                 case FiltersScreen.routeName:

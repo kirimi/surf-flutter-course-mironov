@@ -4,7 +4,6 @@ import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/splash_screen/splash_wm.dart';
-import 'package:provider/provider.dart';
 
 /// Сплэш-экран
 ///
@@ -15,13 +14,10 @@ import 'package:provider/provider.dart';
 class SplashScreen extends CoreMwwmWidget {
   static const String routeName = 'SplashScreen';
 
-  SplashScreen()
-      : super(
-          widgetModelBuilder: (context) => SplashWm(
-            context.read<WidgetModelDependencies>(),
-            navigator: Navigator.of(context),
-          ),
-        );
+  const SplashScreen({
+    @required WidgetModelBuilder wmBuilder,
+  })  : assert(wmBuilder != null),
+        super(widgetModelBuilder: wmBuilder);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
