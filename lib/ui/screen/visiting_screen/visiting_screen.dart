@@ -10,6 +10,7 @@ import 'package:places/ui/screen/visiting_screen/widget/visiting_tab_bar.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/draggable_dismissible_sight_card.dart';
+import 'package:places/ui/widgets/loading_spinner.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:places/ui/widgets/sight_list_widget.dart';
 import 'package:relation/relation.dart';
@@ -57,7 +58,7 @@ class _VisitingScreenState extends WidgetState<VisitingWm> {
               );
             },
             loadingBuilder: (context, _) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: LoadingSpinner());
             },
             errorBuilder: (context, _, e) {
               return _ErrorMessage(message: e.toString());
@@ -72,7 +73,7 @@ class _VisitingScreenState extends WidgetState<VisitingWm> {
               );
             },
             loadingBuilder: (context, _) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: LoadingSpinner());
             },
             errorBuilder: (context, _, e) {
               return _ErrorMessage(message: e.toString());

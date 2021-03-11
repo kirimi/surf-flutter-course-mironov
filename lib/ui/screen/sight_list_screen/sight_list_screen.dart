@@ -9,6 +9,7 @@ import 'package:places/ui/screen/sight_list_screen/widget/favorite_button/favori
 import 'package:places/ui/screen/sight_list_screen/widget/search_sliver_delegate.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:places/ui/widgets/loading_spinner.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:relation/relation.dart';
@@ -57,7 +58,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
           );
         },
         loadingBuilder: (context, _) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingSpinner());
         },
         errorBuilder: (context, _, e) {
           return CenterMessage(

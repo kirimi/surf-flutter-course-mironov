@@ -72,7 +72,7 @@ class VisitingWm extends WidgetModel {
 
   // Загрузка избранного
   void _onLoadFavorites() {
-    favoriteSights.loading();
+    favoriteSights.loading([]);
     doFutureHandleError<List<Sight>>(
       model.perform(GetFavoriteSights()),
       (sights) => favoriteSights.content(sights),
@@ -82,7 +82,7 @@ class VisitingWm extends WidgetModel {
 
   // Загрузка посещенных
   void _onLoadVisited() {
-    visitedSights.loading();
+    visitedSights.loading([]);
     doFutureHandleError<List<Sight>>(
       model.perform(GetVisitedSights()),
       (sights) => visitedSights.content(sights),

@@ -39,6 +39,7 @@ flutter:
   assets:
     - res/
     - res/svg/
+    - res/images/
 
   fonts:
     - family: Roboto

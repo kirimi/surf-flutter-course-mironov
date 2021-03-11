@@ -9,6 +9,7 @@ import 'package:places/ui/screen/sight_search_screen/history/history_item.dart';
 import 'package:places/ui/screen/sight_search_screen/history/history_wm.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/label.dart';
+import 'package:places/ui/widgets/loading_spinner.dart';
 import 'package:provider/provider.dart';
 import 'package:relation/relation.dart';
 
@@ -86,7 +87,7 @@ class _HistoryListState extends WidgetState<HistoryWm> {
       child: SizedBox(
         height: 40.0,
         width: 40.0,
-        child: CircularProgressIndicator(),
+        child: LoadingSpinner(),
       ),
     );
   }

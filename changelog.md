@@ -1,7 +1,8 @@
-№ 14.3 implicit animations
+# 14.3 implicit animations
 - анимация кнопки favorite с помощью AnimatedSwitcher
 - анимация появления фото после загрузки на карточке места с помощью AnimatedOpacity
-
+- добавлен спиннер LoadingSpinner согласно дизайну. Интегрирован на страницы списка мест, favorites, visited.
+Единственное, не нашел легкого пути как сделать постоянно крутящийся спиннер с помощью implicit подхода. Сделал explicit.
 
 # 14.2 animations
 - добавлена анимация сплеш-экрана.
