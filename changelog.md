@@ -1,3 +1,6 @@
+№ 14.3 implicit animations
+- анимация кнопки favorite с помощью AnimatedSwitcher
+
 # 14.2 animations
 - добавлена анимация сплеш-экрана.
 Перенес экран на mwwm. AnimationController создаю внутри wm, подсовывая ему TickerProvider.

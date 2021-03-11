@@ -33,9 +33,13 @@ class _FavoriteButtonState extends WidgetState<FavoriteButtonWm> {
     return StreamedStateBuilder<bool>(
       streamedState: wm.isFavorite,
       builder: (context, isFav) {
-        return SightCardActionButton(
-          onTap: wm.onTap,
-          icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: SightCardActionButton(
+            key: ObjectKey(isFav),
+            onTap: wm.onTap,
+            icon: isFav ? SvgIcons.heartFill : SvgIcons.heart,
+          ),
         );
       },
     );
