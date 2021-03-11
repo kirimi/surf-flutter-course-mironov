@@ -17,7 +17,7 @@ import 'package:relation/relation.dart';
 
 /// BottomSheet подробного представления "Интересного места"
 class SightDetailsBottomSheet extends CoreMwwmWidget {
-  SightDetailsBottomSheet({@required Sight sight, Model model})
+  SightDetailsBottomSheet({@required Sight sight})
       : assert(sight != null),
         super(widgetModelBuilder: (context) {
           return SightDetailsWm(

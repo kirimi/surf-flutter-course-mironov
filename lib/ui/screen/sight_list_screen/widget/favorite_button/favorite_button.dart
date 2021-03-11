@@ -11,7 +11,7 @@ import 'package:relation/relation.dart';
 
 /// Кнопка избранное для карточки места.
 class FavoriteButton extends CoreMwwmWidget {
-  FavoriteButton({@required Sight sight, Model model})
+  FavoriteButton({@required Sight sight})
       : super(widgetModelBuilder: (context) {
           return FavoriteButtonWm(
             context.read<WidgetModelDependencies>(),
