@@ -1,5 +1,6 @@
 № 14.3 implicit animations
 - анимация кнопки favorite с помощью AnimatedSwitcher
+- анимация появления фото после загрузки на карточке места с помощью AnimatedOpacity
 
 
 # 14.2 animations
