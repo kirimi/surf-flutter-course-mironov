@@ -7,6 +7,7 @@ import 'package:places/model/favorites/changes.dart';
 import 'package:places/model/visited/changes.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:places/ui/widgets/ios_date_picker.dart';
+import 'package:places/utils/app_ticker_provider.dart';
 import 'package:relation/relation.dart';
 
 /// wm для экрана Хочу посетить/Посещенные места
@@ -19,7 +20,10 @@ class VisitingWm extends WidgetModel {
 
   final NavigatorState navigator;
 
-  TabController tabController;
+  final TabController tabController = TabController(
+    length: 2,
+    vsync: AppTickerProvider(),
+  );
 
   /// список Избранное
   final favoriteSights =
@@ -40,6 +44,9 @@ class VisitingWm extends WidgetModel {
   /// Выбрать время посещения
   final selectTimeToVisit = Action<Sight>();
 
+  /// тап по табу
+  final tabTap = Action<void>();
+
   @override
   void onBind() {
     super.onBind();
@@ -47,6 +54,7 @@ class VisitingWm extends WidgetModel {
     subscribe(showDetails.stream, _onShowDetails);
     subscribe(selectTimeToVisit.stream, _onSelectTimeToVisit);
     subscribe(removeFromVisited.stream, _onRemoveFromVisited);
+    subscribe(tabTap.stream, (_) => _onTabTap());
   }
 
   @override
@@ -54,6 +62,12 @@ class VisitingWm extends WidgetModel {
     super.onLoad();
     _onLoadFavorites();
     _onLoadVisited();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
   }
 
   // Загрузка избранного
@@ -126,4 +140,7 @@ class VisitingWm extends WidgetModel {
       print('Выбрана дата посещения ${date.toString()}');
     }
   }
+
+  // смена таба
+  void _onTabTap() => tabController.animateTo(tabController.index == 0 ? 1 : 0);
 }
