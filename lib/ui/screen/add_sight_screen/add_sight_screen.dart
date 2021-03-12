@@ -151,9 +151,12 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
               child: StreamedStateBuilder<bool>(
                 streamedState: wm.isSubmitEnabled,
                 builder: (context, inEnabled) {
-                  return IconElevatedButton(
-                    text: AppStrings.addSightBtnCreate,
-                    onPressed: inEnabled ? wm.submit : null,
+                  return Hero(
+                    tag: 'addHero',
+                    child: IconElevatedButton(
+                      text: AppStrings.addSightBtnCreate,
+                      onPressed: inEnabled ? wm.submit : null,
+                    ),
                   );
                 },
               ),

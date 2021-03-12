@@ -32,7 +32,10 @@ class _SightListScreenState extends WidgetState<SightListWm> {
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: AddButton(onPressed: wm.onAddSight),
+      floatingActionButton: Hero(
+        tag: 'addHero',
+        child: AddButton(onPressed: wm.onAddSight),
+      ),
       body: EntityStateBuilder(
         streamedState: wm.sights,
         child: (context, List<Sight> sights) {
