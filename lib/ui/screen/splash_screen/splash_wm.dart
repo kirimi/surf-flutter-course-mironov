@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/utils/app_ticker_provider.dart';
@@ -22,7 +23,7 @@ class SplashWm extends WidgetModel {
   final AnimationController rotationAnimation = AnimationController(
     vsync: AppTickerProvider(),
     upperBound: pi * 2,
-    duration: const Duration(seconds: 2),
+    duration: Const.duration2000,
   );
 
   @override
@@ -47,7 +48,7 @@ class SplashWm extends WidgetModel {
       await Future.wait(
         [
           _initApp(),
-          Future.delayed(const Duration(seconds: 2)),
+          Future.delayed(Const.duration2000),
         ],
         // в случае ошибки _initApp не ждем 2 сек, чтобы обработать.
         eagerError: true,

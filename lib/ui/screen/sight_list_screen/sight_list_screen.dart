@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_wm.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
@@ -33,7 +34,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Hero(
-        tag: 'addHero',
+        tag: Const.heroAdd,
         child: AddButton(onPressed: wm.onAddSight),
       ),
       body: EntityStateBuilder(

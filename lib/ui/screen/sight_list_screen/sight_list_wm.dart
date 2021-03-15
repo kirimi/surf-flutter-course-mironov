@@ -67,7 +67,6 @@ class SightListWm extends WidgetModel {
   // Загрузка списка мест с обработчиком ошибок
   Future<void> _onLoad() async {
     sights.loading([]);
-    await Future.delayed(const Duration(seconds: 2));
     doFutureHandleError<List<Sight>>(
       model.perform(GetSights(filter.value)),
       (result) => sights.accept(EntityState.content(result)),

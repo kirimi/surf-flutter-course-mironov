@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/ui/res/const.dart';
 
 /// Прогресс-бар для страницы онбординга
 class OnboardingProgressBar extends StatelessWidget {
@@ -43,7 +44,7 @@ class _OnboardingProgressBarItem extends StatelessWidget {
         height: 8.0,
         child: Center(
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
+            duration: Const.duration300,
             width: isActive ? 16.0 : 8.0,
             decoration: BoxDecoration(
               color: isActive

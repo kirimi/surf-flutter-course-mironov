@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/onboarding_screen/model/onboarding_item.dart';
 import 'package:places/ui/screen/onboarding_screen/widget/onboarding_content.dart';
@@ -49,15 +50,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     _animations = [
       AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 300),
+        duration: Const.duration300,
       ),
       AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 300),
+        duration: Const.duration300,
       ),
       AnimationController(
         vsync: this,
-        duration: const Duration(milliseconds: 300),
+        duration: Const.duration300,
       ),
     ];
     _animations[0].forward();
@@ -70,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         actions: [
           AnimatedOpacity(
             opacity: _isLastPage ? 0.0 : 1.0,
-            duration: const Duration(milliseconds: 300),
+            duration: Const.duration300,
             child: TextButton(
               onPressed: _onSkipPressed,
               child: const Text(AppStrings.onboardingSkip),
@@ -109,7 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           ),
           AnimatedOpacity(
             opacity: _isLastPage ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 300),
+            duration: Const.duration300,
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -139,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   void _onSkipPressed() {
     _pageController.animateToPage(
       _items.length - 1,
-      duration: const Duration(milliseconds: 300),
+      duration: Const.duration300,
       curve: Curves.linear,
     );
   }

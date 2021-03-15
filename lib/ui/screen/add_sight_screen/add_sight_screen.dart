@@ -3,6 +3,7 @@ import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_wm.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/category_selector.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/sight_photos_list_widget.dart';
@@ -152,7 +153,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                 streamedState: wm.isSubmitEnabled,
                 builder: (context, inEnabled) {
                   return Hero(
-                    tag: 'addHero',
+                    tag: Const.heroAdd,
                     child: IconElevatedButton(
                       text: AppStrings.addSightBtnCreate,
                       onPressed: inEnabled ? wm.submit : null,

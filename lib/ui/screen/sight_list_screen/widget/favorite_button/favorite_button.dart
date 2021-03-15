@@ -3,6 +3,7 @@ import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/favorite_button/favorite_button_wm.dart';
 import 'package:places/ui/widgets/sight_card.dart';
@@ -34,7 +35,7 @@ class _FavoriteButtonState extends WidgetState<FavoriteButtonWm> {
       streamedState: wm.isFavorite,
       builder: (context, isFav) {
         return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
+          duration: Const.duration300,
           child: SightCardActionButton(
             key: ObjectKey(isFav),
             onTap: wm.onTap,
