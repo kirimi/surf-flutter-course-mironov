@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/ui/res/app_strings.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_wm.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
@@ -9,6 +10,7 @@ import 'package:places/ui/screen/sight_list_screen/widget/favorite_button/favori
 import 'package:places/ui/screen/sight_list_screen/widget/search_sliver_delegate.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
+import 'package:places/ui/widgets/loading_spinner.dart';
 import 'package:places/ui/widgets/search_bar.dart';
 import 'package:places/ui/widgets/sight_card.dart';
 import 'package:relation/relation.dart';
@@ -31,7 +33,10 @@ class _SightListScreenState extends WidgetState<SightListWm> {
     return Scaffold(
       bottomNavigationBar: const CustomBottomNavBar(index: 0),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: AddButton(onPressed: wm.onAddSight),
+      floatingActionButton: Hero(
+        tag: Const.heroAdd,
+        child: AddButton(onPressed: wm.onAddSight),
+      ),
       body: EntityStateBuilder(
         streamedState: wm.sights,
         child: (context, List<Sight> sights) {
@@ -57,7 +62,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
           );
         },
         loadingBuilder: (context, _) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingSpinner());
         },
         errorBuilder: (context, _, e) {
           return CenterMessage(
@@ -80,12 +85,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
           onTap: () => wm.showDetails(sight),
           actionsBuilder: (_) {
             return [
-              /// ?????????????????????????
-              /// Вот тут wm.model @protected и ругается
-              FavoriteButton(
-                sight: sight,
-                model: wm.model,
-              ),
+              FavoriteButton(sight: sight),
             ];
           },
         ),

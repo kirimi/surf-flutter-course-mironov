@@ -66,7 +66,7 @@ class SightListWm extends WidgetModel {
 
   // Загрузка списка мест с обработчиком ошибок
   Future<void> _onLoad() async {
-    sights.loading();
+    sights.loading([]);
     doFutureHandleError<List<Sight>>(
       model.perform(GetSights(filter.value)),
       (result) => sights.accept(EntityState.content(result)),
@@ -106,10 +106,7 @@ class SightListWm extends WidgetModel {
         context: navigator.context,
         isScrollControlled: true,
         builder: (_) {
-          return SightDetailsBottomSheet(
-            sight: sight,
-            model: model,
-          );
+          return SightDetailsBottomSheet(sight: sight);
         });
   }
 }

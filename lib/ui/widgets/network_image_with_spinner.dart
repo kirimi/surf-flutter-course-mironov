@@ -19,24 +19,41 @@ class NetworkImageWithSpinner extends StatelessWidget {
     return Image.network(
       url,
       fit: fit,
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) {
-          // загрузка завершена, показываем картинку
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded) {
           return child;
-        } else {
-          // в документации expectedTotalBytes может быть null поэтому в этом кейсе показываем простую крутилку
+        }
+        return AnimatedOpacity(
+          opacity: frame == null ? 0 : 1,
+          duration: const Duration(seconds: 1),
+          curve: Curves.easeOut,
+          child: child,
+        );
+      },
+      loadingBuilder: (context, child, loadingProgress) {
+        Widget loading;
+        if (loadingProgress != null) {
+          // в документации expectedTotalBytes может быть null
+          // поэтому в этом кейсе показываем простую крутилку
           if (loadingProgress.expectedTotalBytes == null ||
               loadingProgress.expectedTotalBytes == 0) {
-            return const CircularProgressIndicator();
+            loading = const CircularProgressIndicator();
+          } else {
+            // Вычисляем прогресс для спиннера
+            final progress = loadingProgress.cumulativeBytesLoaded /
+                loadingProgress.expectedTotalBytes;
+            loading = Center(
+              child: CircularProgressIndicator(value: progress),
+            );
           }
-
-          // Вычисляем прогресс для спиннера
-          final progress = loadingProgress.cumulativeBytesLoaded /
-              loadingProgress.expectedTotalBytes;
-          return Center(
-            child: CircularProgressIndicator(value: progress),
-          );
         }
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            child,
+            if (loading != null) loading,
+          ],
+        );
       },
     );
   }

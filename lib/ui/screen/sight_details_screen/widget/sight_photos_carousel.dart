@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight_photo.dart';
+import 'package:places/ui/res/const.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Карусель фото  места, с индикатором.
@@ -97,7 +98,7 @@ class _ProgressIndicatorItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: isActive ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 300),
+      duration: Const.duration300,
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).accentColor,
