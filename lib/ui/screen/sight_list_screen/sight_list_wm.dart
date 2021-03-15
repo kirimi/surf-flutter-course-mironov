@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
-import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/model/filter/changes.dart';
 import 'package:places/model/sights/changes.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
@@ -25,13 +25,7 @@ class SightListWm extends WidgetModel {
   );
 
   /// Фильтр
-  final StreamedState<Filter> filter = StreamedState(
-    Filter(
-      minDistance: Config.minRange,
-      maxDistance: Config.maxRange,
-      types: [],
-    ),
-  );
+  final StreamedState<Filter> filter = StreamedState();
 
   /// Загрузить места
   final load = Action<void>();
@@ -61,6 +55,9 @@ class SightListWm extends WidgetModel {
   @override
   void onLoad() {
     super.onLoad();
+    // получаем последний использованный фильтр
+    final savedFilter = model.perform(GetFilter());
+    filter.accept(savedFilter);
     _onLoad();
   }
 
@@ -83,6 +80,8 @@ class SightListWm extends WidgetModel {
     ) as Filter;
 
     if (newFilter != null) {
+      // сохраняем фильтр
+      model.perform(SaveFilter(newFilter));
       filter.accept(newFilter);
       _onLoad();
     }

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
+import 'package:places/model/repository/storage_repository.dart';
 import 'package:places/ui/res/const.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
@@ -11,13 +12,13 @@ class SplashWm extends WidgetModel {
   SplashWm(
     WidgetModelDependencies baseDependencies, {
     @required this.navigator,
+    @required this.storageRepository,
   })  : assert(navigator != null),
+        assert(storageRepository != null),
         super(baseDependencies);
 
   final NavigatorState navigator;
-
-  /// Флаг первого запуска приложения
-  bool _isFirstRun;
+  final StorageRepository storageRepository;
 
   /// Анимация вращения логотипа
   final AnimationController rotationAnimation = AnimationController(
@@ -30,9 +31,6 @@ class SplashWm extends WidgetModel {
   void onLoad() {
     super.onLoad();
     rotationAnimation.repeat();
-
-    // todo брать флаг из ShredPref
-    _isFirstRun = true;
     _onLoad();
   }
 
@@ -67,10 +65,12 @@ class SplashWm extends WidgetModel {
   /// Переход дальше в соответствии первый запуск или нет
   void _goNext() {
     navigator.pushReplacementNamed(
-      _isFirstRun ? OnboardingScreen.routeName : SightListScreen.routeName,
+      storageRepository.isFirstRun
+          ? OnboardingScreen.routeName
+          : SightListScreen.routeName,
     );
 
-    // todo сохранять флаг в SharedPref
-    _isFirstRun = false;
+    // сохраняем флаг, что это не первый запуск
+    storageRepository.isFirstRun = false;
   }
 }
