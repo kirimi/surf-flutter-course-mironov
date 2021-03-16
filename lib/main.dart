@@ -39,22 +39,20 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   // await uploadMocks(sightRepository);
   WidgetsFlutterBinding.ensureInitialized();
-  final storageRepository = await SharedPrefsStorageRepository.getInstance();
-  runApp(App(
-    storageRepository: storageRepository,
-  ));
+  final _storageRepository = await SharedPrefsStorageRepository.getInstance();
+  runApp(
+    Provider<StorageRepository>(
+      create: (_) => _storageRepository,
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
-  final StorageRepository storageRepository;
-
-  const App({Key key, this.storageRepository}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<StorageRepository>(create: (_) => storageRepository),
         Provider<SightRepository>(
           create: (context) {
             final NetworkClient networkClient = NetworkClientDio(
