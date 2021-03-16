@@ -38,8 +38,9 @@ final List<SightType> defaultSightTypes = [
 /// Функция возвращает экземпляр [SightType] с соответствующим [code] из [defaultSightTypes]
 /// Или null, если нет такого кода
 SightType getSightTypeByCode(String code) {
-  return defaultSightTypes.singleWhere(
-    (e) => e.code == code,
-    orElse: () => null,
-  );
+  final bool isExist = defaultSightTypes.map((e) => e.code).contains(code);
+  if (isExist) {
+    return defaultSightTypes.singleWhere((e) => e.code == code);
+  }
+  return defaultSightTypes.singleWhere((e) => e.code == 'other');
 }
