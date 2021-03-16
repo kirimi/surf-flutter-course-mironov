@@ -142,7 +142,7 @@ class _FiltersScreenState extends WidgetState<FiltersWm> {
   Widget _buildFilterItem(SightType sightType, List<SightType> selectedTypes) {
     return TypeFilterItemWidget(
       sightType: sightType,
-      isSelected: selectedTypes.contains(sightType),
+      isSelected: selectedTypes.map((e) => e.code).contains(sightType.code),
       onTap: () => wm.toggleSightType(sightType),
     );
   }

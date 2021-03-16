@@ -182,4 +182,18 @@ class SvgData {
   final String semanticsLabel;
 
   const SvgData(this.path, {this.semanticsLabel});
+
+  factory SvgData.fromJson(Map<String, dynamic> map) {
+    return SvgData(
+      map['path'] as String,
+      semanticsLabel: map['semanticsLabel'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'path': path,
+      'semanticsLabel': semanticsLabel,
+    };
+  }
 }

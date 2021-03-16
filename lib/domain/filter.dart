@@ -1,8 +1,13 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:places/config.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
+
+part 'filter.g.dart';
 
 /// Класс описывающий параметры фильтра, который формируется
 /// на странице FiltersScreen.
 /// И используется на SightListScreen, SightSearchScreen
+@JsonSerializable(explicitToJson: true)
 class Filter {
   double minDistance;
   double maxDistance;
@@ -15,6 +20,12 @@ class Filter {
     this.types,
     this.nameFilter,
   });
+
+  Filter.initial() {
+    minDistance = Config.minRange;
+    maxDistance = Config.maxRange;
+    types = [];
+  }
 
   Filter copyWith({
     double minDistance,
@@ -29,6 +40,9 @@ class Filter {
       nameFilter: nameFilter ?? this.nameFilter,
     );
   }
+
+  factory Filter.fromJson(Map<String, dynamic> json) => _$FilterFromJson(json);
+  Map<String, dynamic> toJson() => _$FilterToJson(this);
 
   @override
   String toString() {

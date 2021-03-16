@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/model/favorites/performers.dart';
+import 'package:places/model/filter/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
+import 'package:places/model/repository/storage_repository.dart';
 import 'package:places/model/sights/performers.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_wm.dart';
@@ -27,6 +29,8 @@ WidgetModel _wmBuilder(BuildContext context) {
       ),
       GetFavoriteStatePerformer(context.read<FavoritesRepository>()),
       context.read<ToggleFavoritePerformer>(),
+      SaveFilterPerformer(context.read<StorageRepository>()),
+      GetFilterPerformer(context.read<StorageRepository>()),
     ]),
     Navigator.of(context),
   );

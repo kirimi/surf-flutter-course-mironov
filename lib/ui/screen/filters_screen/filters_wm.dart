@@ -90,8 +90,8 @@ class FiltersWm extends WidgetModel {
 
   // При тапе на категорию добавляем или убираем ее в фильтре
   void _onToggleSightType(SightType sightType) {
-    filter.types.contains(sightType)
-        ? filter.types.remove(sightType)
+    filter.types.map((e) => e.code).contains(sightType.code)
+        ? filter.types.removeWhere((e) => e.code == sightType.code)
         : filter.types.add(sightType);
     selectedSightTypes.accept(filter.types);
     _updateCount();
