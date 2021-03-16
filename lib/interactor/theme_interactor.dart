@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:places/model/repository/storage_repository.dart';
 import 'package:places/ui/res/themes.dart';
 
 /// Интерактор настроек
 class ThemeInteractor extends ChangeNotifier {
-  bool _isDark = false;
+  ThemeInteractor(this.repository);
+
+  final StorageRepository repository;
 
   /// Текущая тема приложения
-  ThemeData get theme => _isDark ? darkTheme : lightTheme;
+  ThemeData get theme => repository.isDarkTheme ? darkTheme : lightTheme;
 
   /// флаг темной темы
-  bool get isDark => _isDark;
+  bool get isDark => repository.isDarkTheme;
 
   /// устанавливает темную тему
   set isDark(bool newVal) {
-    _isDark = newVal;
+    repository.isDarkTheme = newVal;
     notifyListeners();
   }
 }

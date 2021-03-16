@@ -6,6 +6,7 @@ import 'package:places/data/location_repository/location_repository_mock.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_repository.dart';
+import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
 import 'package:places/domain/filter.dart';
@@ -14,6 +15,7 @@ import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
+import 'package:places/model/repository/storage_repository.dart';
 import 'package:places/model/repository/visited_repository.dart';
 import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -36,7 +38,14 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   // await uploadMocks(sightRepository);
-  runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  final _storageRepository = await SharedPrefsStorageRepository.getInstance();
+  runApp(
+    Provider<StorageRepository>(
+      create: (_) => _storageRepository,
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -79,7 +88,9 @@ class App extends StatelessWidget {
               ToggleFavoritePerformer(context.read<FavoritesRepository>()),
         ),
         ChangeNotifierProvider<ThemeInteractor>(
-          create: (context) => ThemeInteractor(),
+          create: (context) => ThemeInteractor(
+            context.read<StorageRepository>(),
+          ),
         ),
       ],
       child: Consumer<ThemeInteractor>(
