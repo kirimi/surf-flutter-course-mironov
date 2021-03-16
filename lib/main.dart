@@ -5,7 +5,7 @@ import 'package:places/data/favorites_repository/favorites_repository_memory.dar
 import 'package:places/data/location_repository/location_repository_mock.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
-import 'package:places/data/search_history_repository/search_history_repository.dart';
+import 'package:places/data/search_history_repository/search_history_memory_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
@@ -14,6 +14,7 @@ import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/search_history_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/repository/storage_repository.dart';
 import 'package:places/model/repository/visited_repository.dart';
@@ -75,7 +76,7 @@ class App extends StatelessWidget {
           create: (_) => VisitedRepositoryMemory(),
         ),
         Provider<SearchHistoryRepository>(
-          create: (context) => SearchHistoryRepository(),
+          create: (context) => SearchHistoryMemoryRepository(),
         ),
         // Провайдим ErrorHandler для mwwm
         Provider<WidgetModelDependencies>(

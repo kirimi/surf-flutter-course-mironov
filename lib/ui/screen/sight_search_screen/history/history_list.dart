@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/data/search_history_repository/search_history_repository.dart';
+import 'package:places/model/repository/search_history_repository.dart';
 import 'package:places/model/search_history/performers.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';

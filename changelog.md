@@ -1,3 +1,6 @@
+# 15.3 Moor
+-
+
 # 15.1 SharedPreference
 - Добавил интерфейс StorageRepository с нужными свойствами (filter, isFirstRun, isDarkTheme)
 - Имплементация этого в SharedPrefsStorageRepository.

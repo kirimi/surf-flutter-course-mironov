@@ -1,5 +1,5 @@
 import 'package:mwwm/mwwm.dart';
-import 'package:places/data/search_history_repository/search_history_repository.dart';
+import 'package:places/model/repository/search_history_repository.dart';
 import 'package:places/model/search_history/changes.dart';
 
 /// Добавление запроса в историю
@@ -47,6 +47,6 @@ class GetHistoryPerformer extends FuturePerformer<List<String>, GetHistory> {
 
   @override
   Future<List<String>> perform(GetHistory change) {
-    return Future.value(repository.requests);
+    return repository.all();
   }
 }
