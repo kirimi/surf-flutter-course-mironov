@@ -199,16 +199,209 @@ class $SearchHistoriesTable extends SearchHistories
   }
 }
 
+class Favorite extends DataClass implements Insertable<Favorite> {
+  final int id;
+  final int placeId;
+  Favorite({@required this.id, @required this.placeId});
+  factory Favorite.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    return Favorite(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      placeId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}place_id']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || placeId != null) {
+      map['place_id'] = Variable<int>(placeId);
+    }
+    return map;
+  }
+
+  FavoritesCompanion toCompanion(bool nullToAbsent) {
+    return FavoritesCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      placeId: placeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(placeId),
+    );
+  }
+
+  factory Favorite.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Favorite(
+      id: serializer.fromJson<int>(json['id']),
+      placeId: serializer.fromJson<int>(json['placeId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'placeId': serializer.toJson<int>(placeId),
+    };
+  }
+
+  Favorite copyWith({int id, int placeId}) => Favorite(
+        id: id ?? this.id,
+        placeId: placeId ?? this.placeId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Favorite(')
+          ..write('id: $id, ')
+          ..write('placeId: $placeId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode, placeId.hashCode));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is Favorite &&
+          other.id == this.id &&
+          other.placeId == this.placeId);
+}
+
+class FavoritesCompanion extends UpdateCompanion<Favorite> {
+  final Value<int> id;
+  final Value<int> placeId;
+  const FavoritesCompanion({
+    this.id = const Value.absent(),
+    this.placeId = const Value.absent(),
+  });
+  FavoritesCompanion.insert({
+    this.id = const Value.absent(),
+    @required int placeId,
+  }) : placeId = Value(placeId);
+  static Insertable<Favorite> custom({
+    Expression<int> id,
+    Expression<int> placeId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (placeId != null) 'place_id': placeId,
+    });
+  }
+
+  FavoritesCompanion copyWith({Value<int> id, Value<int> placeId}) {
+    return FavoritesCompanion(
+      id: id ?? this.id,
+      placeId: placeId ?? this.placeId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (placeId.present) {
+      map['place_id'] = Variable<int>(placeId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FavoritesCompanion(')
+          ..write('id: $id, ')
+          ..write('placeId: $placeId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FavoritesTable extends Favorites
+    with TableInfo<$FavoritesTable, Favorite> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $FavoritesTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _placeIdMeta = const VerificationMeta('placeId');
+  GeneratedIntColumn _placeId;
+  @override
+  GeneratedIntColumn get placeId => _placeId ??= _constructPlaceId();
+  GeneratedIntColumn _constructPlaceId() {
+    return GeneratedIntColumn('place_id', $tableName, false,
+        $customConstraints: 'type UNIQUE');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, placeId];
+  @override
+  $FavoritesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'favorites';
+  @override
+  final String actualTableName = 'favorites';
+  @override
+  VerificationContext validateIntegrity(Insertable<Favorite> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('place_id')) {
+      context.handle(_placeIdMeta,
+          placeId.isAcceptableOrUnknown(data['place_id'], _placeIdMeta));
+    } else if (isInserting) {
+      context.missing(_placeIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Favorite map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return Favorite.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $FavoritesTable createAlias(String alias) {
+    return $FavoritesTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $SearchHistoriesTable _searchHistories;
   $SearchHistoriesTable get searchHistories =>
       _searchHistories ??= $SearchHistoriesTable(this);
+  $FavoritesTable _favorites;
+  $FavoritesTable get favorites => _favorites ??= $FavoritesTable(this);
   SearchHistoryDao _searchHistoryDao;
   SearchHistoryDao get searchHistoryDao =>
       _searchHistoryDao ??= SearchHistoryDao(this as AppDatabase);
+  FavoritesDao _favoritesDao;
+  FavoritesDao get favoritesDao =>
+      _favoritesDao ??= FavoritesDao(this as AppDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [searchHistories];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [searchHistories, favorites];
 }

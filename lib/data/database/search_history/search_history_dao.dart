@@ -1,6 +1,6 @@
 import 'package:moor/moor.dart';
 import 'package:places/data/database/database.dart';
-import 'package:places/data/database/search_history/search_history.dart';
+import 'package:places/data/database/search_history/search_history_table.dart';
 
 part 'search_history_dao.g.dart';
 

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
 import 'package:places/data/database/database.dart';
-import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
+import 'package:places/data/favorites_repository/favorites_repository_db.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_db_repository.dart';
-import 'package:places/data/search_history_repository/search_history_memory_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_memory.dart';
@@ -79,7 +78,9 @@ class App extends StatelessWidget {
           create: (_) => LocationRepositoryMock(),
         ),
         Provider<FavoritesRepository>(
-          create: (_) => FavoritesRepositoryMemory(),
+          create: (_) => FavoritesRepositoryDb(
+            context.read<AppDatabase>(),
+          ),
         ),
         Provider<VisitedRepository>(
           create: (_) => VisitedRepositoryMemory(),
