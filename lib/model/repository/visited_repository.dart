@@ -10,5 +10,5 @@ abstract class VisitedRepository {
   Future<void> remove(int id);
 
   /// Возвращает включено ли место [id] в список "Посещенные"
-  Future<bool> isFavorite(int id);
+  Future<bool> isVisited(int id);
 }

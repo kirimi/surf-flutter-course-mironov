@@ -6,21 +6,23 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:places/data/database/favorites/favorites_dao.dart';
 import 'package:places/data/database/favorites/favorites_table.dart';
-import 'package:places/data/database/search_history/search_history_table.dart';
 import 'package:places/data/database/search_history/search_history_dao.dart';
+import 'package:places/data/database/search_history/search_history_table.dart';
+import 'package:places/data/database/visited/visited_dao.dart';
+import 'package:places/data/database/visited/visited_table.dart';
 
 part 'database.g.dart';
 
 /// База данных
 @UseMoor(
-  tables: [SearchHistories, Favorites],
-  daos: [SearchHistoryDao, FavoritesDao],
+  tables: [SearchHistories, Favorites, Visited],
+  daos: [SearchHistoryDao, FavoritesDao, VisitedDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -30,6 +32,9 @@ class AppDatabase extends _$AppDatabase {
         onUpgrade: (Migrator m, int from, int to) async {
           if (from == 1) {
             await m.createTable(favorites);
+          }
+          if (from == 2) {
+            await m.createTable(visited);
           }
         },
       );

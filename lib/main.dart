@@ -9,7 +9,7 @@ import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_db_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
-import 'package:places/data/visited_repository/visited_repository_memory.dart';
+import 'package:places/data/visited_repository/visited_repository_db.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/model/favorites/performers.dart';
@@ -83,7 +83,9 @@ class App extends StatelessWidget {
           ),
         ),
         Provider<VisitedRepository>(
-          create: (_) => VisitedRepositoryMemory(),
+          create: (_) => VisitedRepositoryDb(
+            context.read<AppDatabase>(),
+          ),
         ),
         Provider<SearchHistoryRepository>(
           create: (context) => SearchHistoryDbRepository(
@@ -116,7 +118,8 @@ class App extends StatelessWidget {
             initialRoute: SplashScreen.routeName,
             routes: {
               OnboardingScreen.routeName: (context) => OnboardingScreen(),
-              SelectCategoryScreen.routeName: (context) => SelectCategoryScreen(),
+              SelectCategoryScreen.routeName: (context) =>
+                  SelectCategoryScreen(),
               SettingsScreen.routeName: (context) => SettingsScreen(),
             },
             onGenerateRoute: (settings) {
