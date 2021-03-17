@@ -7,11 +7,11 @@ abstract class SearchHistoryRepository {
   ///
   /// Добавляется, как самый первый элемент.
   /// Cтарые запросы стираются, чтобы не повторялись.
-  void add(String request);
+  Future<void> add(String request);
 
   /// Очистить всю историю
-  void clear();
+  Future<void> clear();
 
   /// Удаляет запись из истории по индексу
-  void remove(String request);
+  Future<void> remove(String request);
 }

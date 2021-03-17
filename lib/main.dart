@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
+import 'package:places/data/database/database.dart';
 import 'package:places/data/favorites_repository/favorites_repository_memory.dart';
 import 'package:places/data/location_repository/location_repository_mock.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
+import 'package:places/data/search_history_repository/search_history_db_repository.dart';
 import 'package:places/data/search_history_repository/search_history_memory_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
@@ -42,8 +44,15 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final _storageRepository = await SharedPrefsStorageRepository.getInstance();
   runApp(
-    Provider<StorageRepository>(
-      create: (_) => _storageRepository,
+    MultiProvider(
+      providers: [
+        Provider<StorageRepository>(
+          create: (_) => _storageRepository,
+        ),
+        Provider<AppDatabase>(
+          create: (_) => AppDatabase(),
+        ),
+      ],
       child: App(),
     ),
   );
@@ -76,7 +85,9 @@ class App extends StatelessWidget {
           create: (_) => VisitedRepositoryMemory(),
         ),
         Provider<SearchHistoryRepository>(
-          create: (context) => SearchHistoryMemoryRepository(),
+          create: (context) => SearchHistoryDbRepository(
+            context.read<AppDatabase>(),
+          ),
         ),
         // Провайдим ErrorHandler для mwwm
         Provider<WidgetModelDependencies>(
@@ -85,8 +96,9 @@ class App extends StatelessWidget {
           ),
         ),
         Provider<ToggleFavoritePerformer>(
-          create: (context) =>
-              ToggleFavoritePerformer(context.read<FavoritesRepository>()),
+          create: (context) => ToggleFavoritePerformer(
+            context.read<FavoritesRepository>(),
+          ),
         ),
         ChangeNotifierProvider<ThemeInteractor>(
           create: (context) => ThemeInteractor(
@@ -103,8 +115,7 @@ class App extends StatelessWidget {
             initialRoute: SplashScreen.routeName,
             routes: {
               OnboardingScreen.routeName: (context) => OnboardingScreen(),
-              SelectCategoryScreen.routeName: (context) =>
-                  SelectCategoryScreen(),
+              SelectCategoryScreen.routeName: (context) => SelectCategoryScreen(),
               SettingsScreen.routeName: (context) => SettingsScreen(),
             },
             onGenerateRoute: (settings) {

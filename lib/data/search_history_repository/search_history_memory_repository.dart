@@ -1,6 +1,6 @@
 import 'package:places/model/repository/search_history_repository.dart';
 
-/// Репозиторий для истории поиска
+/// Репозиторий для истории поиска. Хранение в памяти
 class SearchHistoryMemoryRepository implements SearchHistoryRepository {
   // Хранилище для списка прошлых запросов
   final List<String> _requests = [];
@@ -16,20 +16,20 @@ class SearchHistoryMemoryRepository implements SearchHistoryRepository {
   /// Добавляется, как самый первый элемент.
   /// Cтарые запросы стираются, чтобы не повторялись.
   @override
-  void add(String request) {
+  Future<void> add(String request) async {
     remove(request);
     _requests.insert(0, request);
   }
 
   /// Очистить всю историю
   @override
-  void clear() {
+  Future<void> clear() async {
     _requests.clear();
   }
 
   /// Удаляет запись из истории по индексу
   @override
-  void remove(String request) {
+  Future<void> remove(String request) async {
     _requests.removeWhere((element) => element == request);
   }
 }
