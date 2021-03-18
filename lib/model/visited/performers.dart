@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
@@ -13,7 +14,7 @@ class AddToVisitedPerformer extends FuturePerformer<void, AddToVisited> {
 
   @override
   Future<void> perform(AddToVisited change) =>
-      visitedRepository.remove(change.sight.id);
+      visitedRepository.add(change.sight.id);
 }
 
 /// Удаление из списка посещенных мест
@@ -34,8 +35,10 @@ class GetVisitedSightsPerformer
   final SightRepository sightRepository;
   final VisitedRepository visitedRepository;
 
-  GetVisitedSightsPerformer({this.sightRepository, this.visitedRepository})
-      : assert(sightRepository != null),
+  GetVisitedSightsPerformer({
+    @required this.sightRepository,
+    @required this.visitedRepository,
+  })  : assert(sightRepository != null),
         assert(visitedRepository != null);
 
   @override

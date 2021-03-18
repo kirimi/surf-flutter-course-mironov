@@ -1,3 +1,11 @@
+# 15.3 Moor
+- Добавлен moor
+- сохранение истории в db
+- сохранение списка favorites мест в db
+- сохранение списка посещенных мест в db
+
+Вот в такие моменты особенно радует clean arсh. и solid. Просто сделал новую имплементацию репозиториев в слое data и инжектнул в дерево через провайдер.
+
 # 15.1 SharedPreference
 - Добавил интерфейс StorageRepository с нужными свойствами (filter, isFirstRun, isDarkTheme)
 - Имплементация этого в SharedPrefsStorageRepository.

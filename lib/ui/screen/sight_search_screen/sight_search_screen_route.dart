@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/data/search_history_repository/search_history_repository.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/model/repository/location_repository.dart';
+import 'package:places/model/repository/search_history_repository.dart';
 import 'package:places/model/repository/sight_repository.dart';
 import 'package:places/model/search_history/performers.dart';
 import 'package:places/model/sights/performers.dart';

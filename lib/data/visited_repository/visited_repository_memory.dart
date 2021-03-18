@@ -18,7 +18,7 @@ class VisitedRepositoryMemory implements VisitedRepository {
   }
 
   @override
-  Future<bool> isFavorite(int id) {
+  Future<bool> isVisited(int id) {
     final bool isFav = _favorites.contains(id);
     return Future.value(isFav);
   }
