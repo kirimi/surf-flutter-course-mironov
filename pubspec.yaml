@@ -37,6 +37,8 @@ dependencies:
 
   geolocator: ^6.2.0
 
+  yandex_mapkit: ^0.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
