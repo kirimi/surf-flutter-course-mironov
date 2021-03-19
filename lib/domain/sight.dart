@@ -5,7 +5,7 @@ import 'package:places/domain/sight_type/sight_type.dart';
 class Sight {
   final int id;
   final String name;
-  final String url;
+  final List<String> photos;
   final String details;
   final GeoPoint point;
   final SightType type;
@@ -13,7 +13,7 @@ class Sight {
   Sight({
     this.id,
     this.name,
-    this.url,
+    this.photos,
     this.details,
     this.type,
     this.point,
@@ -22,14 +22,14 @@ class Sight {
   Sight copyWith({
     int id,
     String name,
-    String url,
+    List<String> photos,
     String details,
     GeoPoint point,
     SightType type,
   }) {
     if ((id == null || identical(id, this.id)) &&
         (name == null || identical(name, this.name)) &&
-        (url == null || identical(url, this.url)) &&
+        (photos == null || identical(photos, this.photos)) &&
         (details == null || identical(details, this.details)) &&
         (point == null || identical(point, this.point)) &&
         (type == null || identical(type, this.type))) {
@@ -39,7 +39,7 @@ class Sight {
     return Sight(
       id: id ?? this.id,
       name: name ?? this.name,
-      url: url ?? this.url,
+      photos: photos ?? this.photos,
       details: details ?? this.details,
       point: point ?? this.point,
       type: type ?? this.type,

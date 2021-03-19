@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/sight_photo.dart';
 import 'package:places/ui/res/const.dart';
 import 'package:places/ui/widgets/network_image_with_spinner.dart';
 
 /// Карусель фото  места, с индикатором.
 class SightPhotosCarousel extends StatefulWidget {
-  final List<SightPhoto> list;
+  final List<String> photos;
 
   const SightPhotosCarousel({
     Key key,
-    @required this.list,
-  })  : assert(list != null),
+    @required this.photos,
+  })  : assert(photos != null),
         super(key: key);
 
   @override
@@ -27,12 +26,12 @@ class _SightPhotosCarouselState extends State<SightPhotosCarousel> {
         return Stack(
           children: [
             PageView.builder(
-              itemCount: widget.list.length,
+              itemCount: widget.photos.length,
               onPageChanged: (index) {
                 setState(() => _currentIndex = index);
               },
               itemBuilder: (context, index) {
-                return NetworkImageWithSpinner(url: widget.list[index].url);
+                return NetworkImageWithSpinner(url: widget.photos[index]);
               },
             ),
             Positioned(
@@ -44,7 +43,7 @@ class _SightPhotosCarouselState extends State<SightPhotosCarousel> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _ProgressIndicator(
-                    total: widget.list.length,
+                    total: widget.photos.length,
                     current: _currentIndex,
                   ),
                 ),

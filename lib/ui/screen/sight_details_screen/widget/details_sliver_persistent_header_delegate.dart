@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:places/domain/sight_photo.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_details_screen/widget/sight_photos_carousel.dart';
@@ -10,7 +9,7 @@ import 'package:places/ui/screen/sight_details_screen/widget/sight_photos_carous
 /// [onBackTap] - при тапе на кнопку back
 class DetailsSliverPersistentHeaderDelegate
     extends SliverPersistentHeaderDelegate {
-  final List<SightPhoto> photos;
+  final List<String> photos;
   final VoidCallback onBackTap;
 
   DetailsSliverPersistentHeaderDelegate({
@@ -38,7 +37,7 @@ class DetailsSliverPersistentHeaderDelegate
 
     return Stack(
       children: [
-        SightPhotosCarousel(list: photos),
+        SightPhotosCarousel(photos: photos),
 
         // Кнопка закрытия
         Opacity(

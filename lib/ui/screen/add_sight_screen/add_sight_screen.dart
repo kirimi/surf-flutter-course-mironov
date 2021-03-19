@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/const.dart';
@@ -49,7 +50,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    StreamedStateBuilder<List<SightPhoto>>(
+                    StreamedStateBuilder<List<File>>(
                       streamedState: wm.sightPhotos,
                       builder: (context, list) {
                         return SightPhotosListWidget(

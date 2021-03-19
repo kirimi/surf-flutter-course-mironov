@@ -62,17 +62,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<NetworkClient>(
+          create: (_) => NetworkClientDio(
+            baseUrl: Config.baseUrl,
+          ),
+        ),
         Provider<SightRepository>(
-          create: (context) {
-            final NetworkClient networkClient = NetworkClientDio(
-              baseUrl: Config.baseUrl,
-            );
-            // final NetworkClient networkClient = NetworkClientNoInternet();
-            final SightRepository repo = SightRepositoryNetwork(networkClient);
-            // final NetworkClient networkClient = NetworkClientNoInternet();
-            // final SightRepository sightRepository = SightRepositoryMemory();
-            return repo;
-          },
+          create: (context) => SightRepositoryNetwork(
+            context.read<NetworkClient>(),
+          ),
         ),
         Provider<LocationRepository>(
           create: (_) => LocationRepositoryMock(),

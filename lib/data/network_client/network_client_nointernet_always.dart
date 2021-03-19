@@ -9,7 +9,7 @@ class NetworkClientNoInternet implements NetworkClient {
   }
 
   @override
-  Future<String> post(String url, String body) {
+  Future<String> post(String url, dynamic body) {
     throw InternetException(url, 'no internet');
   }
 }

@@ -35,7 +35,7 @@ class NetworkClientDio implements NetworkClient {
 
   /// Делает POST запрос
   @override
-  Future<String> post(String url, String body) async {
+  Future<String> post(String url, dynamic body) async {
     return _executeRequest(_dio.post<String>(url, data: body));
   }
 

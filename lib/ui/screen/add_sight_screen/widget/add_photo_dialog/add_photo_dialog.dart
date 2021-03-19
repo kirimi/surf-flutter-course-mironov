@@ -1,16 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:places/mocks.dart';
+import 'package:mwwm/mwwm.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
+import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog/add_photo_dialog_wm.dart';
+import 'package:provider/provider.dart';
 
-enum _AddPhotoDialogResult { cancel, camera, photo, file }
+enum _SourceChoice { camera, photo }
 
-/// Диалог добавления фотографии с разных источников. camera, photo, file
-class AddPhotoDialog extends StatelessWidget {
+/// Диалог добавления фотографии с разных источников. camera, photo
+/// Возвращает [File] c фотографией или null
+class AddPhotoDialog extends CoreMwwmWidget {
+  AddPhotoDialog()
+      : super(
+          widgetModelBuilder: (context) => AddPhotoDialogWm(
+            context.read<WidgetModelDependencies>(),
+            navigator: Navigator.of(context),
+          ),
+        );
+
+  @override
+  _AddPhotoDialogState createState() => _AddPhotoDialogState();
+}
+
+class _AddPhotoDialogState extends WidgetState<AddPhotoDialogWm> {
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -20,40 +36,28 @@ class AddPhotoDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _AddButtons(onSelect: (choice) => onSelect(context, choice)),
+            _AddButtons(onSelect: (choice) {
+              switch (choice) {
+                case _SourceChoice.camera:
+                  wm.camera();
+                  break;
+                case _SourceChoice.photo:
+                  wm.photo();
+                  break;
+              }
+            }),
             const SizedBox(height: 16.0),
-            _CancelButton(
-              onSelect: () => onSelect(context, _AddPhotoDialogResult.cancel),
-            )
+            _CancelButton(onSelect: wm.cancel)
           ],
         ),
       ),
     );
   }
-
-  /// При выборе возвращает на предыдущий экран [SightPhoto] из выбранного провайдера
-  /// Если нажали "отмена" или диалог закрыли, то ничего не возвращает (null)
-  void onSelect(BuildContext context, _AddPhotoDialogResult choice) {
-    switch (choice) {
-      case _AddPhotoDialogResult.camera:
-      case _AddPhotoDialogResult.photo:
-      case _AddPhotoDialogResult.file:
-        Navigator.of(context).pop(sightPhotosMocks[currentMockIndex]);
-        // обновляем индекс мока, чтобы в след раз была другая фото
-        if (currentMockIndex < sightPhotosMocks.length) {
-          currentMockIndex++;
-        }
-        break;
-      case _AddPhotoDialogResult.cancel:
-        Navigator.of(context).pop();
-        break;
-    }
-  }
 }
 
-// Группа кнопок выбора источника.
+/// Группа кнопок выбора источника.
 class _AddButtons extends StatelessWidget {
-  final ValueChanged<_AddPhotoDialogResult> onSelect;
+  final ValueChanged<_SourceChoice> onSelect;
 
   const _AddButtons({
     Key key,
@@ -77,7 +81,7 @@ class _AddButtons extends StatelessWidget {
               icon: SvgIcons.camera,
               text: AppStrings.addPhotoCamera,
               onPressed: () {
-                onSelect(_AddPhotoDialogResult.camera);
+                onSelect(_SourceChoice.camera);
               },
             ),
             const Divider(),
@@ -85,17 +89,9 @@ class _AddButtons extends StatelessWidget {
               icon: SvgIcons.photo,
               text: AppStrings.addPhotoPhoto,
               onPressed: () {
-                onSelect(_AddPhotoDialogResult.photo);
+                onSelect(_SourceChoice.photo);
               },
             ),
-            const Divider(),
-            _AddButton(
-              icon: SvgIcons.file,
-              text: AppStrings.addPhotoFile,
-              onPressed: () {
-                onSelect(_AddPhotoDialogResult.file);
-              },
-            )
           ],
         ),
       ),
@@ -103,7 +99,7 @@ class _AddButtons extends StatelessWidget {
   }
 }
 
-// Кнопка выбора источника фото
+/// Кнопка выбора источника фото
 class _AddButton extends StatelessWidget {
   final SvgData icon;
   final String text;
@@ -141,7 +137,7 @@ class _AddButton extends StatelessWidget {
   }
 }
 
-// Кнопка отмены
+/// Кнопка отмены
 class _CancelButton extends StatelessWidget {
   final VoidCallback onSelect;
 
