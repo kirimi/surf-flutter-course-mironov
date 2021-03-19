@@ -35,6 +35,8 @@ dependencies:
 
   uuid: ^2.2.2
 
+  geolocator: ^6.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

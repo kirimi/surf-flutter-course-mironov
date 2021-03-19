@@ -3,7 +3,7 @@ import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
 import 'package:places/data/database/database.dart';
 import 'package:places/data/favorites_repository/favorites_repository_db.dart';
-import 'package:places/data/location_repository/location_repository_mock.dart';
+import 'package:places/data/location_repository/location_repository_real.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_db_repository.dart';
@@ -73,7 +73,7 @@ class App extends StatelessWidget {
           ),
         ),
         Provider<LocationRepository>(
-          create: (_) => LocationRepositoryMock(),
+          create: (_) => LocationRepositoryReal(),
         ),
         Provider<FavoritesRepository>(
           create: (_) => FavoritesRepositoryDb(
