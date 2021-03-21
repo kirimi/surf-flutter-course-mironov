@@ -15,3 +15,16 @@ class GetCurrentLocationPerformer
     return repository.getCurrentLocation();
   }
 }
+
+/// Получение последней известной геопозиции
+class GetLastKnownLocationPerformer
+    extends FuturePerformer<GeoPoint, GetLastKnownLocation> {
+  final LocationRepository repository;
+
+  GetLastKnownLocationPerformer(this.repository);
+
+  @override
+  Future<GeoPoint> perform(GetLastKnownLocation change) {
+    return repository.getLastKnownLocation();
+  }
+}

@@ -127,7 +127,7 @@ class _AddSightScreenState extends WidgetState<AddScreenWm> {
                       ],
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: wm.selectLocation,
                       style: TextButton.styleFrom(
                           primary: Theme.of(context).accentColor),
                       child: const Text(AppStrings.addSightGetFromMap),

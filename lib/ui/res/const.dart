@@ -11,4 +11,5 @@ class Const {
   static const String imgSightPlacemark = 'res/images/sight.png';
   static const String imgSelectedSightPlacemark =
       'res/images/sight_selected.png';
+  static const String imgTarget = 'res/images/target.png';
 }

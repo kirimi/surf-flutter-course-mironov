@@ -8,6 +8,7 @@ import 'package:places/model/sights/changes.dart';
 import 'package:places/model/theme/changes.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/const.dart';
+import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
 import 'package:relation/relation.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -54,6 +55,9 @@ class MapWm extends WidgetModel {
   /// показать детали места
   final showDetails = Action<Sight>();
 
+  /// Добавить новое место
+  final addSight = Action<void>();
+
   @override
   void onBind() {
     super.onBind();
@@ -62,6 +66,7 @@ class MapWm extends WidgetModel {
     subscribe(moveToUser.stream, (_) => _onMoveToUser());
     subscribe(cancelSelection.stream, (_) => _onCancelSelection());
     subscribe(showDetails.stream, _onShowDetails);
+    subscribe(addSight.stream, _onAddSight);
   }
 
   /// Инициализация
@@ -117,7 +122,7 @@ class MapWm extends WidgetModel {
     selectedSight.accept(null);
   }
 
-  // Показываем боттомшит с подробной информацияй по месту
+  /// Показываем боттомшит с подробной информацияй по месту
   void _onShowDetails(Sight sight) {
     showModalBottomSheet(
         context: navigator.context,
@@ -125,6 +130,12 @@ class MapWm extends WidgetModel {
         builder: (_) {
           return SightDetailsBottomSheet(sight: sight);
         });
+  }
+
+  /// Переход на страницу добавления нового места
+  Future<void> _onAddSight(_) async {
+    await navigator.pushNamed(AddSightScreen.routeName);
+    _loadSights();
   }
 
   /// Масштабирует карту, чтобы все места влезли на экран

@@ -23,6 +23,8 @@ import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen_route.dart';
+import 'package:places/ui/screen/add_sight_screen/select_location_screen/select_location_screen.dart';
+import 'package:places/ui/screen/add_sight_screen/select_location_screen/select_location_screen_route.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/filters_screen/fliters_screen_route.dart';
 import 'package:places/ui/screen/map_screen/map_screen.dart';
@@ -140,6 +142,8 @@ class App extends StatelessWidget {
                   return VisitingScreenRoute();
                 case MapScreen.routeName:
                   return MapScreenRoute();
+                case SelectLocationScreen.routeName:
+                  return SelectLocationScreenRoute();
                 default:
                   return null;
               }

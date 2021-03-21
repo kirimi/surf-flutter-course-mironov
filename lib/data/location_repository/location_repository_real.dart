@@ -30,4 +30,11 @@ class LocationRepositoryReal implements LocationRepository {
 
     return GeoPoint(lat: position.latitude, lon: position.longitude);
   }
+
+  /// Последнее известное местоположение
+  @override
+  Future<GeoPoint> getLastKnownLocation() async {
+    final position = await Geolocator.getLastKnownPosition();
+    return GeoPoint(lat: position.latitude, lon: position.longitude);
+  }
 }

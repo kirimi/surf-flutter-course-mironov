@@ -82,4 +82,7 @@ class AppStrings {
       'Что-то пошло не так.\nПопробуйте позже.';
 
   static const String mapAppBarTitle = 'Карта';
+
+  static const String selectLocationAppbarTitle = 'Местоположение';
+  static const String selectLocationSubmit = 'Готово';
 }

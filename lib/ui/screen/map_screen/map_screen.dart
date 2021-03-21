@@ -53,7 +53,7 @@ class _MapScreenState extends WidgetState<MapWm> {
             );
           }
           return BottomMapControls(
-            onAddSight: () {},
+            onAddSight: wm.addSight,
             onRefresh: wm.refresh,
             onMoveToUser: wm.moveToUser,
           );
