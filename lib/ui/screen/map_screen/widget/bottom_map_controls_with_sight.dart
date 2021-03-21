@@ -56,58 +56,64 @@ class _BottomMapControlsWithSightState extends State<BottomMapControlsWithSight>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, widget) {
-        return SlideTransition(
-          position: _offset,
-          child: widget,
-        );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: CircularIconButton(
-                  icon: SvgIcons.refresh,
-                  onPressed: widget.onRefresh,
+    return Dismissible(
+      key: ObjectKey(widget.sight.id),
+      direction: DismissDirection.down,
+      onDismissed: (_) => widget.onClose(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, widget) {
+          return SlideTransition(
+            position: _offset,
+            child: widget,
+          );
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: CircularIconButton(
+                    icon: SvgIcons.refresh,
+                    onPressed: widget.onRefresh,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: CircularIconButton(
-                  icon: SvgIcons.geolocation,
-                  onPressed: widget.onMoveToUser,
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: CircularIconButton(
+                    icon: SvgIcons.geolocation,
+                    onPressed: widget.onMoveToUser,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: PhysicalModel(
-              color: Colors.transparent,
-              elevation: 4,
-              borderRadius: BorderRadius.circular(24.0),
-              child: SightCard(
-                sight: widget.sight,
-                onTap: widget.onTap,
-                actionsBuilder: (_) {
-                  return [
-                    FavoriteButton(sight: widget.sight),
-                    SightCardActionButton(
-                      onTap: widget.onClose,
-                      icon: SvgIcons.delete,
-                    ),
-                  ];
-                },
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              child: PhysicalModel(
+                color: Colors.transparent,
+                elevation: 4,
+                borderRadius: BorderRadius.circular(24.0),
+                child: SightCard(
+                  sight: widget.sight,
+                  onTap: widget.onTap,
+                  actionsBuilder: (_) {
+                    return [
+                      FavoriteButton(sight: widget.sight),
+                      SightCardActionButton(
+                        onTap: widget.onClose,
+                        icon: SvgIcons.delete,
+                      ),
+                    ];
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
