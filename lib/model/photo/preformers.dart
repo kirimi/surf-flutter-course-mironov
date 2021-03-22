@@ -1,8 +1,10 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:mwwm/mwwm.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/model/photo/changes.dart';
-import 'package:uuid/uuid.dart';
+import 'package:places/utils/photo_resizer/photo_resizer.dart';
 
 /// Загрузка фотографий на сервер
 /// возвращает список url для загруженных фотографий
@@ -15,26 +17,17 @@ class UploadPhotosPerformer
 
   @override
   Future<List<String>> perform(UploadPhotos change) async {
-    final uuid = Uuid();
-    final FormData formData = FormData();
+    final response = await networkClient.uploadPhotos(uploadUrl, change.photos);
+    final map = jsonDecode(response);
+    final urls = (map['urls'] as List<dynamic>).cast<String>();
+    return urls;
+  }
+}
 
-    formData.files.addAll(
-      change.photos.map(
-        (e) => MapEntry(
-          "files",
-          MultipartFile.fromFileSync(e.path, filename: '${uuid.v4()}.jpg'),
-        ),
-      ),
-    );
-
-    // final result = await networkClient.post(uploadUrl, formData);
-    // todo сервер возвращает 413 Request Entity Too Large.
-
-    // возвращаем пока моки
-    return [
-      'https://picsum.photos/800/600?1',
-      'https://picsum.photos/800/600?2',
-      'https://picsum.photos/800/600?3',
-    ];
+/// Масштабирование фото
+class ResizePhotoPerformer extends FuturePerformer<File, ResizePhoto> {
+  @override
+  Future<File> perform(ResizePhoto change) async {
+    return resizeImage(change.photo);
   }
 }

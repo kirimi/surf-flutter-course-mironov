@@ -8,3 +8,10 @@ class UploadPhotos extends FutureChange<List<String>> {
 
   UploadPhotos(this.photos);
 }
+
+/// Масштабировать фото
+class ResizePhoto extends FutureChange<File> {
+  final File photo;
+
+  ResizePhoto(this.photo);
+}
