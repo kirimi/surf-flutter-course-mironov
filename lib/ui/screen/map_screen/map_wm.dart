@@ -4,6 +4,7 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/filter/changes.dart';
+import 'package:places/model/location/changes.dart';
 import 'package:places/model/sights/changes.dart';
 import 'package:places/model/theme/changes.dart';
 import 'package:places/ui/res/app_colors.dart';
@@ -89,7 +90,14 @@ class MapWm extends WidgetModel {
       accuracyCircleFillColor: AppColors.ltAccentColor.withOpacity(.4),
     );
 
-    _onMoveToUser();
+    // двигаем карту на последнее известное местоположение, для скорости
+    final currentLocation = await model.perform(GetLastKnownLocation());
+    _map.move(
+        point: Point(
+          latitude: currentLocation.lat,
+          longitude: currentLocation.lon,
+        ),
+        zoom: 10);
 
     _loadSights();
   }

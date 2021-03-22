@@ -26,6 +26,7 @@ WidgetModel _wmBuilder(BuildContext context) {
     context.read<WidgetModelDependencies>(),
     Model([
       GetCurrentLocationPerformer(context.read<LocationRepository>()),
+      GetLastKnownLocationPerformer(context.read<LocationRepository>()),
       GetDarkModePerformer(context.read<ThemeInteractor>()),
       GetSightsPerformer(
         sightRepository: context.read<SightRepository>(),
