@@ -1,3 +1,5 @@
+import 'dart:io';
+
 /// Интерфейс для сетевого взаимодействия
 ///
 /// Совершает запросы к серверу
@@ -10,4 +12,7 @@ abstract class NetworkClient {
 
   /// Делает GET запрос
   Future<String> get(String url, Map<String, dynamic> params);
+
+  /// Закачивает [photos] на сервер
+  Future<String> uploadPhotos(String url, List<File> photos);
 }

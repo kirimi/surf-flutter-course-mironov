@@ -1,13 +1,18 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
+import 'package:places/model/photo/preformers.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/app_text_styles.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog/add_photo_dialog_wm.dart';
+import 'package:places/ui/widgets/loading_spinner.dart';
 import 'package:provider/provider.dart';
+import 'package:relation/relation.dart';
 
 enum _SourceChoice { camera, photo }
 
@@ -19,6 +24,9 @@ class AddPhotoDialog extends CoreMwwmWidget {
           widgetModelBuilder: (context) => AddPhotoDialogWm(
             context.read<WidgetModelDependencies>(),
             navigator: Navigator.of(context),
+            model: Model([
+              ResizePhotoPerformer(),
+            ]),
           ),
         );
 
@@ -33,22 +41,36 @@ class _AddPhotoDialogState extends WidgetState<AddPhotoDialogWm> {
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _AddButtons(onSelect: (choice) {
-              switch (choice) {
-                case _SourceChoice.camera:
-                  wm.camera();
-                  break;
-                case _SourceChoice.photo:
-                  wm.photo();
-                  break;
-              }
-            }),
-            const SizedBox(height: 16.0),
-            _CancelButton(onSelect: wm.cancel)
-          ],
+        child: StreamedStateBuilder<bool>(
+          streamedState: wm.resizing,
+          builder: (context, isResizing) {
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _AddButtons(onSelect: (choice) {
+                      switch (choice) {
+                        case _SourceChoice.camera:
+                          wm.camera();
+                          break;
+                        case _SourceChoice.photo:
+                          wm.photo();
+                          break;
+                      }
+                    }),
+                    const SizedBox(height: 16.0),
+                    _CancelButton(onSelect: wm.cancel)
+                  ],
+                ),
+                if (isResizing)
+                  const Center(
+                    child: LoadingSpinner(),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
