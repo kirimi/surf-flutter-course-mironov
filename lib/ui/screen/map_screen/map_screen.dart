@@ -9,6 +9,7 @@ import 'package:places/ui/screen/map_screen/widget/bottom_map_controls.dart';
 import 'package:places/ui/screen/map_screen/widget/bottom_map_controls_with_sight.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/loading_spinner.dart';
+import 'package:places/ui/widgets/search_bar.dart';
 import 'package:relation/relation.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -37,6 +38,12 @@ class _MapScreenState extends WidgetState<MapWm> {
         ),
         backgroundColor: AppColors.transparent,
         elevation: 0,
+        bottom: SearchBar(
+          readOnly: true,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          onTap: wm.search,
+          onFilterTap: wm.selectFilter,
+        ),
       ),
       bottomNavigationBar: const CustomBottomNavBar(index: 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

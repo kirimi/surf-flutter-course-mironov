@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
+import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/filter/changes.dart';
 import 'package:places/model/location/changes.dart';
@@ -10,7 +11,9 @@ import 'package:places/model/theme/changes.dart';
 import 'package:places/ui/res/app_colors.dart';
 import 'package:places/ui/res/const.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
+import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/sight_details_screen/sight_details_bottomsheet.dart';
+import 'package:places/ui/screen/sight_search_screen/sight_search_screen.dart';
 import 'package:relation/relation.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -59,6 +62,12 @@ class MapWm extends WidgetModel {
   /// Добавить новое место
   final addSight = Action<void>();
 
+  /// Клик на поиске
+  final search = Action<void>();
+
+  /// Выбрать фильтр
+  final selectFilter = Action<void>();
+
   @override
   void onBind() {
     super.onBind();
@@ -68,6 +77,8 @@ class MapWm extends WidgetModel {
     subscribe(cancelSelection.stream, (_) => _onCancelSelection());
     subscribe(showDetails.stream, _onShowDetails);
     subscribe(addSight.stream, _onAddSight);
+    subscribe(search.stream, _onSearch);
+    subscribe(selectFilter.stream, _onSelectFilter);
   }
 
   /// Инициализация
@@ -144,6 +155,31 @@ class MapWm extends WidgetModel {
   Future<void> _onAddSight(_) async {
     await navigator.pushNamed(AddSightScreen.routeName);
     _loadSights();
+  }
+
+  /// Переход на страницу поиска
+  void _onSearch(_) {
+    final filter = model.perform(GetFilter());
+    navigator.pushNamed(
+      SightSearchScreen.routeName,
+      arguments: filter,
+    );
+  }
+
+  /// Переход на экран фильтра и обновление списка мест при возврате,
+  /// если фильтр изменился
+  Future<void> _onSelectFilter(_) async {
+    final filter = model.perform(GetFilter());
+    final newFilter = await navigator.pushNamed(
+      FiltersScreen.routeName,
+      arguments: filter,
+    ) as Filter;
+
+    if (newFilter != null) {
+      // сохраняем фильтр
+      model.perform(SaveFilter(newFilter));
+      _loadSights();
+    }
   }
 
   /// Масштабирует карту, чтобы все места влезли на экран
