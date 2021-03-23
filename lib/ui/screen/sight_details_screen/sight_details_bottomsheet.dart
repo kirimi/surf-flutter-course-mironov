@@ -79,7 +79,7 @@ class _SightDetailsBottomSheetState extends WidgetState<SightDetailsWm> {
                         IconElevatedButton(
                           icon: SvgIcons.route,
                           text: AppStrings.sightDetailsRouteToBtn.toUpperCase(),
-                          onPressed: () {},
+                          onPressed: wm.navigateTo,
                         ),
                         const SizedBox(height: 32.0),
                         Row(
