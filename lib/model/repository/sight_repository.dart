@@ -37,5 +37,8 @@ abstract class SightRepository {
   /// Pair.first - само место
   /// Pair.second - расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
-  Future<List<SightWithDistance>> getFilteredList(FilterRequest filter);
+  Future<List<SightWithDistance>> getFilteredList(
+    FilterRequest filter, {
+    bool force,
+  });
 }

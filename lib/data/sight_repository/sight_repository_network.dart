@@ -43,7 +43,8 @@ class SightRepositoryNetwork implements SightRepository {
   /// расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
   @override
-  Future<List<SightWithDistance>> getFilteredList(FilterRequest filter) async {
+  Future<List<SightWithDistance>> getFilteredList(FilterRequest filter,
+      {bool force}) async {
     final body = jsonEncode(filter.toJson());
 
     final response = await client.post(_getFilteredUrl, body);

@@ -114,7 +114,7 @@ class MapWm extends WidgetModel {
   }
 
   /// Обновляет места в соответствии с фидльтром
-  void _onRefresh() => _loadSights();
+  void _onRefresh() => _loadSights(force: true);
 
   /// Двигает карту на пользователя
   void _onMoveToUser() => _map.moveToUser();
@@ -232,11 +232,11 @@ class MapWm extends WidgetModel {
   }
 
   /// Загружает места в соответствии с фильтром
-  void _loadSights() {
+  void _loadSights({bool force = false}) {
     loading.loading(true);
     final filter = model.perform(GetFilter());
     doFutureHandleError<List<Sight>>(
-      model.perform(GetSights(filter)),
+      model.perform(GetSights(filter, force: force)),
       (result) {
         _sights.clear();
         _sights.addAll(result);

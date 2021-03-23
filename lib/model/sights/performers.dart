@@ -33,11 +33,12 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
 
   @override
   Future<List<Sight>> perform(GetSights change) {
-    return _requestFilteredSights(filter: change.filter);
+    return _requestFilteredSights(filter: change.filter, force: change.force);
   }
 
   // Загружает места, которые соответствуют фильтру [filter]
-  Future<List<Sight>> _requestFilteredSights({@required Filter filter}) async {
+  Future<List<Sight>> _requestFilteredSights(
+      {@required Filter filter, bool force = false}) async {
     FilterRequest filterReq;
 
     if (filter.maxDistance != null) {
@@ -59,7 +60,8 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
       );
     }
 
-    final result = await sightRepository.getFilteredList(filterReq);
+    final result =
+        await sightRepository.getFilteredList(filterReq, force: force);
     return result.map((e) => e.sight).toList();
   }
 }

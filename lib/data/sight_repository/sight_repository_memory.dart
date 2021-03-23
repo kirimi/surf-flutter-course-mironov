@@ -50,7 +50,10 @@ class SightRepositoryMemory implements SightRepository {
   /// расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
   @override
-  Future<List<SightWithDistance>> getFilteredList(FilterRequest filter) async {
+  Future<List<SightWithDistance>> getFilteredList(
+    FilterRequest filter, {
+    bool force,
+  }) async {
     final filteredByNameAndType = _sights.where((p) {
       // отфильтровываем по типу места
       return filter.typeFilter == null ||
