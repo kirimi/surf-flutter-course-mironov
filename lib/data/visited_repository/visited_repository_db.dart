@@ -1,4 +1,5 @@
 import 'package:places/data/database/database.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/model/repository/visited_repository.dart';
 
 /// Репозиторий мест "Посещенные".
@@ -9,11 +10,11 @@ class VisitedRepositoryDb implements VisitedRepository {
 
   /// Возвращает список id мест "Посещенные"
   @override
-  Future<Set<int>> getList() => database.visitedDao.getAll();
+  Future<List<Sight>> getList() => database.visitedDao.getAll();
 
-  /// Добавляет место с [id] в список "Посещенные"
+  /// Добавляет место [sight] в список "Посещенные"
   @override
-  Future<void> add(int id) => database.visitedDao.add(id);
+  Future<void> add(Sight sight) => database.visitedDao.add(sight);
 
   /// Удаляет место с [id] из списка "Посещенные"
   @override

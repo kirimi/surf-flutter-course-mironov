@@ -202,15 +202,19 @@ class $SearchHistoriesTable extends SearchHistories
 class Favorite extends DataClass implements Insertable<Favorite> {
   final int id;
   final int placeId;
-  Favorite({@required this.id, @required this.placeId});
+  final String sight;
+  Favorite({@required this.id, @required this.placeId, @required this.sight});
   factory Favorite.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
     return Favorite(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       placeId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}place_id']),
+      sight:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}sight']),
     );
   }
   @override
@@ -222,6 +226,9 @@ class Favorite extends DataClass implements Insertable<Favorite> {
     if (!nullToAbsent || placeId != null) {
       map['place_id'] = Variable<int>(placeId);
     }
+    if (!nullToAbsent || sight != null) {
+      map['sight'] = Variable<String>(sight);
+    }
     return map;
   }
 
@@ -231,6 +238,8 @@ class Favorite extends DataClass implements Insertable<Favorite> {
       placeId: placeId == null && nullToAbsent
           ? const Value.absent()
           : Value(placeId),
+      sight:
+          sight == null && nullToAbsent ? const Value.absent() : Value(sight),
     );
   }
 
@@ -240,6 +249,7 @@ class Favorite extends DataClass implements Insertable<Favorite> {
     return Favorite(
       id: serializer.fromJson<int>(json['id']),
       placeId: serializer.fromJson<int>(json['placeId']),
+      sight: serializer.fromJson<String>(json['sight']),
     );
   }
   @override
@@ -248,57 +258,70 @@ class Favorite extends DataClass implements Insertable<Favorite> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'placeId': serializer.toJson<int>(placeId),
+      'sight': serializer.toJson<String>(sight),
     };
   }
 
-  Favorite copyWith({int id, int placeId}) => Favorite(
+  Favorite copyWith({int id, int placeId, String sight}) => Favorite(
         id: id ?? this.id,
         placeId: placeId ?? this.placeId,
+        sight: sight ?? this.sight,
       );
   @override
   String toString() {
     return (StringBuffer('Favorite(')
           ..write('id: $id, ')
-          ..write('placeId: $placeId')
+          ..write('placeId: $placeId, ')
+          ..write('sight: $sight')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, placeId.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(placeId.hashCode, sight.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Favorite &&
           other.id == this.id &&
-          other.placeId == this.placeId);
+          other.placeId == this.placeId &&
+          other.sight == this.sight);
 }
 
 class FavoritesCompanion extends UpdateCompanion<Favorite> {
   final Value<int> id;
   final Value<int> placeId;
+  final Value<String> sight;
   const FavoritesCompanion({
     this.id = const Value.absent(),
     this.placeId = const Value.absent(),
+    this.sight = const Value.absent(),
   });
   FavoritesCompanion.insert({
     this.id = const Value.absent(),
     @required int placeId,
-  }) : placeId = Value(placeId);
+    @required String sight,
+  })  : placeId = Value(placeId),
+        sight = Value(sight);
   static Insertable<Favorite> custom({
     Expression<int> id,
     Expression<int> placeId,
+    Expression<String> sight,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (placeId != null) 'place_id': placeId,
+      if (sight != null) 'sight': sight,
     });
   }
 
-  FavoritesCompanion copyWith({Value<int> id, Value<int> placeId}) {
+  FavoritesCompanion copyWith(
+      {Value<int> id, Value<int> placeId, Value<String> sight}) {
     return FavoritesCompanion(
       id: id ?? this.id,
       placeId: placeId ?? this.placeId,
+      sight: sight ?? this.sight,
     );
   }
 
@@ -311,6 +334,9 @@ class FavoritesCompanion extends UpdateCompanion<Favorite> {
     if (placeId.present) {
       map['place_id'] = Variable<int>(placeId.value);
     }
+    if (sight.present) {
+      map['sight'] = Variable<String>(sight.value);
+    }
     return map;
   }
 
@@ -318,7 +344,8 @@ class FavoritesCompanion extends UpdateCompanion<Favorite> {
   String toString() {
     return (StringBuffer('FavoritesCompanion(')
           ..write('id: $id, ')
-          ..write('placeId: $placeId')
+          ..write('placeId: $placeId, ')
+          ..write('sight: $sight')
           ..write(')'))
         .toString();
   }
@@ -347,8 +374,20 @@ class $FavoritesTable extends Favorites
         $customConstraints: 'type UNIQUE');
   }
 
+  final VerificationMeta _sightMeta = const VerificationMeta('sight');
+  GeneratedTextColumn _sight;
   @override
-  List<GeneratedColumn> get $columns => [id, placeId];
+  GeneratedTextColumn get sight => _sight ??= _constructSight();
+  GeneratedTextColumn _constructSight() {
+    return GeneratedTextColumn(
+      'sight',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, placeId, sight];
   @override
   $FavoritesTable get asDslTable => this;
   @override
@@ -368,6 +407,12 @@ class $FavoritesTable extends Favorites
           placeId.isAcceptableOrUnknown(data['place_id'], _placeIdMeta));
     } else if (isInserting) {
       context.missing(_placeIdMeta);
+    }
+    if (data.containsKey('sight')) {
+      context.handle(
+          _sightMeta, sight.isAcceptableOrUnknown(data['sight'], _sightMeta));
+    } else if (isInserting) {
+      context.missing(_sightMeta);
     }
     return context;
   }
@@ -389,15 +434,20 @@ class $FavoritesTable extends Favorites
 class VisitedData extends DataClass implements Insertable<VisitedData> {
   final int id;
   final int placeId;
-  VisitedData({@required this.id, @required this.placeId});
+  final String sight;
+  VisitedData(
+      {@required this.id, @required this.placeId, @required this.sight});
   factory VisitedData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
     return VisitedData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       placeId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}place_id']),
+      sight:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}sight']),
     );
   }
   @override
@@ -409,6 +459,9 @@ class VisitedData extends DataClass implements Insertable<VisitedData> {
     if (!nullToAbsent || placeId != null) {
       map['place_id'] = Variable<int>(placeId);
     }
+    if (!nullToAbsent || sight != null) {
+      map['sight'] = Variable<String>(sight);
+    }
     return map;
   }
 
@@ -418,6 +471,8 @@ class VisitedData extends DataClass implements Insertable<VisitedData> {
       placeId: placeId == null && nullToAbsent
           ? const Value.absent()
           : Value(placeId),
+      sight:
+          sight == null && nullToAbsent ? const Value.absent() : Value(sight),
     );
   }
 
@@ -427,6 +482,7 @@ class VisitedData extends DataClass implements Insertable<VisitedData> {
     return VisitedData(
       id: serializer.fromJson<int>(json['id']),
       placeId: serializer.fromJson<int>(json['placeId']),
+      sight: serializer.fromJson<String>(json['sight']),
     );
   }
   @override
@@ -435,57 +491,70 @@ class VisitedData extends DataClass implements Insertable<VisitedData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'placeId': serializer.toJson<int>(placeId),
+      'sight': serializer.toJson<String>(sight),
     };
   }
 
-  VisitedData copyWith({int id, int placeId}) => VisitedData(
+  VisitedData copyWith({int id, int placeId, String sight}) => VisitedData(
         id: id ?? this.id,
         placeId: placeId ?? this.placeId,
+        sight: sight ?? this.sight,
       );
   @override
   String toString() {
     return (StringBuffer('VisitedData(')
           ..write('id: $id, ')
-          ..write('placeId: $placeId')
+          ..write('placeId: $placeId, ')
+          ..write('sight: $sight')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, placeId.hashCode));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(placeId.hashCode, sight.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is VisitedData &&
           other.id == this.id &&
-          other.placeId == this.placeId);
+          other.placeId == this.placeId &&
+          other.sight == this.sight);
 }
 
 class VisitedCompanion extends UpdateCompanion<VisitedData> {
   final Value<int> id;
   final Value<int> placeId;
+  final Value<String> sight;
   const VisitedCompanion({
     this.id = const Value.absent(),
     this.placeId = const Value.absent(),
+    this.sight = const Value.absent(),
   });
   VisitedCompanion.insert({
     this.id = const Value.absent(),
     @required int placeId,
-  }) : placeId = Value(placeId);
+    @required String sight,
+  })  : placeId = Value(placeId),
+        sight = Value(sight);
   static Insertable<VisitedData> custom({
     Expression<int> id,
     Expression<int> placeId,
+    Expression<String> sight,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (placeId != null) 'place_id': placeId,
+      if (sight != null) 'sight': sight,
     });
   }
 
-  VisitedCompanion copyWith({Value<int> id, Value<int> placeId}) {
+  VisitedCompanion copyWith(
+      {Value<int> id, Value<int> placeId, Value<String> sight}) {
     return VisitedCompanion(
       id: id ?? this.id,
       placeId: placeId ?? this.placeId,
+      sight: sight ?? this.sight,
     );
   }
 
@@ -498,6 +567,9 @@ class VisitedCompanion extends UpdateCompanion<VisitedData> {
     if (placeId.present) {
       map['place_id'] = Variable<int>(placeId.value);
     }
+    if (sight.present) {
+      map['sight'] = Variable<String>(sight.value);
+    }
     return map;
   }
 
@@ -505,7 +577,8 @@ class VisitedCompanion extends UpdateCompanion<VisitedData> {
   String toString() {
     return (StringBuffer('VisitedCompanion(')
           ..write('id: $id, ')
-          ..write('placeId: $placeId')
+          ..write('placeId: $placeId, ')
+          ..write('sight: $sight')
           ..write(')'))
         .toString();
   }
@@ -533,8 +606,20 @@ class $VisitedTable extends Visited with TableInfo<$VisitedTable, VisitedData> {
         $customConstraints: 'type UNIQUE');
   }
 
+  final VerificationMeta _sightMeta = const VerificationMeta('sight');
+  GeneratedTextColumn _sight;
   @override
-  List<GeneratedColumn> get $columns => [id, placeId];
+  GeneratedTextColumn get sight => _sight ??= _constructSight();
+  GeneratedTextColumn _constructSight() {
+    return GeneratedTextColumn(
+      'sight',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, placeId, sight];
   @override
   $VisitedTable get asDslTable => this;
   @override
@@ -554,6 +639,12 @@ class $VisitedTable extends Visited with TableInfo<$VisitedTable, VisitedData> {
           placeId.isAcceptableOrUnknown(data['place_id'], _placeIdMeta));
     } else if (isInserting) {
       context.missing(_placeIdMeta);
+    }
+    if (data.containsKey('sight')) {
+      context.handle(
+          _sightMeta, sight.isAcceptableOrUnknown(data['sight'], _sightMeta));
+    } else if (isInserting) {
+      context.missing(_sightMeta);
     }
     return context;
   }
