@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
+import 'package:places/data/cache_repository/cache_repository.dart';
+import 'package:places/data/cache_repository/cache_repository_db.dart';
 import 'package:places/data/database/database.dart';
 import 'package:places/data/favorites_repository/favorites_repository_db.dart';
 import 'package:places/data/location_repository/location_repository_real.dart';
@@ -8,6 +10,7 @@ import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_db_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
+import 'package:places/data/sight_repository/sight_repositiry_cached.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_db.dart';
 import 'package:places/domain/filter.dart';
@@ -55,6 +58,11 @@ Future<void> main() async {
         Provider<AppDatabase>(
           create: (_) => AppDatabase(),
         ),
+        Provider<CacheRepository>(
+          create: (context) => CacheRepositoryDb(
+            context.read<AppDatabase>(),
+          ),
+        ),
       ],
       child: App(),
     ),
@@ -72,8 +80,11 @@ class App extends StatelessWidget {
           ),
         ),
         Provider<SightRepository>(
-          create: (context) => SightRepositoryNetwork(
-            context.read<NetworkClient>(),
+          create: (context) => SightRepositoryCached(
+            network: SightRepositoryNetwork(
+              context.read<NetworkClient>(),
+            ),
+            cache: context.read<CacheRepository>(),
           ),
         ),
         Provider<LocationRepository>(

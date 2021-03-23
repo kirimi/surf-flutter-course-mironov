@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/sight_repository/sight_api_mapper.dart';
-import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_with_distance.dart';
 import 'package:places/model/repository/sight_repository.dart';
 
 /// Репозиторий мест. Данные на сервере
@@ -43,8 +43,7 @@ class SightRepositoryNetwork implements SightRepository {
   /// расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
   @override
-  Future<List<Pair<Sight, double>>> getFilteredList(
-      FilterRequest filter) async {
+  Future<List<SightWithDistance>> getFilteredList(FilterRequest filter) async {
     final body = jsonEncode(filter.toJson());
 
     final response = await client.post(_getFilteredUrl, body);
@@ -54,7 +53,7 @@ class SightRepositoryNetwork implements SightRepository {
       final sight = Sight().fromApiJson(p as Map<String, dynamic>);
       // api не возвращает distance, хотя в swagger описано.
       final distance = p['distance'] as double ?? 0;
-      return Pair(sight, distance);
+      return SightWithDistance(sight, distance);
     }).toList();
 
     return sights;

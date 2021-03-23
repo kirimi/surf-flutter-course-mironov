@@ -663,6 +663,288 @@ class $VisitedTable extends Visited with TableInfo<$VisitedTable, VisitedData> {
   }
 }
 
+class CacheData extends DataClass implements Insertable<CacheData> {
+  final int id;
+  final int created;
+  final String key;
+  final String value;
+  CacheData(
+      {@required this.id,
+      @required this.created,
+      @required this.key,
+      @required this.value});
+  factory CacheData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    return CacheData(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      created:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}created']),
+      key: stringType.mapFromDatabaseResponse(data['${effectivePrefix}key']),
+      value:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}value']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || created != null) {
+      map['created'] = Variable<int>(created);
+    }
+    if (!nullToAbsent || key != null) {
+      map['key'] = Variable<String>(key);
+    }
+    if (!nullToAbsent || value != null) {
+      map['value'] = Variable<String>(value);
+    }
+    return map;
+  }
+
+  CacheCompanion toCompanion(bool nullToAbsent) {
+    return CacheCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      created: created == null && nullToAbsent
+          ? const Value.absent()
+          : Value(created),
+      key: key == null && nullToAbsent ? const Value.absent() : Value(key),
+      value:
+          value == null && nullToAbsent ? const Value.absent() : Value(value),
+    );
+  }
+
+  factory CacheData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return CacheData(
+      id: serializer.fromJson<int>(json['id']),
+      created: serializer.fromJson<int>(json['created']),
+      key: serializer.fromJson<String>(json['key']),
+      value: serializer.fromJson<String>(json['value']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'created': serializer.toJson<int>(created),
+      'key': serializer.toJson<String>(key),
+      'value': serializer.toJson<String>(value),
+    };
+  }
+
+  CacheData copyWith({int id, int created, String key, String value}) =>
+      CacheData(
+        id: id ?? this.id,
+        created: created ?? this.created,
+        key: key ?? this.key,
+        value: value ?? this.value,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('CacheData(')
+          ..write('id: $id, ')
+          ..write('created: $created, ')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(created.hashCode, $mrjc(key.hashCode, value.hashCode))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is CacheData &&
+          other.id == this.id &&
+          other.created == this.created &&
+          other.key == this.key &&
+          other.value == this.value);
+}
+
+class CacheCompanion extends UpdateCompanion<CacheData> {
+  final Value<int> id;
+  final Value<int> created;
+  final Value<String> key;
+  final Value<String> value;
+  const CacheCompanion({
+    this.id = const Value.absent(),
+    this.created = const Value.absent(),
+    this.key = const Value.absent(),
+    this.value = const Value.absent(),
+  });
+  CacheCompanion.insert({
+    this.id = const Value.absent(),
+    @required int created,
+    @required String key,
+    @required String value,
+  })  : created = Value(created),
+        key = Value(key),
+        value = Value(value);
+  static Insertable<CacheData> custom({
+    Expression<int> id,
+    Expression<int> created,
+    Expression<String> key,
+    Expression<String> value,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (created != null) 'created': created,
+      if (key != null) 'key': key,
+      if (value != null) 'value': value,
+    });
+  }
+
+  CacheCompanion copyWith(
+      {Value<int> id,
+      Value<int> created,
+      Value<String> key,
+      Value<String> value}) {
+    return CacheCompanion(
+      id: id ?? this.id,
+      created: created ?? this.created,
+      key: key ?? this.key,
+      value: value ?? this.value,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (created.present) {
+      map['created'] = Variable<int>(created.value);
+    }
+    if (key.present) {
+      map['key'] = Variable<String>(key.value);
+    }
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CacheCompanion(')
+          ..write('id: $id, ')
+          ..write('created: $created, ')
+          ..write('key: $key, ')
+          ..write('value: $value')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $CacheTable extends Cache with TableInfo<$CacheTable, CacheData> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $CacheTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, false,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _createdMeta = const VerificationMeta('created');
+  GeneratedIntColumn _created;
+  @override
+  GeneratedIntColumn get created => _created ??= _constructCreated();
+  GeneratedIntColumn _constructCreated() {
+    return GeneratedIntColumn(
+      'created',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _keyMeta = const VerificationMeta('key');
+  GeneratedTextColumn _key;
+  @override
+  GeneratedTextColumn get key => _key ??= _constructKey();
+  GeneratedTextColumn _constructKey() {
+    return GeneratedTextColumn(
+      'key',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _valueMeta = const VerificationMeta('value');
+  GeneratedTextColumn _value;
+  @override
+  GeneratedTextColumn get value => _value ??= _constructValue();
+  GeneratedTextColumn _constructValue() {
+    return GeneratedTextColumn(
+      'value',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, created, key, value];
+  @override
+  $CacheTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'cache';
+  @override
+  final String actualTableName = 'cache';
+  @override
+  VerificationContext validateIntegrity(Insertable<CacheData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('created')) {
+      context.handle(_createdMeta,
+          created.isAcceptableOrUnknown(data['created'], _createdMeta));
+    } else if (isInserting) {
+      context.missing(_createdMeta);
+    }
+    if (data.containsKey('key')) {
+      context.handle(
+          _keyMeta, key.isAcceptableOrUnknown(data['key'], _keyMeta));
+    } else if (isInserting) {
+      context.missing(_keyMeta);
+    }
+    if (data.containsKey('value')) {
+      context.handle(
+          _valueMeta, value.isAcceptableOrUnknown(data['value'], _valueMeta));
+    } else if (isInserting) {
+      context.missing(_valueMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CacheData map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return CacheData.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $CacheTable createAlias(String alias) {
+    return $CacheTable(_db, alias);
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $SearchHistoriesTable _searchHistories;
@@ -672,6 +954,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $FavoritesTable get favorites => _favorites ??= $FavoritesTable(this);
   $VisitedTable _visited;
   $VisitedTable get visited => _visited ??= $VisitedTable(this);
+  $CacheTable _cache;
+  $CacheTable get cache => _cache ??= $CacheTable(this);
   SearchHistoryDao _searchHistoryDao;
   SearchHistoryDao get searchHistoryDao =>
       _searchHistoryDao ??= SearchHistoryDao(this as AppDatabase);
@@ -684,5 +968,5 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [searchHistories, favorites, visited];
+      [searchHistories, favorites, visited, cache];
 }

@@ -43,7 +43,8 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
     if (filter.maxDistance != null) {
       // Если задан гео-поиск, то получаем текущее местоположение
       // и формируем соответствующий запрос
-      final GeoPoint currLoc = await locationRepository.getCurrentLocation();
+      // final GeoPoint currLoc = await locationRepository.getCurrentLocation();
+      final GeoPoint currLoc = await locationRepository.getLastKnownLocation();
       filterReq = FilterRequest(
         lat: currLoc.lat,
         lng: currLoc.lon,
@@ -59,6 +60,6 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
     }
 
     final result = await sightRepository.getFilteredList(filterReq);
-    return result.map((e) => e.first).toList();
+    return result.map((e) => e.sight).toList();
   }
 }
