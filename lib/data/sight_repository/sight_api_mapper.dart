@@ -27,7 +27,7 @@ extension SightApiMapper on Sight {
         lat: map['lat'] as double,
       ),
       name: map['name'] as String,
-      url: urls.isNotEmpty ? urls.first : '',
+      photos: urls,
       type: getSightTypeByCode(map['placeType'] as String),
       details: map['description'] as String,
     );
@@ -38,7 +38,7 @@ extension SightApiMapper on Sight {
       'name': name,
       'lat': point.lat,
       'lng': point.lon,
-      'urls': [url],
+      'urls': photos,
       'placeType': type.code,
       'description': details,
     };

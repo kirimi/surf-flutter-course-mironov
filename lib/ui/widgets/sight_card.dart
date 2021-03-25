@@ -45,7 +45,7 @@ class SightCard extends StatelessWidget {
                   Expanded(
                     child: SizedBox(
                       width: double.infinity,
-                      child: NetworkImageWithSpinner(url: sight.url),
+                      child: NetworkImageWithSpinner(url: sight.photos[0]),
                     ),
                   ),
                   Expanded(

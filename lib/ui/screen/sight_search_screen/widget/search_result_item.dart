@@ -24,7 +24,7 @@ class SearchResultItem extends StatelessWidget {
           height: 56.0,
           width: 56.0,
           child: NetworkImageWithSpinner(
-            url: sight.url,
+            url: sight.photos[0],
           ),
         ),
       ),

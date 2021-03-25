@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
+import 'package:places/config.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/domain/sight_photo.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
+import 'package:places/model/photo/changes.dart';
 import 'package:places/model/sights/changes.dart';
-import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog.dart';
+import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog/add_photo_dialog.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:relation/relation.dart';
 
@@ -22,7 +25,7 @@ class AddScreenWm extends WidgetModel {
   final NavigatorState navigator;
 
   // временное хранилище для фотографий
-  final List<SightPhoto> _sightPhotoList = [];
+  final List<File> _sightPhotoList = [];
 
   // -------------
   // States
@@ -34,7 +37,10 @@ class AddScreenWm extends WidgetModel {
   final StreamedState<SightType> sightType = StreamedState();
 
   /// Фотографии места
-  final StreamedState<List<SightPhoto>> sightPhotos = StreamedState([]);
+  final StreamedState<List<File>> sightPhotos = StreamedState([]);
+
+  /// идет процесс загрузки
+  final StreamedState<bool> sending = StreamedState(false);
 
   /// FocusNode для полей ввода,
   /// по Action updateFocusNode происходит логика переключения фокуса
@@ -109,13 +115,23 @@ class AddScreenWm extends WidgetModel {
         title.controller.text != '' &&
         lat.controller.text != '' &&
         lon.controller.text != '' &&
-        description.controller.text != '';
+        description.controller.text != '' &&
+        _sightPhotoList.isNotEmpty;
 
     isSubmitEnabled.accept(isEnabled);
   }
 
   // Создание нового места
   Future<void> _onSubmit(_) async {
+    sending.accept(true);
+    // Загружаем фотографии на сервер и получаем их пути на сервере.
+    final List<String> urls =
+        await model.perform(UploadPhotos(_sightPhotoList));
+
+    // делаем пути абсолютными
+    final List<String> absUrls =
+        urls.map((e) => '${Config.baseUrl}/$e').toList();
+
     final Sight newSight = Sight(
       name: title.controller.text,
       point: GeoPoint(
@@ -123,17 +139,18 @@ class AddScreenWm extends WidgetModel {
         lat: double.parse(lat.controller.text),
       ),
       details: description.controller.text,
-      url: 'https://republica-dominikana.ru/wp-content/uploads/2018/08/51.jpg',
+      photos: absUrls,
       type: sightType.value,
     );
 
     model.perform(AddNewSight(newSight));
+    sending.accept(false);
     navigator.pop();
   }
 
   // Добавление фотографии
   Future<void> _onAddPhoto(_) async {
-    final SightPhoto sightPhoto = await showDialog(
+    final File sightPhoto = await showDialog(
         context: navigator.context,
         builder: (_) {
           return AddPhotoDialog();

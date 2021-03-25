@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/mocks.dart';
 import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 import 'package:places/ui/res/app_strings.dart';
@@ -57,7 +56,7 @@ class _SightDetailsBottomSheetState extends WidgetState<SightDetailsWm> {
               slivers: [
                 SliverPersistentHeader(
                   delegate: DetailsSliverPersistentHeaderDelegate(
-                    photos: sightPhotosMocks,
+                    photos: wm.sight.photos,
                     onBackTap: wm.onBack,
                   ),
                 ),

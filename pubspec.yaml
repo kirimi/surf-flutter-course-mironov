@@ -16,6 +16,7 @@ dependencies:
   flutter_svg: ^0.19.3
 
   dio: ^3.0.10
+  http_parser: ^3.1.4
   provider: ^4.3.3
   rxdart: ^0.25.0
 
@@ -31,6 +32,10 @@ dependencies:
   path_provider: ^0.5.0
   path: ^1.8.0
 
+  image_picker: ^0.6.7+22
+  image: ^2.1.19
+
+  uuid: ^2.2.2
 
 dev_dependencies:
   flutter_test:
