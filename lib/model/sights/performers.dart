@@ -33,17 +33,19 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
 
   @override
   Future<List<Sight>> perform(GetSights change) {
-    return _requestFilteredSights(filter: change.filter);
+    return _requestFilteredSights(filter: change.filter, force: change.force);
   }
 
   // Загружает места, которые соответствуют фильтру [filter]
-  Future<List<Sight>> _requestFilteredSights({@required Filter filter}) async {
+  Future<List<Sight>> _requestFilteredSights(
+      {@required Filter filter, bool force = false}) async {
     FilterRequest filterReq;
 
     if (filter.maxDistance != null) {
       // Если задан гео-поиск, то получаем текущее местоположение
       // и формируем соответствующий запрос
-      final GeoPoint currLoc = await locationRepository.getCurrentLocation();
+      // final GeoPoint currLoc = await locationRepository.getCurrentLocation();
+      final GeoPoint currLoc = await locationRepository.getLastKnownLocation();
       filterReq = FilterRequest(
         lat: currLoc.lat,
         lng: currLoc.lon,
@@ -58,7 +60,8 @@ class GetSightsPerformer extends FuturePerformer<List<Sight>, GetSights> {
       );
     }
 
-    final result = await sightRepository.getFilteredList(filterReq);
-    return result.map((e) => e.first).toList();
+    final result =
+        await sightRepository.getFilteredList(filterReq, force: force);
+    return result.map((e) => e.sight).toList();
   }
 }

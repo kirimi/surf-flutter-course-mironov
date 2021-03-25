@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_with_distance.dart';
 import 'package:places/model/repository/sight_repository.dart';
 
 /// Репозиторий мест. Данные в памяти. Для тестов
@@ -50,8 +50,10 @@ class SightRepositoryMemory implements SightRepository {
   /// расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
   @override
-  Future<List<Pair<Sight, double>>> getFilteredList(
-      FilterRequest filter) async {
+  Future<List<SightWithDistance>> getFilteredList(
+    FilterRequest filter, {
+    bool force,
+  }) async {
     final filteredByNameAndType = _sights.where((p) {
       // отфильтровываем по типу места
       return filter.typeFilter == null ||
@@ -70,7 +72,8 @@ class SightRepositoryMemory implements SightRepository {
     if (filter.radius == null || filter.lat == null || filter.lng == null) {
       // Если запрос был без фильтра по координате
       // расстояния не считаем и передаем -1
-      final result = filteredByNameAndType.map((p) => Pair(p, -1.0));
+      final result =
+          filteredByNameAndType.map((p) => SightWithDistance(p, -1.0));
       return Future.value(result.toList());
     } else {
       // Если запрос был с фильтром по координате, то делаем фильтрацию
@@ -86,7 +89,7 @@ class SightRepositoryMemory implements SightRepository {
           point: GeoPoint(lat: p.point.lat, lon: p.point.lon),
           center: GeoPoint(lat: filter.lat, lon: filter.lng),
         );
-        return Pair(p, dist);
+        return SightWithDistance(p, dist);
       });
       return Future.value(filteredByDist.toList());
     }

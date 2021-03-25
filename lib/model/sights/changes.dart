@@ -12,6 +12,7 @@ class AddNewSight extends FutureChange<void> {
 /// Получение списка мест, согласно фильтру
 class GetSights extends FutureChange<List<Sight>> {
   final Filter filter;
+  final bool force;
 
-  GetSights(this.filter);
+  GetSights(this.filter, {this.force = false});
 }

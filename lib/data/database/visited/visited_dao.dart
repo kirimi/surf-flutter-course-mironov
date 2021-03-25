@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:moor/moor.dart';
 import 'package:places/data/database/database.dart';
 import 'package:places/data/database/visited/visited_table.dart';
+import 'package:places/domain/sight.dart';
 
 part 'visited_dao.g.dart';
 
@@ -9,16 +12,21 @@ part 'visited_dao.g.dart';
 class VisitedDao extends DatabaseAccessor<AppDatabase> with _$VisitedDaoMixin {
   VisitedDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
-  /// Возвращает спискок id посещенных мест
-  Future<Set<int>> getAll() async {
+  /// Возвращает спискок посещенных мест
+  Future<List<Sight>> getAll() async {
     final items = await select(visited).get();
-    return items.map((e) => e.placeId).toSet();
+    return items
+        .map((e) => Sight.fromJson(jsonDecode(e.sight) as Map<String, dynamic>))
+        .toList();
   }
 
-  /// добавляет место [placeId] в список посещенных мест
-  Future<int> add(int placeId) {
+  /// добавляет место [sight] в список посещенных мест
+  Future<int> add(Sight sight) {
     return into(visited).insert(
-      VisitedCompanion(placeId: Value(placeId)),
+      VisitedCompanion(
+        placeId: Value(sight.id),
+        sight: Value(jsonEncode(sight.toJson())),
+      ),
     );
   }
 

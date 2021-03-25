@@ -1,10 +1,12 @@
+import 'package:places/domain/sight.dart';
+
 /// Интерфейс для репозитория мест "Хочу посетить"
 abstract class FavoritesRepository {
-  /// Возвращает список id мест "Хочу посетить"
-  Future<Set<int>> getList();
+  /// Возвращает список мест "Хочу посетить"
+  Future<List<Sight>> getList();
 
-  /// Добавляет место с [id] в список "Хочу посетить"
-  Future<void> add(int id);
+  /// Добавляет место в список "Хочу посетить"
+  Future<void> add(Sight sight);
 
   /// Удаляет место с [id] из списка "Хочу посетить"
   Future<void> remove(int id);
