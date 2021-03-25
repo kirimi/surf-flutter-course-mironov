@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
-import 'package:places/config.dart';
 import 'package:places/domain/geo_point.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
@@ -129,13 +128,10 @@ class AddScreenWm extends WidgetModel {
   // Создание нового места
   Future<void> _onSubmit(_) async {
     sending.accept(true);
+
     // Загружаем фотографии на сервер и получаем их пути на сервере.
     final List<String> urls =
         await model.perform(UploadPhotos(_sightPhotoList));
-
-    // делаем пути абсолютными
-    final List<String> absUrls =
-        urls.map((e) => '${Config.baseUrl}/$e').toList();
 
     final Sight newSight = Sight(
       name: title.controller.text,
@@ -144,11 +140,12 @@ class AddScreenWm extends WidgetModel {
         lat: double.parse(lat.controller.text),
       ),
       details: description.controller.text,
-      photos: absUrls,
+      photos: urls,
       type: sightType.value,
     );
 
     model.perform(AddNewSight(newSight));
+
     sending.accept(false);
     navigator.pop();
   }
