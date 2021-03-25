@@ -8,6 +8,7 @@ import 'package:places/domain/sight.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
 import 'package:places/model/photo/changes.dart';
 import 'package:places/model/sights/changes.dart';
+import 'package:places/ui/screen/add_sight_screen/select_location_screen/select_location_screen.dart';
 import 'package:places/ui/screen/add_sight_screen/widget/add_photo_dialog/add_photo_dialog.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:relation/relation.dart';
@@ -77,6 +78,9 @@ class AddScreenWm extends WidgetModel {
   /// Удаление фотографии
   final deletePhoto = Action<int>();
 
+  /// Выбор локации на карте
+  final selectLocation = Action<void>();
+
   @override
   void onBind() {
     super.onBind();
@@ -86,6 +90,7 @@ class AddScreenWm extends WidgetModel {
     subscribe(submitTextField.stream, _onSubmitTextField);
     subscribe(addPhoto.stream, _onAddPhoto);
     subscribe(deletePhoto.stream, _onDeletePhoto);
+    subscribe(selectLocation.stream, _onSelectLocation);
   }
 
   // Выбор категории места
@@ -166,6 +171,16 @@ class AddScreenWm extends WidgetModel {
   void _onDeletePhoto(int index) {
     _sightPhotoList.removeAt(index);
     sightPhotos.accept(_sightPhotoList);
+  }
+
+  /// Выбор локации на карте, при возврате установка соответствующих полей
+  Future<void> _onSelectLocation(_) async {
+    final result =
+        await navigator.pushNamed(SelectLocationScreen.routeName) as GeoPoint;
+    if (result != null) {
+      lat.controller.text = result.lat.toString();
+      lon.controller.text = result.lon.toString();
+    }
   }
 
   // Нажата кнопка "назад"

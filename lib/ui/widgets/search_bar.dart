@@ -23,6 +23,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController controller;
   final String text;
   final bool readOnly;
+  final EdgeInsets padding;
 
   const SearchBar({
     Key key,
@@ -34,6 +35,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
     this.onChanged,
     this.onClear,
     this.controller,
+    this.padding = const EdgeInsets.all(8.0),
   }) : super(key: key);
 
   @override
@@ -42,7 +44,7 @@ class SearchBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding,
       // тут кнопка фильтра реализована через Stack, чтобы не происходил
       // onTap у поля ввода, в случае если ее реализовывать через suffix поля
       // ввода.  https://github.com/flutter/flutter/issues/39376

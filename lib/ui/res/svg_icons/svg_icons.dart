@@ -174,6 +174,16 @@ class SvgIcons {
     'res/svg/share.svg',
     semanticsLabel: 'Share',
   );
+
+  static const SvgData geolocation = SvgData(
+    'res/svg/geolocation.svg',
+    semanticsLabel: 'Geolocation',
+  );
+
+  static const SvgData refresh = SvgData(
+    'res/svg/refresh.svg',
+    semanticsLabel: 'Refresh',
+  );
 }
 
 /// Описание SVG-ресурса
