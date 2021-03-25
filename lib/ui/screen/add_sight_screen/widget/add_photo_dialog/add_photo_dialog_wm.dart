@@ -42,7 +42,7 @@ class AddPhotoDialogWm extends WidgetModel {
   Future<void> onCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      _resideAndPop(File(pickedFile.path));
+      _resizeAndPop(File(pickedFile.path));
     } else {
       onCancel();
     }
@@ -52,7 +52,7 @@ class AddPhotoDialogWm extends WidgetModel {
   Future<void> onPhoto() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      _resideAndPop(File(pickedFile.path));
+      _resizeAndPop(File(pickedFile.path));
     } else {
       onCancel();
     }
@@ -62,7 +62,7 @@ class AddPhotoDialogWm extends WidgetModel {
   void onCancel() => navigator.pop();
 
   /// масштабирует/сжимает фото и возвращает
-  Future<void> _resideAndPop(File image) async {
+  Future<void> _resizeAndPop(File image) async {
     resizing.accept(true);
     final resized = await model.perform(ResizePhoto(image));
     resizing.accept(false);
