@@ -17,20 +17,31 @@ class AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24.0),
-      child: Material(
-        child: InkWell(
-          onTap: onPressed,
-          child: Ink(
-            height: 48.0,
-            width: 177.0,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                AppColors.yellow,
-                Theme.of(context).accentColor,
-              ]),
+    return Container(
+      height: 48.0,
+      width: 177.0,
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+          gradient: LinearGradient(
+            colors: [
+              AppColors.yellow,
+              Theme.of(context).accentColor,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.black.withOpacity(0.3),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: const Offset(1, 3),
             ),
+          ]),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: onPressed,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,

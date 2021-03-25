@@ -1,4 +1,5 @@
 import 'package:places/data/database/database.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/model/repository/favorites_repository.dart';
 
 /// Репозиторий мест "Хочу посетить".
@@ -10,11 +11,11 @@ class FavoritesRepositoryDb implements FavoritesRepository {
 
   /// Добавляет место с [id] в список "Хочу посетить"
   @override
-  Future<void> add(int id) => database.favoritesDao.add(id);
+  Future<void> add(Sight sight) => database.favoritesDao.add(sight);
 
   /// Возвращает список id мест "Хочу посетить"
   @override
-  Future<Set<int>> getList() => database.favoritesDao.getAll();
+  Future<List<Sight>> getList() => database.favoritesDao.getAll();
 
   /// Возвращает включено ли место [id] в список "Хочу посетить"
   @override

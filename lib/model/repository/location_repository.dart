@@ -4,4 +4,7 @@ import 'package:places/domain/geo_point.dart';
 abstract class LocationRepository {
   /// Отдает текущее местоположение в виде [GeoPoint]
   Future<GeoPoint> getCurrentLocation();
+
+  /// Отдает последнее известное местоположение
+  Future<GeoPoint> getLastKnownLocation();
 }

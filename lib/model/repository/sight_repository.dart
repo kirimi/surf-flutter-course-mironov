@@ -1,6 +1,6 @@
-import 'package:places/domain/core/pair.dart';
 import 'package:places/domain/filter_request.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/domain/sight_with_distance.dart';
 
 /// Интерфейс для репозитория мест
 abstract class SightRepository {
@@ -37,5 +37,8 @@ abstract class SightRepository {
   /// Pair.first - само место
   /// Pair.second - расстояние (double) до точки, если передали в [filter] текущую координату и радиус
   /// или -1.0, если filter не передали.
-  Future<List<Pair<Sight, double>>> getFilteredList(FilterRequest filter);
+  Future<List<SightWithDistance>> getFilteredList(
+    FilterRequest filter, {
+    bool force,
+  });
 }

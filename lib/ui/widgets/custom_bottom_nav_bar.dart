@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:places/ui/res/svg_icons/svg_icon.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
+import 'package:places/ui/screen/map_screen/map_screen.dart';
 import 'package:places/ui/screen/settings_screen.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
@@ -60,7 +61,7 @@ class CustomBottomNavBar extends StatelessWidget {
                 route = SightListScreen.routeName;
                 break;
               case 1:
-                // todo route карты
+                route = MapScreen.routeName;
                 break;
               case 2:
                 route = VisitingScreen.routeName;

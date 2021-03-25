@@ -45,6 +45,7 @@
 	<string>The application uses photos to store photos of interesting places.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The app uses the camera to take pictures of interesting places.</string>
-
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
 </dict>
 </plist>

@@ -1,24 +1,33 @@
+import 'dart:convert';
+
 import 'package:moor/moor.dart';
 import 'package:places/data/database/database.dart';
 import 'package:places/data/database/favorites/favorites_table.dart';
+import 'package:places/domain/sight.dart';
 
 part 'favorites_dao.g.dart';
 
 /// DAO для доступа к таблице Избранное
 @UseDao(tables: [Favorites])
-class FavoritesDao extends DatabaseAccessor<AppDatabase> with _$FavoritesDaoMixin {
+class FavoritesDao extends DatabaseAccessor<AppDatabase>
+    with _$FavoritesDaoMixin {
   FavoritesDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
   /// Возвращает спискок id избранных мест
-  Future<Set<int>> getAll() async {
+  Future<List<Sight>> getAll() async {
     final items = await select(favorites).get();
-    return items.map((e) => e.placeId).toSet();
+    return items
+        .map((e) => Sight.fromJson(jsonDecode(e.sight) as Map<String, dynamic>))
+        .toList();
   }
 
   /// добавляет место [placeId] в списко Избранное
-  Future<int> add(int placeId) {
+  Future<int> add(Sight sight) {
     return into(favorites).insert(
-      FavoritesCompanion(placeId: Value(placeId)),
+      FavoritesCompanion(
+        placeId: Value(sight.id),
+        sight: Value(jsonEncode(sight.toJson())),
+      ),
     );
   }
 

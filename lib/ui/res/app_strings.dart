@@ -80,4 +80,9 @@ class AppStrings {
   static const String historyErrorTitle = 'Ошибка';
   static const String historyErrorSubtitle =
       'Что-то пошло не так.\nПопробуйте позже.';
+
+  static const String mapAppBarTitle = 'Карта';
+
+  static const String selectLocationAppbarTitle = 'Местоположение';
+  static const String selectLocationSubmit = 'Готово';
 }

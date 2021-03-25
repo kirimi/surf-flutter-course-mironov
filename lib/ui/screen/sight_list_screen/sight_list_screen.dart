@@ -5,9 +5,9 @@ import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/res/const.dart';
 import 'package:places/ui/res/svg_icons/svg_icons.dart';
 import 'package:places/ui/screen/sight_list_screen/sight_list_wm.dart';
-import 'package:places/ui/screen/sight_list_screen/widget/add_button.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/favorite_button/favorite_button.dart';
 import 'package:places/ui/screen/sight_list_screen/widget/search_sliver_delegate.dart';
+import 'package:places/ui/widgets/add_button.dart';
 import 'package:places/ui/widgets/center_message.dart';
 import 'package:places/ui/widgets/custom_bottom_nav_bar.dart';
 import 'package:places/ui/widgets/loading_spinner.dart';
@@ -62,7 +62,7 @@ class _SightListScreenState extends WidgetState<SightListWm> {
           );
         },
         loadingBuilder: (context, _) {
-          return Center(child: LoadingSpinner());
+          return const Center(child: LoadingSpinner());
         },
         errorBuilder: (context, _, e) {
           return CenterMessage(

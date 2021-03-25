@@ -12,9 +12,16 @@ class LocationRepositoryMock implements LocationRepository {
       return Future.value(_currentLocation);
     } else {
       _currentLocation = GeoPoint(lon: 30.433278, lat: 59.685994);
-      return Future.delayed(const Duration(milliseconds: 10), () {
+      return Future.delayed(const Duration(milliseconds: 500), () {
         return Future.value(_currentLocation);
       });
     }
+  }
+
+  /// Последнее известное местоположение
+  @override
+  Future<GeoPoint> getLastKnownLocation() {
+    _currentLocation = GeoPoint(lon: 30.433278, lat: 59.685994);
+    return Future.value(_currentLocation);
   }
 }

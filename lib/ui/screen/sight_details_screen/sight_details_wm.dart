@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Action;
+import 'package:map_launcher/map_launcher.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/model/favorites/changes.dart';
@@ -27,11 +28,14 @@ class SightDetailsWm extends WidgetModel {
   /// Нажата кнопка Favorite
   final onFavorite = Action<void>();
 
+  final navigateTo = Action<void>();
+
   @override
   void onBind() {
     super.onBind();
     subscribe(onBack.stream, (_) => _onBack());
     subscribe(onFavorite.stream, (_) => _onFavorite());
+    subscribe(navigateTo.stream, (_) => _onNavigateTo());
 
     /// Слушаем change и обновляем стейт, если прилетело событие про наш sight
     model.listen<ToggleFavoriteResult, ToggleFavorite>().listen((res) {
@@ -54,6 +58,15 @@ class SightDetailsWm extends WidgetModel {
   }
 
   void _onFavorite() => model.perform(ToggleFavorite(sight));
+
+  Future<void> _onNavigateTo() async {
+    final availableMaps = await MapLauncher.installedMaps;
+
+    await availableMaps.first.showMarker(
+      coords: Coords(sight.point.lat, sight.point.lon),
+      title: sight.name,
+    );
+  }
 
   void _onBack() => navigator.pop();
 }

@@ -23,6 +23,30 @@ class FilterRequest {
     this.nameFilter,
   });
 
+  FilterRequest copyWith({
+    double lat,
+    double lng,
+    double radius,
+    List<String> typeFilter,
+    String nameFilter,
+  }) {
+    if ((lat == null || identical(lat, this.lat)) &&
+        (lng == null || identical(lng, this.lng)) &&
+        (radius == null || identical(radius, this.radius)) &&
+        (typeFilter == null || identical(typeFilter, this.typeFilter)) &&
+        (nameFilter == null || identical(nameFilter, this.nameFilter))) {
+      return this;
+    }
+
+    return FilterRequest(
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      radius: radius ?? this.radius,
+      typeFilter: typeFilter ?? this.typeFilter,
+      nameFilter: nameFilter ?? this.nameFilter,
+    );
+  }
+
   /// преобразуем в map
   Map<String, dynamic> toJson() {
     return {

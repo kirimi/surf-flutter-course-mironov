@@ -4,4 +4,5 @@ import 'package:moor/moor.dart';
 class Visited extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get placeId => integer().customConstraint('type UNIQUE')();
+  TextColumn get sight => text()();
 }

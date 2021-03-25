@@ -37,7 +37,9 @@ class NetworkImageWithSpinner extends StatelessWidget {
           // поэтому в этом кейсе показываем простую крутилку
           if (loadingProgress.expectedTotalBytes == null ||
               loadingProgress.expectedTotalBytes == 0) {
-            loading = const CircularProgressIndicator();
+            loading = const Center(
+              child: CircularProgressIndicator(),
+            );
           } else {
             // Вычисляем прогресс для спиннера
             final progress = loadingProgress.cumulativeBytesLoaded /

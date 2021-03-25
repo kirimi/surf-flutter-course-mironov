@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
 import 'package:places/config.dart';
+import 'package:places/data/cache_repository/cache_repository.dart';
+import 'package:places/data/cache_repository/cache_repository_db.dart';
 import 'package:places/data/database/database.dart';
 import 'package:places/data/favorites_repository/favorites_repository_db.dart';
-import 'package:places/data/location_repository/location_repository_mock.dart';
+import 'package:places/data/location_repository/location_repository_real.dart';
 import 'package:places/data/network_client/network_client.dart';
 import 'package:places/data/network_client/network_client_dio.dart';
 import 'package:places/data/search_history_repository/search_history_db_repository.dart';
 import 'package:places/data/shared_prefs_storage_repository/shared_prefs_storage_repository.dart';
+import 'package:places/data/sight_repository/sight_repositiry_cached.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_db.dart';
 import 'package:places/domain/filter.dart';
@@ -23,8 +26,12 @@ import 'package:places/ui/error/default_error_handler.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen.dart';
 import 'package:places/ui/screen/add_sight_screen/add_sight_screen_route.dart';
+import 'package:places/ui/screen/add_sight_screen/select_location_screen/select_location_screen.dart';
+import 'package:places/ui/screen/add_sight_screen/select_location_screen/select_location_screen_route.dart';
 import 'package:places/ui/screen/filters_screen/filters_screen.dart';
 import 'package:places/ui/screen/filters_screen/fliters_screen_route.dart';
+import 'package:places/ui/screen/map_screen/map_screen.dart';
+import 'package:places/ui/screen/map_screen/map_screen_route.dart';
 import 'package:places/ui/screen/onboarding_screen/onboarding_screen.dart';
 import 'package:places/ui/screen/select_category_screen.dart';
 import 'package:places/ui/screen/settings_screen.dart';
@@ -51,6 +58,11 @@ Future<void> main() async {
         Provider<AppDatabase>(
           create: (_) => AppDatabase(),
         ),
+        Provider<CacheRepository>(
+          create: (context) => CacheRepositoryDb(
+            context.read<AppDatabase>(),
+          ),
+        ),
       ],
       child: App(),
     ),
@@ -68,12 +80,15 @@ class App extends StatelessWidget {
           ),
         ),
         Provider<SightRepository>(
-          create: (context) => SightRepositoryNetwork(
-            context.read<NetworkClient>(),
+          create: (context) => SightRepositoryCached(
+            network: SightRepositoryNetwork(
+              context.read<NetworkClient>(),
+            ),
+            cache: context.read<CacheRepository>(),
           ),
         ),
         Provider<LocationRepository>(
-          create: (_) => LocationRepositoryMock(),
+          create: (_) => LocationRepositoryReal(),
         ),
         Provider<FavoritesRepository>(
           create: (_) => FavoritesRepositoryDb(
@@ -136,6 +151,10 @@ class App extends StatelessWidget {
                   return SightListScreenRoute();
                 case VisitingScreen.routeName:
                   return VisitingScreenRoute();
+                case MapScreen.routeName:
+                  return MapScreenRoute();
+                case SelectLocationScreen.routeName:
+                  return SelectLocationScreenRoute();
                 default:
                   return null;
               }
