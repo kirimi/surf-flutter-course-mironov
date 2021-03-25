@@ -72,8 +72,7 @@ class NetworkClientDio implements NetworkClient {
     );
 
     try {
-      final request = _dio.post<String>(url, data: formData);
-      final response = await request;
+      final response = await _dio.post<String>(url, data: formData);
       // Если загружен один файл, то путь к нему содержится в заголовке "location".
       // Если в запросе было больше одного файла, то ответ в виде списка путей к загруженным файлам в теле ответа.
       if (response.statusCode == 201 &&
