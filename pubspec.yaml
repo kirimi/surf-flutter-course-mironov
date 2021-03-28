@@ -51,8 +51,15 @@ dev_dependencies:
   json_serializable: ^3.5.1
   moor_generator: ^3.4.0
 
+  flutter_launcher_icons: ^0.8.1
+
   # линтер. настройки в analysis_options.yaml
   lint: 1.3.0
+
+flutter_icons:
+  image_path: "res/launcher_icons/dev.png"
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
@@ -61,6 +68,7 @@ flutter:
     - res/
     - res/svg/
     - res/images/
+    - res/launcher_icons/
 
   fonts:
     - family: Roboto
