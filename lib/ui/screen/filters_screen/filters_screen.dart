@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
+import 'package:places/environment/environment.dart';
 import 'package:places/ui/res/app_strings.dart';
 import 'package:places/ui/screen/filters_screen/filters_wm.dart';
 import 'package:places/ui/screen/filters_screen/widget/type_filter_item_widget.dart';
@@ -74,8 +74,8 @@ class _FiltersScreenState extends WidgetState<FiltersWm> {
               builder: (context, rangeValues) {
                 return RangeSlider(
                   values: rangeValues,
-                  min: Config.minRange,
-                  max: Config.maxRange,
+                  min: Environment.instance.buildConfig.minRange,
+                  max: Environment.instance.buildConfig.maxRange,
                   onChangeEnd: (newValues) => wm.onFinishChangeRange(newValues),
                   onChanged: (newValues) => wm.onChangeRange(newValues),
                 );

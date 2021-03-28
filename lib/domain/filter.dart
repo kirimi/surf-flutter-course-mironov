@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:places/config.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
+import 'package:places/environment/environment.dart';
 
 part 'filter.g.dart';
 
@@ -22,8 +22,8 @@ class Filter {
   });
 
   Filter.initial() {
-    minDistance = Config.minRange;
-    maxDistance = Config.maxRange;
+    minDistance = Environment.instance.buildConfig.minRange;
+    maxDistance = Environment.instance.buildConfig.maxRange;
     types = [];
   }
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart' hide Action;
 import 'package:mwwm/mwwm.dart';
-import 'package:places/config.dart';
 import 'package:places/domain/filter.dart';
 import 'package:places/domain/sight_type/default_sight_types.dart';
 import 'package:places/domain/sight_type/sight_type.dart';
+import 'package:places/environment/environment.dart';
 import 'package:places/model/sights/changes.dart';
 import 'package:relation/relation.dart';
 
@@ -80,8 +80,8 @@ class FiltersWm extends WidgetModel {
 
   // сбрасывает фильтры в начальное значение
   void _onClearFilter() {
-    filter.minDistance = Config.minRange;
-    filter.maxDistance = Config.maxRange;
+    filter.minDistance = Environment.instance.buildConfig.minRange;
+    filter.maxDistance = Environment.instance.buildConfig.maxRange;
     filter.types.clear();
     rangeValues.accept(RangeValues(filter.minDistance, filter.maxDistance));
     selectedSightTypes.accept(filter.types);

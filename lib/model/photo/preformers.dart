@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:mwwm/mwwm.dart';
 import 'package:places/data/network_client/network_client.dart';
+import 'package:places/environment/environment.dart';
 import 'package:places/model/photo/changes.dart';
 import 'package:places/utils/photo_resizer/photo_resizer.dart';
-
-import '../../config.dart';
 
 /// Загрузка фотографий на сервер
 /// возвращает список url для загруженных фотографий
@@ -24,8 +23,9 @@ class UploadPhotosPerformer
     final urls = (map['urls'] as List<dynamic>).cast<String>();
 
     // делаем пути абсолютными
-    final List<String> absUrls =
-        urls.map((e) => '${Config.baseUrl}/$e').toList();
+    final List<String> absUrls = urls
+        .map((e) => '${Environment.instance.buildConfig.baseUrl}/$e')
+        .toList();
 
     return absUrls;
   }
