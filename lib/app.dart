@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mwwm/mwwm.dart';
-import 'package:places/config.dart';
 import 'package:places/data/cache_repository/cache_repository.dart';
 import 'package:places/data/cache_repository/cache_repository_db.dart';
 import 'package:places/data/database/database.dart';
@@ -14,6 +13,7 @@ import 'package:places/data/sight_repository/sight_repositiry_cached.dart';
 import 'package:places/data/sight_repository/sight_repository_network.dart';
 import 'package:places/data/visited_repository/visited_repository_db.dart';
 import 'package:places/domain/filter.dart';
+import 'package:places/environment/environment.dart';
 import 'package:places/interactor/theme_interactor.dart';
 import 'package:places/model/favorites/performers.dart';
 import 'package:places/model/repository/favorites_repository.dart';
@@ -45,7 +45,8 @@ import 'package:places/ui/screen/visiting_screen/visiting_screen.dart';
 import 'package:places/ui/screen/visiting_screen/visiting_screen_router.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async {
+/// Точка входа в приложение
+Future<void> run() async {
   // await uploadMocks(sightRepository);
   WidgetsFlutterBinding.ensureInitialized();
   final _storageRepository = await SharedPrefsStorageRepository.getInstance();
@@ -58,11 +59,6 @@ Future<void> main() async {
         Provider<AppDatabase>(
           create: (_) => AppDatabase(),
         ),
-        Provider<CacheRepository>(
-          create: (context) => CacheRepositoryDb(
-            context.read<AppDatabase>(),
-          ),
-        ),
       ],
       child: App(),
     ),
@@ -74,9 +70,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<CacheRepository>(
+          create: (context) => CacheRepositoryDb(
+            context.read<AppDatabase>(),
+          ),
+        ),
         Provider<NetworkClient>(
           create: (_) => NetworkClientDio(
-            baseUrl: Config.baseUrl,
+            baseUrl: Environment.instance.buildConfig.baseUrl,
           ),
         ),
         Provider<SightRepository>(
